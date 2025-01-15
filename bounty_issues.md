@@ -1,5 +1,5 @@
 |Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|
-|---|---|---|---|---|---
+|---|---|---|---|---|
 | ergoplatform | [Finish executeFromSelfReg implementation](https://github.com/ergoplatform/sigmastate-interpreter/issues/1039) | 1 | 281.97 | SigUSD |
 | ergoplatform | [debug function](https://github.com/ergoplatform/sigmastate-interpreter/issues/1035) | 2 | 281.97 | SigUSD |
 | ergoplatform | [Finish Bulletproofs range check example](https://github.com/ergoplatform/sigmastate-interpreter/issues/1032) | 3 | 200.00 | ERG |
@@ -40,4 +40,4 @@
 |---|---|---|---|---|---
 | **Overall Totals:** |   | 31 | 3895.95 | 
 
-Report generated: 2025-01-15 16:28:45 UTC
+Report generated: 2025-01-15 16:30:34 UTC
