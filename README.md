@@ -1,6 +1,7 @@
 # Ergo Ecosystem Bounties
-[Ergo Ecosystem Bounties](/bounty_issues.md) Will be posted weekly in ERG equivalent (e.g. RSN is shown in equivalent ERG while payout column notes paid in "RSN"). 
-If there are bounties missing, please create a PR to add the "owner" and "repo" and they will be added next week. There should be a "Bounty" tag on the Issue as well as a value for the bounty in the same or separate tag.
+[Ergo Ecosystem Bounties](/bounty_issues.md) <-- Click here for Open Bounties
+<br><br>Open bounties will be posted weekly in ERG equivalent (e.g. RSN is shown in equivalent ERG while payout column notes paid in "RSN"). 
+<br>If there are bounties missing, please create a PR to add the "owner" and "repo" and they will be added next week. There should be a "Bounty" tag on the Issue as well as a value for the bounty in the same or separate tag.
 
 |Week|Count of Open Issues|ERG Bounties|
 |---|---|---|
