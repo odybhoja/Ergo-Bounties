@@ -5,7 +5,8 @@
 
 |Week|Count of Open Issues|ERG Bounties|
 |---|---|---|
-|Keystone Wallet Integration| | 3,000 ERG|
+|Keystone Wallet Integration|[Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1331622817103614036)| 3,000 ERG|
+|[Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8)|7|775 SigUSD|
 |Jan 15, 2025|31|3,895.95 ERG|
 |Jan 22, 2025|100|27,512.25 ERG|
 
