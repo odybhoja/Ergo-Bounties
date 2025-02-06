@@ -6,8 +6,8 @@
 |Week|Count of Open Issues|ERG Bounties|
 |---|---|---|
 |Keystone Wallet Integration|[Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1334170095529889793)| 3,000 ERG|
-|[Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8)|7|775 SigUSD|
-|[Jan 30, 2025](https://github.com/ErgoDevs/Ergo-Bounties/blob/main/bounty_issues.md)|99|28,074.21 ERG| 
+|[Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8)|7| 775 SigUSD|
+|[Jan 30, 2025](https://github.com/ErgoDevs/Ergo-Bounties/blob/main/bounty_issues.md)|99| 35,764.72  ERG| 
 
 ## Donations
 
@@ -121,13 +121,13 @@ We appreciate donations, they will be spent on doing Ergo core development, impr
 | ChainCashLabs | [Add openapi schema and swagger ui](https://github.com/ChainCashLabs/chaincash-rs/issues/28) | Rust | - | 20.70 | GORT |
 |---|---|---|---|---|---
 |---|**Project**|---|**Count**|**ERG Equivalent**|---
-|--- |  **ergoplatform Subtotal:** |   | 82 | 27,444.45  | 
+|--- |  **ergoplatform Subtotal:** |   | 82 | 35,026.82   | 
 |---|  **rosen-bridge Subtotal:** |   | 6 | 111.16 | 
-|---|  **StabilityNexus Subtotal:** |   | 2 | 68.97 | 
-|---|  **ChainCashLabs Subtotal:** |   | 9 | 449.63 | 
-|---|  **Overall Totals:** |   | 99 | 28,074.21 | 
+|---|  **StabilityNexus Subtotal:** |   | 2 | 91.74 | 
+|---|  **ChainCashLabs Subtotal:** |   | 9 | 534.99 | 
+|---|  **Overall Totals:** |   | 99 | 35,764.72 | 
 
-Report generated: 2025-01-30 11:31:21 UTC
+Report generated: 2025-02-06 14:42:45 UTC-6
 
 ## Listing of Repos Queried 
 |Owner|Repo|
