@@ -7,7 +7,7 @@
 |---|---|---|
 |Keystone Wallet Integration|[Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1334170095529889793)| 3,000 ERG|
 |[Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8)|7| 775 SigUSD|
-|[Jan 30, 2025](https://github.com/ErgoDevs/Ergo-Bounties/blob/main/bounty_issues.md)|99| 35,764.72  ERG| 
+|[Feb 6, 2025](https://github.com/ErgoDevs/Ergo-Bounties/blob/main/bounty_issues.md)|99| 35,764.72  ERG| 
 
 ## Donations
 
