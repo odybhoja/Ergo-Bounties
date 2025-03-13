@@ -68,7 +68,7 @@ def generate_organization_files(
             # Sort bounties by title
             org_bounties.sort(key=lambda x: x["title"])
             
-            # Add rows for each bounty
+            # Add rows for each bounty (excluding those with "Not specified" amounts)
             for bounty in org_bounties:
                 title = bounty["title"]
                 url = bounty["url"]
@@ -76,6 +76,10 @@ def generate_organization_files(
                 currency = bounty["currency"]
                 primary_lang = bounty["primary_lang"]
                 secondary_lang = bounty["secondary_lang"]
+                
+                # Skip bounties with "Not specified" amounts
+                if amount == "Not specified":
+                    continue
                 
                 # Try to convert to ERG equivalent
                 erg_equiv = convert_to_erg(amount, currency, conversion_rates)

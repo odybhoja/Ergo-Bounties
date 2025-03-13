@@ -114,13 +114,17 @@ def generate_currency_files(
             # Sort bounties by owner and title
             currency_bounties.sort(key=lambda x: (x["owner"], x["title"]))
             
-            # Add rows for each bounty
+            # Add rows for each bounty (excluding those with "Not specified" amounts)
             for bounty in currency_bounties:
                 owner = bounty["owner"]
                 title = bounty["title"]
                 url = bounty["url"]
                 amount = bounty["amount"]
                 primary_lang = bounty["primary_lang"]
+                
+                # Skip bounties with "Not specified" amounts
+                if amount == "Not specified":
+                    continue
                 
                 # Try to convert to ERG equivalent
                 erg_equiv = convert_to_erg(amount, currency, conversion_rates)

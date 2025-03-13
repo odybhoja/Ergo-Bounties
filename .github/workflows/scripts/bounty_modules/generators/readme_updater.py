@@ -142,6 +142,9 @@ def update_readme_table(
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-brightgreen" alt="Open Bounties"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-success" alt="Total Value"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
+   </p>
+   
+   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/💎%20Donate-ff69b4"></a>
@@ -160,11 +163,7 @@ def update_readme_table(
   </p>
 </div>
 
----
 
-## 📅 Automated Daily Updates
-
-Daily tracking and updates via GitHub Actions at Midnight UTC.
 '''
         
         # Use the new README content

@@ -114,7 +114,7 @@ def generate_main_file(
         # Sort all bounties by ERG value (highest first)
         sorted_bounties = sorted(bounty_data, key=lambda x: x.get("erg_value", 0.0), reverse=True)
         
-        # Add rows for each bounty
+        # Add rows for each bounty (excluding those with "Not specified" amounts)
         for bounty in sorted_bounties:
             owner = bounty["owner"]
             title = bounty["title"]
@@ -122,6 +122,10 @@ def generate_main_file(
             amount = bounty["amount"]
             currency = bounty["currency"]
             primary_lang = bounty["primary_lang"]
+            
+            # Skip bounties with "Not specified" amounts
+            if amount == "Not specified":
+                continue
             
             # Try to convert to ERG equivalent
             erg_equiv = convert_to_erg(amount, currency, conversion_rates)
@@ -206,12 +210,14 @@ def generate_summary_file(
         # Add overall total
         f.write(f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n\n")
         
-        # Calculate totals by currency
+        # Calculate totals by currency (excluding bounties with "Not specified" amounts)
         currency_totals = {}
         for currency, currency_bounties in currencies_dict.items():
-            currency_totals[currency] = {"count": len(currency_bounties), "value": 0.0}
+            # Count only bounties with specified amounts
+            specified_bounties = [b for b in currency_bounties if b["amount"] != "Not specified"]
+            currency_totals[currency] = {"count": len(specified_bounties), "value": 0.0}
             
-            for bounty in currency_bounties:
+            for bounty in specified_bounties:
                 amount = bounty["amount"]
                 currency_totals[currency]["value"] += calculate_erg_value(amount, currency, conversion_rates)
         
