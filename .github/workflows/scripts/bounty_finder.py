@@ -21,6 +21,53 @@ except Exception as e:
     print(f"Error reading tracked_repos.json: {e}")
     sys.exit(1)
 
+# Read organizations from tracked_orgs.json
+try:
+    with open('tracked_orgs.json', 'r') as f:
+        orgs_to_query = json.load(f)
+except Exception as e:
+    print(f"Warning: Error reading tracked_orgs.json: {e}")
+    orgs_to_query = []
+
+# Function to get all repositories for an organization
+def get_org_repos(org):
+    headers = {"Authorization": f"token {github_token}"}
+    url = f"https://api.github.com/orgs/{org}/repos?per_page=100"
+    all_repos = []
+    
+    while url:
+        response = requests.get(url, headers=headers)
+        if response.status_code != 200:
+            print(f"Error fetching repositories for organization {org}: {response.status_code}")
+            return []
+            
+        repos = response.json()
+        all_repos.extend(repos)
+        url = response.links.get('next', {}).get('url')
+    
+    return all_repos
+
+# Add repositories from tracked organizations
+for org_entry in orgs_to_query:
+    org = org_entry['org']
+    print(f"Fetching repositories for organization: {org}")
+    
+    org_repos = get_org_repos(org)
+    for repo in org_repos:
+        # Skip archived repositories
+        if repo.get('archived', False):
+            continue
+            
+        # Skip forks if they don't have issues
+        if repo.get('fork', False) and not repo.get('has_issues', False):
+            continue
+            
+        # Add to repos_to_query if not already there
+        repo_entry = {"owner": org, "repo": repo['name']}
+        if repo_entry not in repos_to_query:
+            print(f"Adding repository from organization: {org}/{repo['name']}")
+            repos_to_query.append(repo_entry)
+
 def get_repo_languages(owner, repo):
     headers = {"Authorization": f"token {github_token}"}
     url = f"https://api.github.com/repos/{owner}/{repo}/languages"
@@ -517,13 +564,29 @@ with open(md_file, 'w', encoding='utf-8') as f:
             owner_count += 1
             global_count += 1
     
-    # Write repository information
-    f.write("\n## Listing of Repos Queried \n")
+    # Write repository and organization information
+    f.write("\n## Tracked Repositories and Organizations\n")
+    
+    # List individual repositories
+    f.write("\n### Individually Tracked Repositories\n")
     f.write("|Owner|Repo|\n")
     f.write("|---|---|\n")
     
     for repo in repos_to_query:
+        # Skip repos that were added from tracked organizations
+        if any(org_entry['org'] == repo['owner'] for org_entry in orgs_to_query):
+            continue
         f.write(f"|{repo['owner']}|{repo['repo']}|\n")
+    
+    # List tracked organizations
+    if orgs_to_query:
+        f.write("\n### Tracked Organizations\n")
+        f.write("|Organization|Description|\n")
+        f.write("|---|---|\n")
+        
+        for org_entry in orgs_to_query:
+            org = org_entry['org']
+            f.write(f"|{org}|All repositories in this organization are automatically tracked|\n")
 
 # Write a summary file for README reference
 summary_file = f'{bounties_dir}/summary.md'
