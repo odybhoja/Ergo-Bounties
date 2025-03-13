@@ -10,6 +10,63 @@ Before submitting a claim, ensure you have:
 2. Submitted and had your PR merged in the relevant repository
 3. A wallet address where you can receive payment
 
+## Reserving a Bounty
+
+To prevent duplicate work, you can reserve a bounty before you start working on it. This lets others know that you're actively working on the bounty.
+
+### Why Reserve Bounties?
+
+Reserving a bounty helps:
+- Prevent duplicate effort from multiple contributors
+- Signal to maintainers that progress is being made
+- Give you a reasonable timeframe to complete the work
+- Establish a first-come, first-served system for popular bounties
+
+### How to Reserve a Bounty
+
+1. **First, check if the bounty is already reserved**:
+   - Review [open pull requests](https://github.com/ErgoDevs/Ergo-Bounties/pulls) to see if anyone is already working on your target bounty
+   - Check the original bounty issue/repository as well, as not everyone may use this central repository
+   - PRs with "[WIP]" in the title indicate in-progress work
+
+2. **Create a submission file**:
+   - Follow the same process as normal submissions, but mark it as in-progress
+   - Use the same JSON template, with these differences:
+     ```json
+     {
+       // ... other fields remain the same
+       "work_link": "", // Leave empty until work is complete
+       "status": "in-progress", // This indicates it's a reservation
+       "submission_date": "", // Leave empty until work is complete
+       "expected_completion": "YYYY-MM-DD", // Add your estimated completion date
+       "description": "Brief description of your planned approach or progress updates"
+     }
+     ```
+
+3. **Submit as a PR**:
+   - Title format: `[WIP] Bounty repo#issue - Brief description`
+   - Example: `[WIP] Bounty sigmastate-interpreter#1053 - FSM Test Implementation`
+
+4. **Work on your implementation**:
+   - The open PR serves as your reservation
+   - You can update the PR description or JSON file with progress updates if you wish
+
+5. **When you complete the work**:
+   - Update your existing PR with:
+     - New title: `[READY] Bounty repo#issue - Brief description`
+     - Updated JSON file:
+       - Fill in the `work_link` with your implementation PR
+       - Change `status` to `awaiting-review`
+       - Add today's date as `submission_date`
+       - Update the `description` with details of your completed work
+
+### Reservation Duration
+
+- The community expects reservations to be completed within a reasonable timeframe
+- For complex tasks, include an estimated completion date in your JSON file
+- If you need more time, update your PR with progress and a new expected date
+- If you can't complete the work, close your PR to free up the bounty for others
+
 ## Step-by-Step Submission Process
 
 ### 1. Fork & Clone the Repository

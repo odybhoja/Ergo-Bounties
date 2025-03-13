@@ -1,0 +1,46 @@
+[
+  {
+    "owner": "ergoplatform",
+    "repo": "sigmastate-interpreter"
+  },
+  {
+    "owner": "ergoplatform",
+    "repo": "sigma-rust"
+  },
+  {
+    "owner": "ergoplatform",
+    "repo": "ergo"
+  },
+  {
+    "owner": "rosen-bridge",
+    "repo": "ui"
+  },
+  {
+    "owner": "kushti",
+    "repo": "dexy-stable"
+  },
+  {
+    "owner": "ergoplatform",
+    "repo": "grow-ergo"
+  },
+  {
+    "owner": "ergoplatform",
+    "repo": "oracle-core"
+  },
+  {
+    "owner": "StabilityNexus",
+    "repo": "BenefactionPlatform-Ergo"
+  },
+  {
+    "owner": "ChainCashLabs",
+    "repo": "chaincash"
+  },
+  {
+    "owner": "ChainCashLabs",
+    "repo": "chaincash-rs"
+  },
+  {
+    "owner": "input-output-hk",
+    "repo": "scrypto"
+  }
+]
