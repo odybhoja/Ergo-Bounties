@@ -5,11 +5,11 @@ import json
 from datetime import datetime
 
 # Import modules
-from .bounty_modules.api_client import get_org_repos, get_repo_languages, get_issues
-from .bounty_modules.extractors import check_bounty_labels, extract_bounty_from_labels, extract_bounty_from_text
-from .bounty_modules.conversion_rates import get_conversion_rates, convert_to_erg
-from .bounty_modules.utils import ensure_directory, calculate_erg_value
-from .bounty_modules.generators import (
+from bounty_modules.api_client import get_org_repos, get_repo_languages, get_issues
+from bounty_modules.extractors import check_bounty_labels, extract_bounty_from_labels, extract_bounty_from_text
+from bounty_modules.conversion_rates import get_conversion_rates, convert_to_erg
+from bounty_modules.utils import ensure_directory, calculate_erg_value
+from bounty_modules.generators import (
     generate_language_files,
     generate_organization_files,
     generate_currency_files,

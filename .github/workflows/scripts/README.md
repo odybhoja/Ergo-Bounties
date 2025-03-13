@@ -29,11 +29,20 @@ The script generates the following files:
 
 ## Running the Script
 
-To run the script:
+To run the script, use one of the following methods:
+
+### Method 1: Using the wrapper script (recommended)
 
 ```bash
-cd .github/workflows
-python scripts/run_bounty_finder.py
+cd .github/workflows/scripts
+python run_bounty_finder.py
+```
+
+### Method 2: Running the main script directly
+
+```bash
+cd .github/workflows/scripts
+python bounty_finder.py
 ```
 
 The script requires a GitHub token to be set as an environment variable:
@@ -41,6 +50,10 @@ The script requires a GitHub token to be set as an environment variable:
 ```bash
 export GITHUB_TOKEN=your_github_token
 ```
+
+### Running from GitHub Actions
+
+The script is designed to be run from GitHub Actions, where the GITHUB_TOKEN is automatically provided.
 
 ## Configuration
 
