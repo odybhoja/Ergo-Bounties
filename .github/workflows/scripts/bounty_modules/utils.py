@@ -92,7 +92,7 @@ def calculate_erg_value(amount, currency, conversion_rates):
         elif currency == "RSN" and "RSN" in conversion_rates:
             return float(amount) / conversion_rates["RSN"]
         elif currency == "BENE" and "BENE" in conversion_rates:
-            return 0.0  # BENE has no value
+            return float(amount) / conversion_rates["BENE"]  # BENE is worth $1 in ERG
         elif currency == "g GOLD" and "gGOLD" in conversion_rates:
             return float(amount) * conversion_rates["gGOLD"]
         else:

@@ -7,11 +7,8 @@ def get_conversion_rates():
     Returns:
         dict: Dictionary of currency rates
     """
-    # Initialize rates with BENE at 0 (as specified)
-    rates = {
-        "BENE": 0.0
-    }
-    print(f"Setting BENE rate to 0 as it has no value/pair")
+    # Initialize rates dictionary
+    rates = {}
     
     try:
         # Get Spectrum API data for crypto rates
@@ -61,34 +58,74 @@ def get_conversion_rates():
             print(f"No RSN markets found in API data")
             raise Exception("RSN rate not found in API data")
         
-        # Get gold price from a public API
+        # Set BENE to $1 worth of ERG
+        if "SigUSD" in rates:
+            rates["BENE"] = rates["SigUSD"]
+            print(f"Setting BENE rate to {rates['BENE']} (equivalent to $1 worth of ERG)")
+        else:
+            rates["BENE"] = 0.0
+            print(f"Warning: SigUSD rate not available, setting BENE to 0")
+        
+        # Get gold price from Ergo Explorer API (XAU/ERG oracle pool)
         try:
-            # Using CoinGecko API to get gold price in USD
-            gold_response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=gold&vs_currencies=usd")
-            if gold_response.status_code == 200:
-                gold_data = gold_response.json()
-                gold_usd_price = gold_data.get('gold', {}).get('usd')
-                
-                if gold_usd_price:
-                    # Convert gold price to ERG
-                    # 1 troy ounce = 31.1035 grams
-                    gold_price_per_gram_usd = gold_usd_price / 31.1035
+            # Access the oracle pool state endpoint
+            oracle_response = requests.get("https://api.ergoplatform.com/api/v1/boxes/unspent/byAddress/E61k6zqzJbBVMwXhS8JBtqwxfLfCjR3mp2Bpoz6CQBtKQaJZsRVa")
+            if oracle_response.status_code == 200:
+                oracle_data = oracle_response.json()
+                if oracle_data.get('items') and len(oracle_data['items']) > 0:
+                    # Get the most recent box (usually the first one)
+                    latest_box = oracle_data['items'][0]
+                    # Get the R4 register value
+                    r4_value = latest_box.get('additionalRegisters', {}).get('R4', {}).get('renderedValue')
                     
-                    # Convert USD to ERG using SigUSD as bridge (SigUSD is pegged to USD)
-                    # If 1 ERG = X SigUSD, and 1 SigUSD = 1 USD, then 1 gram of gold in ERG = gold_price_per_gram_usd * (1/X)
-                    gold_price_per_gram_erg = gold_price_per_gram_usd * (1/rates["SigUSD"])
-                    
-                    rates["gGOLD"] = gold_price_per_gram_erg
-                    print(f"Found gold price: ${gold_usd_price} per troy oz, ${gold_price_per_gram_usd:.2f} per gram, {gold_price_per_gram_erg:.2f} ERG per gram")
+                    if r4_value:
+                        # Calculate price: 10^18 / R4_value
+                        try:
+                            r4_value = float(r4_value)
+                            gold_price_per_gram_erg = (10**18) / r4_value
+                            rates["gGOLD"] = gold_price_per_gram_erg
+                            print(f"Found gold price from oracle pool: {gold_price_per_gram_erg:.2f} ERG per gram")
+                        except (ValueError, ZeroDivisionError) as e:
+                            print(f"Error calculating gold price from R4 value: {e}")
+                            raise Exception("Invalid R4 value in oracle pool data")
+                    else:
+                        print("R4 register not found in oracle pool data")
+                        raise Exception("R4 register not found")
                 else:
-                    print("Gold price data not found in CoinGecko response")
-                    raise Exception("Gold price not available")
+                    print("No boxes found in oracle pool data")
+                    raise Exception("No oracle pool boxes found")
             else:
-                print(f"Error fetching gold price: {gold_response.status_code}")
-                raise Exception("Failed to fetch gold price data")
+                print(f"Error fetching oracle pool data: {oracle_response.status_code}")
+                raise Exception("Failed to fetch oracle pool data")
         except Exception as gold_error:
-            print(f"Error getting gold price: {gold_error}")
-            raise Exception(f"Gold price fetch failed: {gold_error}")
+            print(f"Error getting gold price from oracle pool: {gold_error}")
+            # Fallback to CoinGecko API if oracle pool fails
+            try:
+                print("Falling back to CoinGecko API for gold price...")
+                gold_response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=gold&vs_currencies=usd")
+                if gold_response.status_code == 200:
+                    gold_data = gold_response.json()
+                    gold_usd_price = gold_data.get('gold', {}).get('usd')
+                    
+                    if gold_usd_price and "SigUSD" in rates:
+                        # Convert gold price to ERG
+                        # 1 troy ounce = 31.1035 grams
+                        gold_price_per_gram_usd = gold_usd_price / 31.1035
+                        
+                        # Convert USD to ERG using SigUSD as bridge (SigUSD is pegged to USD)
+                        gold_price_per_gram_erg = gold_price_per_gram_usd * (1/rates["SigUSD"])
+                        
+                        rates["gGOLD"] = gold_price_per_gram_erg
+                        print(f"Found gold price from CoinGecko: ${gold_usd_price} per troy oz, ${gold_price_per_gram_usd:.2f} per gram, {gold_price_per_gram_erg:.2f} ERG per gram")
+                    else:
+                        print("Gold price data not found in CoinGecko response or SigUSD rate not available")
+                        raise Exception("Gold price not available")
+                else:
+                    print(f"Error fetching gold price from CoinGecko: {gold_response.status_code}")
+                    raise Exception("Failed to fetch gold price data")
+            except Exception as fallback_error:
+                print(f"Error in fallback gold price fetch: {fallback_error}")
+                raise Exception(f"Gold price fetch failed: {fallback_error}")
         
         print(f"Using conversion rates: {rates}")
         return rates
@@ -121,7 +158,7 @@ def convert_to_erg(amount, currency, conversion_rates):
         elif currency == "RSN" and "RSN" in conversion_rates:
             return f"{float(amount) / conversion_rates['RSN']:.2f}"
         elif currency == "BENE" and "BENE" in conversion_rates:
-            return "0.00"  # BENE has no value
+            return f"{float(amount) / conversion_rates['BENE']:.2f}"  # BENE is worth $1 in ERG
         elif currency == "g GOLD" and "gGOLD" in conversion_rates:
             return f"{float(amount) * conversion_rates['gGOLD']:.2f}"
         else:
