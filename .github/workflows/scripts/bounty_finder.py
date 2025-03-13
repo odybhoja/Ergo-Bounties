@@ -434,6 +434,15 @@ for lang, lang_bounties in languages.items():
         f.write(f"# {lang} Bounties\n\n")
         f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
         f.write(f"Total {lang} bounties: **{len(lang_bounties)}**\n\n")
+        
+        # Add navigation badges
+        f.write("## Navigation\n\n")
+        f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](../all.md) ")
+        f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](../all.md#bounties-by-programming-language) ")
+        f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies)}-yellow)](../all.md#bounties-by-currency) ")
+        f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](../all.md#bounties-by-organization) ")
+        f.write(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{len(conversion_rates)}-purple)](../currency_prices.md)\n\n")
+        
         f.write("|Owner|Title & Link|Bounty Amount|Paid in|Secondary Language|Claim|\n")
         f.write("|---|---|---|---|---|---|\n")
         
@@ -503,11 +512,270 @@ for lang, lang_bounties in languages.items():
             
             f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} | [Claim]({claim_url}) |\n")
 
+# Create a directory for organization-specific files if it doesn't exist
+org_dir = f'{bounties_dir}/by_org'
+os.makedirs(org_dir, exist_ok=True)
+
+# Create a directory for currency-specific files if it doesn't exist
+currency_dir = f'{bounties_dir}/by_currency'
+os.makedirs(currency_dir, exist_ok=True)
+
+# Group bounties by organization
+orgs = {}
+for bounty in bounty_data:
+    owner = bounty["owner"]
+    if owner not in orgs:
+        orgs[owner] = []
+    orgs[owner].append(bounty)
+
+# Write organization-specific Markdown files
+for org, org_bounties in orgs.items():
+    org_file = f'{org_dir}/{org.lower()}.md'
+    with open(org_file, 'w', encoding='utf-8') as f:
+        # Write header
+        f.write(f"# {org} Bounties\n\n")
+        f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+        f.write(f"Total {org} bounties: **{len(org_bounties)}**\n\n")
+        
+        # Add navigation badges
+        f.write("## Navigation\n\n")
+        f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](../all.md) ")
+        f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](../all.md#bounties-by-programming-language) ")
+        f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies)}-yellow)](../all.md#bounties-by-currency) ")
+        f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](../all.md#bounties-by-organization)\n\n")
+        
+        f.write("|Title & Link|Bounty Amount|Paid in|Primary Language|Secondary Language|Claim|\n")
+        f.write("|---|---|---|---|---|---|\n")
+        
+        # Sort bounties by title
+        org_bounties.sort(key=lambda x: x["title"])
+        
+        # Add rows for each bounty
+        for bounty in org_bounties:
+            title = bounty["title"]
+            url = bounty["url"]
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            primary_lang = bounty["primary_lang"]
+            secondary_lang = bounty["secondary_lang"]
+            
+            # Try to convert to ERG equivalent
+            erg_equiv = amount
+            if amount != "Not specified":
+                try:
+                    if currency == "ERG":
+                        erg_equiv = amount
+                    elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
+                    elif currency == "GORT" and "GORT" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "BENE" and "BENE" in conversion_rates:
+                        erg_equiv = "0.00"  # BENE has no value
+                    elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
+                    else:
+                        erg_equiv = amount  # For other currencies, just use the amount
+                except ValueError:
+                    erg_equiv = amount
+            
+            # Create a claim link that opens a PR template
+            issue_number = bounty["issue_number"]
+            creator = bounty["creator"]
+            repo_name = bounty["repo"]
+            
+            # Create JSON template using json.dumps to properly escape special characters
+            template_data = {
+                "contributor": "YOUR_GITHUB_USERNAME",
+                "wallet_address": "YOUR_WALLET_ADDRESS",
+                "contact_method": "YOUR_CONTACT_INFO",
+                "work_link": "",
+                "work_title": title,
+                "bounty_id": f"{bounty['owner']}/{repo_name}#{issue_number}",
+                "original_issue_link": url,
+                "payment_currency": currency,
+                "bounty_value": 0 if amount == "Not specified" else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
+                "status": "in-progress",
+                "submission_date": "",
+                "expected_completion": "YYYY-MM-DD",
+                "description": "I am working on this bounty",
+                "review_notes": "",
+                "payment_tx_id": "",
+                "payment_date": ""
+            }
+            
+            # Convert to JSON and URL encode
+            import urllib.parse
+            json_content = json.dumps(template_data, indent=2)
+            encoded_json = urllib.parse.quote(json_content)
+            
+            # Create the claim URL
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{bounty['owner'].lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{bounty['owner']}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
+            
+            # Add language links
+            primary_lang_link = f"[{primary_lang}](../by_language/{primary_lang.lower()}.md)"
+            
+            f.write(f"| [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency.lower()}.md) | {primary_lang_link} | {secondary_lang} | [Claim]({claim_url}) |\n")
+
+# Group bounties by currency
+currencies_dict = {}
+for bounty in bounty_data:
+    currency = bounty["currency"]
+    if currency not in currencies_dict:
+        currencies_dict[currency] = []
+    currencies_dict[currency].append(bounty)
+
+# Write currency-specific Markdown files
+for currency, currency_bounties in currencies_dict.items():
+    if currency == "Not specified":
+        currency_file_name = "not_specified"
+    else:
+        currency_file_name = currency.lower()
+    
+    currency_file = f'{currency_dir}/{currency_file_name}.md'
+    with open(currency_file, 'w', encoding='utf-8') as f:
+        # Write header
+        f.write(f"# {currency} Bounties\n\n")
+        f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+        f.write(f"Total {currency} bounties: **{len(currency_bounties)}**\n\n")
+        
+        # Add navigation badges
+        f.write("## Navigation\n\n")
+        f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](../all.md) ")
+        f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](../all.md#bounties-by-programming-language) ")
+        f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies_dict)}-yellow)](../all.md#bounties-by-currency) ")
+        f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](../all.md#bounties-by-organization)\n\n")
+        
+        # Add conversion rate if available
+        if currency in conversion_rates:
+            f.write(f"## Current {currency} Rate\n\n")
+            f.write(f"1 {currency} = {conversion_rates[currency]:.6f} ERG\n\n")
+        
+        f.write("|Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|\n")
+        f.write("|---|---|---|---|---|---|\n")
+        
+        # Sort bounties by owner and title
+        currency_bounties.sort(key=lambda x: (x["owner"], x["title"]))
+        
+        # Add rows for each bounty
+        for bounty in currency_bounties:
+            owner = bounty["owner"]
+            title = bounty["title"]
+            url = bounty["url"]
+            amount = bounty["amount"]
+            primary_lang = bounty["primary_lang"]
+            
+            # Try to convert to ERG equivalent
+            erg_equiv = amount
+            if amount != "Not specified":
+                try:
+                    if currency == "ERG":
+                        erg_equiv = amount
+                    elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
+                    elif currency == "GORT" and "GORT" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "BENE" and "BENE" in conversion_rates:
+                        erg_equiv = "0.00"  # BENE has no value
+                    elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
+                    else:
+                        erg_equiv = amount  # For other currencies, just use the amount
+                except ValueError:
+                    erg_equiv = amount
+            
+            # Create a claim link that opens a PR template
+            issue_number = bounty["issue_number"]
+            creator = bounty["creator"]
+            repo_name = bounty["repo"]
+            
+            # Create JSON template using json.dumps to properly escape special characters
+            template_data = {
+                "contributor": "YOUR_GITHUB_USERNAME",
+                "wallet_address": "YOUR_WALLET_ADDRESS",
+                "contact_method": "YOUR_CONTACT_INFO",
+                "work_link": "",
+                "work_title": title,
+                "bounty_id": f"{owner}/{repo_name}#{issue_number}",
+                "original_issue_link": url,
+                "payment_currency": currency,
+                "bounty_value": 0 if amount == "Not specified" else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
+                "status": "in-progress",
+                "submission_date": "",
+                "expected_completion": "YYYY-MM-DD",
+                "description": "I am working on this bounty",
+                "review_notes": "",
+                "payment_tx_id": "",
+                "payment_date": ""
+            }
+            
+            # Convert to JSON and URL encode
+            import urllib.parse
+            json_content = json.dumps(template_data, indent=2)
+            encoded_json = urllib.parse.quote(json_content)
+            
+            # Create the claim URL
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
+            
+            # Add organization and language links
+            org_link = f"[{owner}](../by_org/{owner.lower()}.md)"
+            primary_lang_link = f"[{primary_lang}](../by_language/{primary_lang.lower()}.md)"
+            
+            f.write(f"| {org_link} | [{title}]({url}) | {amount} | {erg_equiv} | {primary_lang_link} | [Claim]({claim_url}) |\n")
+
+# Create a currency price table file
+price_table_file = f'{bounties_dir}/currency_prices.md'
+with open(price_table_file, 'w', encoding='utf-8') as f:
+    # Write header
+    f.write("# Currency Prices\n\n")
+    f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+    
+    # Add navigation badges
+    f.write("## Navigation\n\n")
+    f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](all.md) ")
+    f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](all.md#bounties-by-programming-language) ")
+    f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies_dict)}-yellow)](all.md#bounties-by-currency) ")
+    f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](all.md#bounties-by-organization)\n\n")
+    
+    # Write price table
+    f.write("## Current Prices\n\n")
+    f.write("| Currency | ERG Equivalent | Notes |\n")
+    f.write("|----------|----------------|-------|\n")
+    
+    # Add rows for each currency with known conversion rates
+    for currency, rate in sorted(conversion_rates.items()):
+        notes = ""
+        if currency == "SigUSD":
+            notes = "Stablecoin pegged to USD"
+        elif currency == "BENE":
+            notes = "No market value"
+        elif currency == "gGOLD":
+            notes = "Price per gram of gold"
+        
+        # Format the currency name for display
+        display_currency = currency
+        if currency == "gGOLD":
+            display_currency = "g GOLD"
+        
+        # Add link to currency page if it exists
+        currency_link = f"[{display_currency}](by_currency/{display_currency.lower().replace(' ', '_')}.md)"
+        
+        f.write(f"| {currency_link} | {rate:.6f} | {notes} |\n")
+    
+    f.write("\n*Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*\n")
+
 # Write main Markdown file
 with open(md_file, 'w', encoding='utf-8') as f:
     # Write header
     f.write("# Open Bounties\n\n")
     f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+    
+    # Add navigation badges
+    f.write("## Navigation\n\n")
+    f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](all.md) ")
+    f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](all.md#bounties-by-programming-language) ")
+    f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies_dict)}-yellow)](all.md#bounties-by-currency) ")
+    f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](all.md#bounties-by-organization) ")
+    f.write(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{len(conversion_rates)}-purple)](currency_prices.md)\n\n")
     
     # Write summary section
     f.write("## Summary\n\n")
@@ -516,7 +784,9 @@ with open(md_file, 'w', encoding='utf-8') as f:
     
     for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["count"], reverse=True):
         if totals["count"] > 0:
-            f.write(f"| {owner} | {totals['count']} | {totals['value']:.2f} |\n")
+            # Add link to organization page
+            org_link = f"[{owner}](by_org/{owner.lower()}.md)"
+            f.write(f"| {org_link} | {totals['count']} | {totals['value']:.2f} |\n")
     
     f.write(f"| **Overall Total** | **{total_bounties}** | **{total_value:.2f}** |\n\n")
     
@@ -529,6 +799,66 @@ with open(md_file, 'w', encoding='utf-8') as f:
         count = len(lang_bounties)
         percentage = (count / total_bounties) * 100
         f.write(f"| [{lang}](by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
+    
+    # Write currency breakdown section
+    f.write("\n## Bounties by Currency\n\n")
+    f.write("| Currency | Count | Total Value (ERG) |\n")
+    f.write("|----------|-------|------------------|\n")
+    
+    # Calculate totals by currency
+    currency_totals = {}
+    for bounty in bounty_data:
+        currency = bounty["currency"]
+        amount = bounty["amount"]
+        
+        if currency not in currency_totals:
+            currency_totals[currency] = {"count": 0, "value": 0.0}
+        
+        currency_totals[currency]["count"] += 1
+        
+        # Try to convert to ERG equivalent for total
+        if amount != "Not specified":
+            try:
+                if currency == "ERG":
+                    erg_value = float(amount)
+                elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                    erg_value = float(amount) * conversion_rates["SigUSD"]
+                elif currency == "GORT" and "GORT" in conversion_rates:
+                    erg_value = float(amount) * conversion_rates["GORT"]
+                elif currency == "BENE" and "BENE" in conversion_rates:
+                    erg_value = 0.0  # BENE has no value
+                elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                    erg_value = float(amount) * conversion_rates["gGOLD"]
+                else:
+                    erg_value = 0.0  # For unknown currencies
+                
+                currency_totals[currency]["value"] += erg_value
+            except ValueError:
+                pass
+    
+    # Write currency rows
+    for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["count"], reverse=True):
+        # Format the currency name for the file link
+        if currency == "Not specified":
+            currency_file_name = "not_specified"
+        else:
+            currency_file_name = currency.lower()
+        
+        # Add link to currency page
+        currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
+        
+        f.write(f"| {currency_link} | {totals['count']} | {totals['value']:.2f} |\n")
+    
+    # Write organization breakdown section
+    f.write("\n## Bounties by Organization\n\n")
+    f.write("| Organization | Count | Total Value (ERG) |\n")
+    f.write("|--------------|-------|------------------|\n")
+    
+    for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["count"], reverse=True):
+        if totals["count"] > 0:
+            # Add link to organization page
+            org_link = f"[{owner}](by_org/{owner.lower()}.md)"
+            f.write(f"| {org_link} | {totals['count']} | {totals['value']:.2f} |\n")
     
     f.write("\n## Detailed Bounties\n\n")
     f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Claim|\n")
@@ -633,22 +963,81 @@ summary_file = f'{bounties_dir}/summary.md'
 with open(summary_file, 'w', encoding='utf-8') as f:
     f.write("## 📋 Open Bounties\n\n")
     f.write(f"**[View Current Open Bounties →](/{bounties_dir}/all.md)**\n\n")
+    
+    # Add navigation badges
+    f.write("## Navigation\n\n")
+    f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](/{bounties_dir}/all.md) ")
+    f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](/{bounties_dir}/all.md#bounties-by-programming-language) ")
+    f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies_dict)}-yellow)](/{bounties_dir}/all.md#bounties-by-currency) ")
+    f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](/{bounties_dir}/all.md#bounties-by-organization) ")
+    f.write(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{len(conversion_rates)}-purple)](/{bounties_dir}/currency_prices.md)\n\n")
+    
+    f.write("## Projects\n\n")
     f.write("| Project | Count | Value |\n")
     f.write("|----------|-------|-------|\n")
     
     # Add rows for major projects (those with more than 1 bounty)
     for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
         if totals["count"] > 0:
-            f.write(f"| {owner} | {totals['count']} | {totals['value']:,.2f} ERG |\n")
+            # Add link to organization page
+            org_link = f"[{owner}](/{bounties_dir}/by_org/{owner.lower()}.md)"
+            f.write(f"| {org_link} | {totals['count']} | {totals['value']:,.2f} ERG |\n")
     
     # Add overall total
     f.write(f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n\n")
     
+    # Add currency breakdown
+    f.write("## Currencies\n\n")
+    f.write("| Currency | Count | Total Value (ERG) |\n")
+    f.write("|----------|-------|------------------|\n")
+    
+    # Write currency rows
+    for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["count"], reverse=True)[:5]:  # Top 5 currencies
+        # Format the currency name for the file link
+        if currency == "Not specified":
+            currency_file_name = "not_specified"
+        else:
+            currency_file_name = currency.lower()
+        
+        # Add link to currency page
+        currency_link = f"[{currency}](/{bounties_dir}/by_currency/{currency_file_name}.md)"
+        
+        f.write(f"| {currency_link} | {totals['count']} | {totals['value']:.2f} |\n")
+    
+    f.write(f"\n[View all currencies →](/{bounties_dir}/all.md#bounties-by-currency)\n\n")
+    
+    # Add language breakdown
+    f.write("## Languages\n\n")
+    f.write("| Language | Count | Percentage |\n")
+    f.write("|----------|-------|------------|\n")
+    
+    # Write language rows
+    for lang, lang_bounties in sorted(languages.items(), key=lambda x: len(x[1]), reverse=True)[:5]:  # Top 5 languages
+        count = len(lang_bounties)
+        percentage = (count / total_bounties) * 100
+        f.write(f"| [{lang}](/{bounties_dir}/by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
+    
+    f.write(f"\n[View all languages →](/{bounties_dir}/all.md#bounties-by-programming-language)\n\n")
+    
     f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
+    
+    f.write(f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n")
 
 # Create a featured bounties table for the README
 featured_bounties_file = f'{bounties_dir}/featured_bounties.md'
 with open(featured_bounties_file, 'w', encoding='utf-8') as f:
+    # Write header
+    f.write("# Featured Bounties\n\n")
+    f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+    
+    # Add navigation badges
+    f.write("## Navigation\n\n")
+    f.write(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)](all.md) ")
+    f.write(f"[![By Language](https://img.shields.io/badge/By_Language-{len(languages)}-green)](all.md#bounties-by-programming-language) ")
+    f.write(f"[![By Currency](https://img.shields.io/badge/By_Currency-{len(currencies_dict)}-yellow)](all.md#bounties-by-currency) ")
+    f.write(f"[![By Organization](https://img.shields.io/badge/By_Organization-{len(orgs)}-orange)](all.md#bounties-by-organization) ")
+    f.write(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{len(conversion_rates)}-purple)](currency_prices.md)\n\n")
+    
     # Get current date for the week row
     current_date = datetime.datetime.now().strftime("%b %d, %Y")
     
@@ -658,6 +1047,8 @@ with open(featured_bounties_file, 'w', encoding='utf-8') as f:
         amount = bounty["amount"]
         currency = bounty["currency"]
         title = bounty["title"]
+        url = bounty["url"]
+        owner = bounty["owner"]
         
         if amount != "Not specified":
             try:
@@ -691,18 +1082,39 @@ with open(featured_bounties_file, 'w', encoding='utf-8') as f:
     top_bounties = top_bounties[:2]
     
     # Write the featured bounties table
-    f.write("| Week | Count of Open Issues | ERG Bounties |\n")
-    f.write("|------|---------------------|-------------|\n")
+    f.write("## Top Bounties by Value\n\n")
+    f.write("| Bounty | Organization | Value | Currency |\n")
+    f.write("|--------|--------------|-------|----------|\n")
     
     # Add rows for featured bounties
     for bounty in top_bounties:
-        f.write(f"| {bounty['title']} | {bounty['last_update']} | {bounty['amount']} {bounty['currency']} |\n")
+        # Find the original bounty data
+        for b in bounty_data:
+            if b["title"] == bounty["title"]:
+                owner = b["owner"]
+                url = b["url"]
+                
+                # Format the currency name for the file link
+                currency = bounty["currency"]
+                if currency == "Not specified":
+                    currency_file_name = "not_specified"
+                else:
+                    currency_file_name = currency.lower()
+                
+                # Add links to organization and currency pages
+                org_link = f"[{owner}](by_org/{owner.lower()}.md)"
+                currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
+                
+                # Calculate ERG equivalent
+                erg_equiv = bounty["value"]
+                
+                f.write(f"| [{bounty['title']}]({url}) | {org_link} | {erg_equiv:.2f} ERG | {currency_link} |\n")
+                break
     
-    # Add row for current week with total counts
+    f.write("\n## Weekly Summary\n\n")
+    f.write("| Date | Open Bounties | Total Value |\n")
+    f.write("|------|--------------|-------------|\n")
     f.write(f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n")
-    
-    # Add total row
-    f.write(f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n")
 
 print(f"Main bounty file written to: {md_file}")
 print(f"Summary file written to: {summary_file}")
