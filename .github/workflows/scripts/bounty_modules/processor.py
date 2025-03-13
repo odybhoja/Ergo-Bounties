@@ -203,10 +203,19 @@ class BountyProcessor:
         """
         languages = {}
         for bounty in self.bounty_data:
+            # Skip bounties with "Not specified" amounts for "Unknown" language
+            if bounty["primary_lang"] == "Unknown" and bounty["amount"] == "Not specified":
+                continue
+                
             primary_lang = bounty["primary_lang"]
             if primary_lang not in languages:
                 languages[primary_lang] = []
             languages[primary_lang].append(bounty)
+            
+        # Remove "Unknown" language if it's empty after filtering
+        if "Unknown" in languages and len(languages["Unknown"]) == 0:
+            del languages["Unknown"]
+            
         return languages
     
     def group_by_organization(self) -> Dict[str, List[Dict[str, Any]]]:
@@ -234,6 +243,11 @@ class BountyProcessor:
         currencies_dict = {}
         for bounty in self.bounty_data:
             currency = bounty["currency"]
+            
+            # Skip "Not specified" currency
+            if currency == "Not specified":
+                continue
+                
             if currency not in currencies_dict:
                 currencies_dict[currency] = []
             currencies_dict[currency].append(bounty)

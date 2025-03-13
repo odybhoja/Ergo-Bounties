@@ -67,6 +67,10 @@ def generate_currency_files(
     
     # Write currency-specific Markdown files
     for currency, currency_bounties in currencies_dict.items():
+        # Skip "Not specified" currency
+        if currency == "Not specified":
+            logger.info("Skipping 'Not specified' currency")
+            continue
         # Format the currency name for the file using constants
         if currency in currency_file_names:
             currency_file_name = currency_file_names[currency]

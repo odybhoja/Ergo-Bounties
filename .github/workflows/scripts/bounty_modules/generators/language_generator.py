@@ -47,8 +47,8 @@ def generate_language_files(
     
     # Write language-specific Markdown files
     for lang, lang_bounties in languages.items():
-        # Skip "Unknown" language if all its bounties have "Not specified" amounts
-        if lang == "Unknown" and all(bounty["amount"] == "Not specified" for bounty in lang_bounties):
+        # Skip any language if all its bounties have "Not specified" amounts
+        if all(bounty["amount"] == "Not specified" for bounty in lang_bounties):
             logger.info(f"Skipping {lang} language as all bounties have 'Not specified' amounts")
             continue
             
