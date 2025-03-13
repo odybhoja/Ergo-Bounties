@@ -1,0 +1,131 @@
+# Ergo Bounty Submission Guide
+
+This guide provides detailed instructions for submitting completed work to the Ergo ecosystem. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
+
+## Prerequisites
+
+Before submitting a claim, ensure you have:
+
+1. Completed work for a bounty or made a contribution to the Ergo ecosystem
+2. Submitted and had your PR merged in the relevant repository
+3. A wallet address where you can receive payment
+
+## Step-by-Step Submission Process
+
+### 1. Fork & Clone the Repository
+
+```bash
+git clone https://github.com/ErgoDevs/Ergo-Bounties.git
+cd Ergo-Bounties
+```
+
+### 2. Create a JSON Submission File
+
+Create a new JSON file in the `submissions/` directory with the naming convention:
+
+```
+{github_username}-{descriptive-name}.json
+```
+
+For example:
+```
+user123-ergoscript-fsmtest.json
+```
+
+### 3. Fill Out the JSON File
+
+Copy the template from `templates/submission-template.json` and fill in your details:
+
+```json
+{
+  "contributor": "user123",
+  "wallet_address": "9fABC123...",
+  "contact_method": "Discord: user123#1234",
+  "work_link": "https://github.com/ergoplatform/sigmastate-interpreter/pull/1100",
+  "work_title": "ErgoScript FSM Test Implementation",
+  "bounty_id": "sigmastate-interpreter#1053",
+  "original_issue_link": "https://github.com/ergoplatform/sigmastate-interpreter/issues/1053",
+  "payment_currency": "ERG",
+  "bounty_value": 200.00,
+  "status": "awaiting-review",
+  "submission_date": "2025-03-13",
+  "description": "Implemented ErgoScript version of the finite state machine test.",
+  
+  "review_notes": "",
+  "payment_tx_id": "",
+  "payment_date": ""
+}
+```
+
+#### Required Fields
+
+- **contributor**: Your GitHub username
+- **wallet_address**: The address where payment should be sent
+- **work_link**: Link to the PR where the work was completed
+- **work_title**: A short title describing the work
+- **payment_currency**: Currency for payment (e.g., ERG, SigUSD, RSN)
+- **bounty_value**: The payment amount (numeric value, based on currency)
+- **status**: Set this to `awaiting-review`
+- **submission_date**: Date of submission (YYYY-MM-DD)
+
+#### Recommended Fields
+
+- **bounty_id**: The GitHub issue number in `{repo}#{issue_number}` format (if applicable)
+- **contact_method**: A way for reviewers to reach out if they have questions
+- **original_issue_link**: The full URL to the original issue or bounty
+- **description**: A brief summary of the work completed
+
+#### Fields for Reviewers (Leave Empty)
+
+- **review_notes**: Will be filled by reviewers
+- **payment_tx_id**: Will be filled after payment
+- **payment_date**: Will be filled after payment
+
+### 4. Commit & Push Changes
+
+```bash
+git add submissions/user123-ergoscript-fsmtest.json
+git commit -m "Submission for ErgoScript FSM Test Implementation"
+git push origin main
+```
+
+### 5. Open a Pull Request
+
+1. Go to GitHub and open a pull request with a descriptive title
+2. Provide a brief summary in the PR description
+3. Ensure all details in your JSON file are correct
+
+## Review Process
+
+1. Maintainers will review your submission
+2. They will verify:
+   - The work has been completed as per requirements
+   - The PR has been merged in the target repository
+   - The bounty value matches what was advertised
+3. If approved, the PR will be merged
+4. Payment will be processed based on the JSON details
+5. The status will be updated to `paid` once payment is complete
+
+## Payment Process
+
+1. After approval, an authorized person will process the payment
+2. They will update your submission with:
+   - `status`: Changed to `paid`
+   - `payment_tx_id`: The transaction ID
+   - `payment_date`: The date of payment
+3. These updates will be committed to the repository
+
+## Troubleshooting
+
+If you encounter issues with your submission:
+
+1. Check the PR comments for feedback from reviewers
+2. Make any requested changes to your submission
+3. If your PR is closed without merging, you may need to create a new PR with corrections
+
+## Questions or Support
+
+If you have questions about the bounty submission process, please:
+
+1. Open an issue in the Ergo-Bounties repository
+2. Reach out on the Ergo Discord server

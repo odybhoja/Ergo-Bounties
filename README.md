@@ -1,7 +1,21 @@
 # Ergo Ecosystem Bounties
+
+## Open Bounties
 [Ergo Ecosystem Bounties](/bounty_issues.md) <-- Click here for Open Bounties
 <br><br>Open bounties will be posted weekly in ERG equivalent (e.g. RSN is shown in equivalent ERG while payout column notes paid in "RSN"). 
 <br>If there are bounties missing, please create a PR to add the "owner" and "repo" and they will be added next week. There should be a "Bounty" tag on the Issue as well as a value for the bounty in the same or separate tag.
+
+## Bounty Submission Process
+
+This repository uses a PR-based bounty submission system. After completing a bounty:
+
+1. Create a JSON file in the [submissions](/submissions) directory
+2. Submit a PR with your bounty claim
+3. Maintainers will review and process your payment
+
+For detailed instructions, see:
+- [Submission Guide](/docs/submission-guide.md)
+- [Submission Template](/templates/submission-template.json)
 
 |Week|Count of Open Issues|ERG Bounties|
 |---|---|---|
