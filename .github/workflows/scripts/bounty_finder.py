@@ -16,7 +16,8 @@ from bounty_modules.generators import (
     generate_price_table,
     generate_main_file,
     generate_summary_file,
-    generate_featured_bounties_file
+    generate_featured_bounties_file,
+    update_readme_table
 )
 
 def main():
@@ -245,6 +246,13 @@ def main():
         orgs, 
         bounties_dir
     )
+    
+    # Update the README.md table with the latest bounty counts and values
+    update_readme_table(
+        total_bounties,
+        total_value,
+        bounties_dir
+    )
 
     # Print summary
     print(f"Main bounty file written to: {bounties_dir}/all.md")
@@ -254,6 +262,7 @@ def main():
     print(f"Currency-specific files written to: {bounties_dir}/by_currency/")
     print(f"Currency price table written to: {bounties_dir}/currency_prices.md")
     print(f"Featured bounties file written to: {bounties_dir}/featured_bounties.md")
+    print(f"README.md table updated with latest bounty counts and values")
     print(f"Total bounties found: {total_bounties}")
     print(f"Total ERG equivalent value: {total_value:.2f}")
 

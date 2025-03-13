@@ -1,4 +1,5 @@
 import os
+import re
 from datetime import datetime
 from .utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
 from .conversion_rates import convert_to_erg
@@ -66,7 +67,14 @@ def generate_language_files(bounty_data, languages, conversion_rates, total_boun
                 
                 claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
                 
-                f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} | [Claim]({claim_url}) |\n")
+                # Format the currency name for the file link
+                currency_file_name = currency.lower()
+                if currency == "g GOLD":
+                    currency_file_name = "gold"
+                elif currency == "Not specified":
+                    currency_file_name = "not_specified"
+                
+                f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency_file_name}.md) | {secondary_lang} | [Claim]({claim_url}) |\n")
 
 def generate_organization_files(bounty_data, orgs, conversion_rates, total_bounties, languages, currencies_count, bounties_dir):
     """
@@ -134,7 +142,14 @@ def generate_organization_files(bounty_data, orgs, conversion_rates, total_bount
                 # Add language links
                 primary_lang_link = f"[{primary_lang}](../by_language/{primary_lang.lower()}.md)"
                 
-                f.write(f"| [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency.lower()}.md) | {primary_lang_link} | {secondary_lang} | [Claim]({claim_url}) |\n")
+                # Format the currency name for the file link
+                currency_file_name = currency.lower()
+                if currency == "g GOLD":
+                    currency_file_name = "gold"
+                elif currency == "Not specified":
+                    currency_file_name = "not_specified"
+                
+                f.write(f"| [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency_file_name}.md) | {primary_lang_link} | {secondary_lang} | [Claim]({claim_url}) |\n")
 
 def generate_currency_files(bounty_data, currencies_dict, conversion_rates, total_bounties, languages, orgs, bounties_dir):
     """
@@ -155,8 +170,11 @@ def generate_currency_files(bounty_data, currencies_dict, conversion_rates, tota
     
     # Write currency-specific Markdown files
     for currency, currency_bounties in currencies_dict.items():
+        # Format the currency name for the file
         if currency == "Not specified":
             currency_file_name = "not_specified"
+        elif currency == "g GOLD":
+            currency_file_name = "gold"
         else:
             currency_file_name = currency.lower()
         
@@ -270,7 +288,12 @@ def generate_price_table(conversion_rates, total_bounties, languages, currencies
                 display_currency = "g GOLD"
             
             # Add link to currency page if it exists
-            currency_link = f"[{display_currency}](by_currency/{display_currency.lower().replace(' ', '_')}.md)"
+            # Format the currency name for the file link
+            file_currency = display_currency
+            if display_currency == "g GOLD":
+                file_currency = "gold"
+            
+            currency_link = f"[{display_currency}](by_currency/{file_currency.lower()}.md)"
             
             # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
             display_rate = rate
@@ -360,6 +383,8 @@ def generate_main_file(bounty_data, project_totals, languages, currencies_dict, 
             # Format the currency name for the file link
             if currency == "Not specified":
                 currency_file_name = "not_specified"
+            elif currency == "g GOLD":
+                currency_file_name = "gold"
             else:
                 currency_file_name = currency.lower()
             
@@ -475,6 +500,8 @@ def generate_summary_file(project_totals, languages, currencies_dict, orgs, conv
             # Format the currency name for the file link
             if currency == "Not specified":
                 currency_file_name = "not_specified"
+            elif currency == "g GOLD":
+                currency_file_name = "gold"
             else:
                 currency_file_name = currency.lower()
             
@@ -501,6 +528,59 @@ def generate_summary_file(project_totals, languages, currencies_dict, orgs, conv
         f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
         
         f.write(f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n")
+
+def update_readme_table(total_bounties, total_value, bounties_dir):
+    """
+    Update the Featured Bounties table in the README.md file.
+    
+    Args:
+        total_bounties (int): Total number of bounties
+        total_value (float): Total value of bounties in ERG
+        bounties_dir (str): Bounties directory
+    """
+    readme_file = 'README.md'
+    
+    try:
+        # Read the current README.md file
+        with open(readme_file, 'r', encoding='utf-8') as f:
+            readme_content = f.read()
+        
+        # Get the current date
+        current_date = datetime.now().strftime("%b %d, %Y")
+        
+        # Create the new table row for the current date
+        new_row = f"| {current_date} | {total_bounties} | **{total_value:,.2f} ERG**|"
+        
+        # Calculate the new total (fixed values + dynamic value)
+        # Fixed values: 3,000 ERG (Keystone) + 775 SigUSD (Fleet SDK)
+        # We need to convert 775 SigUSD to ERG
+        total_count = total_bounties + 7 + 1  # 7 Fleet SDK + 1 Keystone
+        total_erg_value = total_value + 3000  # 3000 ERG for Keystone
+        
+        # Create the new total row
+        new_total_row = f"| *Total* | *{total_count}* | *{total_erg_value:,.2f} ERG* |"
+        
+        # Find the table in the README.md file and update the third row and total row
+        table_pattern = r"\| Week\s*\|\s*(?:Count of Open Issues|Open Issues)\s*\|\s*(?:ERG Bounties|Rewards)\s*\|\s*\n\|[-\s|]*\n\|[^\n]*\n\|[^\n]*\n\|[^\n]*\n\|[^\n]*\n"
+        
+        # Create the replacement table
+        replacement_table = f"""| Week                        | Open Issues | Rewards         |
+|-----------------------------|-------------|-----------------|
+| Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **3,000 ERG**   |
+| [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | 7           | **775 SigUSD**  |
+| {current_date}                | {total_bounties}         | **{total_value:,.2f} ERG**|
+| **Total**                   | **{total_count}**     | **{total_erg_value:,.2f} ERG**|"""
+        
+        # Replace the table in the README.md file
+        updated_readme = re.sub(table_pattern, replacement_table, readme_content)
+        
+        # Write the updated README.md file
+        with open(readme_file, 'w', encoding='utf-8') as f:
+            f.write(updated_readme)
+            
+        print(f"Updated README.md with new bounty counts and values")
+    except Exception as e:
+        print(f"Error updating README.md: {e}")
 
 def generate_featured_bounties_file(bounty_data, conversion_rates, total_bounties, total_value, languages, currencies_dict, orgs, bounties_dir):
     """
@@ -576,6 +656,8 @@ def generate_featured_bounties_file(bounty_data, conversion_rates, total_bountie
             currency = bounty["currency"]
             if currency == "Not specified":
                 currency_file_name = "not_specified"
+            elif currency == "g GOLD":
+                currency_file_name = "gold"
             else:
                 currency_file_name = currency.lower()
             
