@@ -117,7 +117,9 @@ def convert_to_erg(amount, currency, conversion_rates):
         elif currency == "SigUSD" and "SigUSD" in conversion_rates:
             return f"{float(amount) * conversion_rates['SigUSD']:.2f}"
         elif currency == "GORT" and "GORT" in conversion_rates:
-            return f"{float(amount) * conversion_rates['GORT']:.2f}"
+            return f"{float(amount) / conversion_rates['GORT']:.2f}"
+        elif currency == "RSN" and "RSN" in conversion_rates:
+            return f"{float(amount) / conversion_rates['RSN']:.2f}"
         elif currency == "BENE" and "BENE" in conversion_rates:
             return "0.00"  # BENE has no value
         elif currency == "g GOLD" and "gGOLD" in conversion_rates:
