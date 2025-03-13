@@ -238,7 +238,9 @@ for repo in repos_to_query:
                     "currency": currency,
                     "primary_lang": primary_lang,
                     "secondary_lang": secondary_lang,
-                    "labels": [label['name'] for label in issue['labels']]
+                    "labels": [label['name'] for label in issue['labels']],
+                    "issue_number": issue['number'],
+                    "creator": issue['user']['login']  # GitHub username of the issue creator
                 }
                 
                 bounty_data.append(bounty_info)
@@ -324,8 +326,8 @@ for lang, lang_bounties in languages.items():
         f.write(f"# {lang} Bounties\n\n")
         f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
         f.write(f"Total {lang} bounties: **{len(lang_bounties)}**\n\n")
-        f.write("|Owner|Title & Link|Bounty Amount|Paid in|Secondary Language|\n")
-        f.write("|---|---|---|---|---|\n")
+        f.write("|Owner|Title & Link|Bounty Amount|Paid in|Secondary Language|Claim|\n")
+        f.write("|---|---|---|---|---|---|\n")
         
         # Sort bounties by owner
         lang_bounties.sort(key=lambda x: (x["owner"], x["title"]))
@@ -356,7 +358,12 @@ for lang, lang_bounties in languages.items():
                 except ValueError:
                     erg_equiv = amount
             
-            f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} |\n")
+            # Create a claim link that opens a PR template
+            issue_number = bounty["issue_number"]
+            creator = bounty["creator"]
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={{\n  \"contributor\": \"YOUR_GITHUB_USERNAME\",\n  \"wallet_address\": \"YOUR_WALLET_ADDRESS\",\n  \"contact_method\": \"YOUR_CONTACT_INFO\",\n  \"work_link\": \"\",\n  \"work_title\": \"{title.replace('\"', '\\\\\"')}\",\n  \"bounty_id\": \"{owner}/{repo_name}#{issue_number}\",\n  \"original_issue_link\": \"{url}\",\n  \"payment_currency\": \"{currency}\",\n  \"bounty_value\": {amount if amount != 'Not specified' else '0'},\n  \"status\": \"in-progress\",\n  \"submission_date\": \"\",\n  \"expected_completion\": \"YYYY-MM-DD\",\n  \"description\": \"I am working on this bounty\",\n  \"review_notes\": \"\",\n  \"payment_tx_id\": \"\",\n  \"payment_date\": \"\"\n}}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{title}"
+            
+            f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} | [Claim]({claim_url}) |\n")
 
 # Write main Markdown file
 with open(md_file, 'w', encoding='utf-8') as f:
@@ -386,8 +393,8 @@ with open(md_file, 'w', encoding='utf-8') as f:
         f.write(f"| [{lang}](by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
     
     f.write("\n## Detailed Bounties\n\n")
-    f.write("|Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|\n")
-    f.write("|---|---|---|---|---|\n")
+    f.write("|Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|Claim|\n")
+    f.write("|---|---|---|---|---|---|\n")
     
     # Group bounties by owner
     owners = {}
@@ -424,7 +431,12 @@ with open(md_file, 'w', encoding='utf-8') as f:
                 except ValueError:
                     erg_equiv = amount
             
-            f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} |\n")
+            # Create a claim link that opens a PR template
+            issue_number = bounty["issue_number"]
+            creator = bounty["creator"]
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={{\n  \"contributor\": \"YOUR_GITHUB_USERNAME\",\n  \"wallet_address\": \"YOUR_WALLET_ADDRESS\",\n  \"contact_method\": \"YOUR_CONTACT_INFO\",\n  \"work_link\": \"\",\n  \"work_title\": \"{title.replace('\"', '\\\\\"')}\",\n  \"bounty_id\": \"{owner}/{repo_name}#{issue_number}\",\n  \"original_issue_link\": \"{url}\",\n  \"payment_currency\": \"{currency}\",\n  \"bounty_value\": {amount if amount != 'Not specified' else '0'},\n  \"status\": \"in-progress\",\n  \"submission_date\": \"\",\n  \"expected_completion\": \"YYYY-MM-DD\",\n  \"description\": \"I am working on this bounty\",\n  \"review_notes\": \"\",\n  \"payment_tx_id\": \"\",\n  \"payment_date\": \"\"\n}}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{title}"
+            
+            f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} | [Claim]({claim_url}) |\n")
             owner_count += 1
             global_count += 1
     
