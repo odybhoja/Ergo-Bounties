@@ -1,6 +1,6 @@
 # Currency Prices
 
-*Report generated: 2025-03-13 17:20:24 UTC*
+*Report generated: 2025-03-13 19:31:04 UTC*
 
 ## Navigation
 
@@ -10,10 +10,10 @@
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE](by_currency/bene.md) | 0.000000 | No market value |
+| [BENE](by_currency/bene.md) | 1.266551 | No market value |
 | [GORT](by_currency/gort.md) | 0.078932 |  |
 | [RSN](by_currency/rsn.md) | 0.053869 |  |
-| [SigUSD](by_currency/sigusd.md) | 1.266533 | Stablecoin pegged to USD |
+| [SigUSD](by_currency/sigusd.md) | 1.266551 | Stablecoin pegged to USD |
 | [g GOLD](by_currency/gold.md) | 0.000001 | Price per gram of gold |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*

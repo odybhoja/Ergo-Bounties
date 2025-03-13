@@ -10,18 +10,18 @@
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/bounties/by_org/ergoplatform.md) | 84 | 45,005.20 ERG |
-| [input-output-hk](/bounties/by_org/input-output-hk.md) | 1 | 633.27 ERG |
+| [ergoplatform](/bounties/by_org/ergoplatform.md) | 84 | 45,005.76 ERG |
+| [input-output-hk](/bounties/by_org/input-output-hk.md) | 1 | 633.28 ERG |
 | [ChainCashLabs](/bounties/by_org/chaincashlabs.md) | 9 | 153.92 ERG |
+| [StabilityNexus](/bounties/by_org/stabilitynexus.md) | 2 | 126.66 ERG |
 | [rosen-bridge](/bounties/by_org/rosen-bridge.md) | 7 | 113.13 ERG |
-| [StabilityNexus](/bounties/by_org/stabilitynexus.md) | 2 | 0.00 ERG |
-| **Total** | **103** | **45,905.51 ERG** |
+| **Total** | **103** | **46,032.73 ERG** |
 
 ## Currencies
 
 | Currency | Count | Total Value (ERG) |
 |----------|-------|------------------|
-| [SigUSD](/bounties/by_currency/sigusd.md) | 54 | 41099.00 |
+| [SigUSD](/bounties/by_currency/sigusd.md) | 54 | 41099.57 |
 | [ERG](/bounties/by_currency/erg.md) | 25 | 4500.00 |
 | [GORT](/bounties/by_currency/gort.md) | 7 | 193.38 |
 | [g GOLD](/bounties/by_currency/gold.md) | 6 | 0.00 |
