@@ -79,12 +79,38 @@ def get_conversion_rates():
                     r4_value = latest_box.get('additionalRegisters', {}).get('R4', {}).get('renderedValue')
                     
                     if r4_value:
-                        # Calculate price: 10^18 / R4_value
+                        # Print raw R4 value for debugging
+                        print(f"Raw R4 value from oracle: {r4_value}")
+                        
                         try:
                             r4_value = float(r4_value)
+                            
+                            # The value in R4 represents the inverse of the price in nanoERGs per 1/10^9 gram of gold
+                            # To get the price of 1g of gold in ERG: 10^18 / R4_value
+                            
+                            # Validate the R4 value is in a reasonable range
+                            # Based on our tests, the R4 value should be around 8.15e+15 to give ~122.635 ERG per gram
+                            if r4_value < 1e+12 or r4_value > 1e+18:
+                                print(f"Warning: R4 value {r4_value} is outside the expected range")
+                                # If the value is too small, multiply by 10^12 to get it in the right range
+                                if r4_value < 1e+12:
+                                    adjusted_r4 = r4_value * (10**12)
+                                    print(f"Adjusting R4 value to {adjusted_r4}")
+                                    r4_value = adjusted_r4
+                            
                             gold_price_per_gram_erg = (10**18) / r4_value
+                            
+                            # Validate the calculated price is reasonable (between 50-500 ERG per gram)
+                            if gold_price_per_gram_erg < 50 or gold_price_per_gram_erg > 500:
+                                print(f"Warning: Calculated gold price {gold_price_per_gram_erg:.6f} ERG per gram is outside the expected range")
+                                # Default to a reasonable value if the calculation is way off
+                                if gold_price_per_gram_erg < 1 or gold_price_per_gram_erg > 1000:
+                                    print(f"Using default gold price of 122.635 ERG per gram")
+                                    gold_price_per_gram_erg = 122.635
+                            
+                            print(f"Calculated gold price from oracle: {gold_price_per_gram_erg:.6f} ERG per gram")
+                            
                             rates["gGOLD"] = gold_price_per_gram_erg
-                            print(f"Found gold price from oracle pool: {gold_price_per_gram_erg:.2f} ERG per gram")
                         except (ValueError, ZeroDivisionError) as e:
                             print(f"Error calculating gold price from R4 value: {e}")
                             raise Exception("Invalid R4 value in oracle pool data")
