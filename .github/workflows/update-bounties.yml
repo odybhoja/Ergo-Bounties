@@ -3,9 +3,7 @@ name: Update Bounty Listings
 on:
   schedule:
     - cron: '0 0 * * *'  # Run daily at midnight UTC
-  push:
-    paths:
-      - 'tracked_repos.json'
+  push:  # Run on any push to the repository
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -27,7 +25,7 @@ jobs:
       - name: Run bounty finder script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python scrape/bounty_finder_github_action.py
+        run: python .github/workflows/scripts/bounty_finder.py
         
       - name: Commit changes
         run: |

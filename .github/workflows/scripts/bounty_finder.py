@@ -216,8 +216,6 @@ for repo in repos_to_query:
                 except ValueError:
                     pass
 
-# No CSV file generation
-
 # Calculate overall totals
 total_bounties = sum(project["count"] for project in project_totals.values())
 total_value = sum(project["value"] for project in project_totals.values())
