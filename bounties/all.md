@@ -1,6 +1,6 @@
 # Open Bounties
 
-*Report generated: 2025-03-13 13:33:08 UTC*
+*Report generated: 2025-03-13 13:45:05 UTC*
 
 ## Summary
 
@@ -17,10 +17,10 @@
 
 | Language | Count | Percentage |
 |----------|-------|------------|
-| [Scala](bounties_by_language/scala.md) | 70 | 70.0% |
-| [Rust](bounties_by_language/rust.md) | 22 | 22.0% |
-| [TypeScript](bounties_by_language/typescript.md) | 6 | 6.0% |
-| [Svelte](bounties_by_language/svelte.md) | 2 | 2.0% |
+| [Scala](by_language/scala.md) | 70 | 70.0% |
+| [Rust](by_language/rust.md) | 22 | 22.0% |
+| [TypeScript](by_language/typescript.md) | 6 | 6.0% |
+| [Svelte](by_language/svelte.md) | 2 | 2.0% |
 
 ## Detailed Bounties
 
