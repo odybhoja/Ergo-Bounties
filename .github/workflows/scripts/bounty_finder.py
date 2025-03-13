@@ -1,14 +1,30 @@
 #!/usr/bin/env python3
-import os
+"""
+Bounty Finder - Main script for finding and processing bounties from GitHub.
+
+This script orchestrates the process of:
+1. Loading configuration
+2. Fetching conversion rates
+3. Processing repositories and organizations
+4. Generating markdown files with bounty information
+"""
+
 import sys
-import json
-from datetime import datetime
+import logging
+from typing import Dict, List, Any
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('bounty_finder')
 
 # Import modules
-from bounty_modules.api_client import get_org_repos, get_repo_languages, get_issues
-from bounty_modules.extractors import check_bounty_labels, extract_bounty_from_labels, extract_bounty_from_text
-from bounty_modules.conversion_rates import get_conversion_rates, convert_to_erg
-from bounty_modules.utils import ensure_directory, calculate_erg_value
+from bounty_modules.config import BountyConfig
+from bounty_modules.conversion_rates import get_conversion_rates
+from bounty_modules.processor import BountyProcessor
+from bounty_modules.utils import ensure_directory
 from bounty_modules.generators import (
     generate_language_files,
     generate_organization_files,
@@ -21,152 +37,52 @@ from bounty_modules.generators import (
 )
 
 def main():
-    # Get GitHub token from environment variable
-    github_token = os.environ.get("GITHUB_TOKEN")
-    if not github_token:
-        print("Error: GITHUB_TOKEN environment variable is required")
-        sys.exit(1)
-
-    # Define file paths
+    """Main function to run the bounty finder."""
+    logger.info("Starting bounty finder")
+    
+    # Initialize configuration
     bounties_dir = 'bounties'
-    ensure_directory(bounties_dir)
-
-    # Read repositories from bounties/tracked_repos.json
-    try:
-        with open(f'{bounties_dir}/tracked_repos.json', 'r') as f:
-            repos_to_query = json.load(f)
-    except Exception as e:
-        print(f"Error reading bounties/tracked_repos.json: {e}")
+    config = BountyConfig(bounties_dir)
+    
+    # Check if configuration is valid
+    if not config.is_valid():
+        logger.error("Invalid configuration")
         sys.exit(1)
-
-    # Read organizations from bounties/tracked_orgs.json
-    try:
-        with open(f'{bounties_dir}/tracked_orgs.json', 'r') as f:
-            orgs_to_query = json.load(f)
-    except Exception as e:
-        print(f"Warning: Error reading bounties/tracked_orgs.json: {e}")
-        orgs_to_query = []
-
-    # Add repositories from tracked organizations
-    for org_entry in orgs_to_query:
-        org = org_entry['org']
-        print(f"Fetching repositories for organization: {org}")
-        
-        org_repos = get_org_repos(org, github_token)
-        for repo in org_repos:
-            # Skip archived repositories
-            if repo.get('archived', False):
-                continue
-                
-            # Skip forks if they don't have issues
-            if repo.get('fork', False) and not repo.get('has_issues', False):
-                continue
-                
-            # Add to repos_to_query if not already there
-            repo_entry = {"owner": org, "repo": repo['name']}
-            if repo_entry not in repos_to_query:
-                print(f"Adding repository from organization: {org}/{repo['name']}")
-                repos_to_query.append(repo_entry)
-
-    # Initialize data structure to store bounty information
-    bounty_data = []
-    project_totals = {}
-
+    
+    # Ensure bounties directory exists
+    ensure_directory(bounties_dir)
+    
+    # Load repositories and organizations
+    repos_to_query = config.load_tracked_repos()
+    orgs_to_query = config.load_tracked_orgs()
+    
     # Fetch conversion rates
+    logger.info("Fetching conversion rates")
     conversion_rates = get_conversion_rates()
-
-    # Process each repository
-    for repo in repos_to_query:
-        owner = repo['owner']
-        repo_name = repo['repo']
-        
-        print(f"Processing {owner}/{repo_name}...")
-        
-        # Get repository languages
-        languages = get_repo_languages(owner, repo_name, github_token)
-        primary_lang = languages[0] if languages else "Unknown"
-        secondary_lang = languages[1] if len(languages) > 1 else "None"
-        
-        # Initialize project counter if not exists
-        if owner not in project_totals:
-            project_totals[owner] = {"count": 0, "value": 0.0}
-        
-        # Get issues
-        issues = get_issues(owner, repo_name, github_token)
-        
-        # Process each issue
-        for issue in issues:
-            if issue['state'] == 'open':
-                if ("bounty" in issue["title"].lower() or 
-                    "b-" in issue["title"].lower() or 
-                    check_bounty_labels(issue["labels"])):
-                    
-                    title = issue['title'].replace(",", " ")
-                    
-                    # First check labels for bounty amount
-                    amount, currency = extract_bounty_from_labels(issue["labels"])
-                    
-                    # If no bounty found in labels, check title and body
-                    if not amount:
-                        amount, currency = extract_bounty_from_text(title, issue.get('body', ''))
-                    
-                    # If still no bounty found, mark as "Not specified"
-                    if not amount:
-                        amount = "Not specified"
-                        currency = "Not specified"
-                    
-                    # Store the bounty information
-                    bounty_info = {
-                        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                        "owner": owner,
-                        "repo": repo_name,
-                        "title": title,
-                        "url": issue['html_url'],
-                        "amount": amount,
-                        "currency": currency,
-                        "primary_lang": primary_lang,
-                        "secondary_lang": secondary_lang,
-                        "labels": [label['name'] for label in issue['labels']],
-                        "issue_number": issue['number'],
-                        "creator": issue['user']['login']  # GitHub username of the issue creator
-                    }
-                    
-                    bounty_data.append(bounty_info)
-                    
-                    # Update project totals
-                    project_totals[owner]["count"] += 1
-                    
-                    # Try to convert amount to float for totals
-                    project_totals[owner]["value"] += calculate_erg_value(amount, currency, conversion_rates)
-
-    # Calculate overall totals
-    total_bounties = sum(project["count"] for project in project_totals.values())
-    total_value = sum(project["value"] for project in project_totals.values())
-
-    # Group bounties by language
-    languages = {}
-    for bounty in bounty_data:
-        primary_lang = bounty["primary_lang"]
-        if primary_lang not in languages:
-            languages[primary_lang] = []
-        languages[primary_lang].append(bounty)
-
-    # Group bounties by organization
-    orgs = {}
-    for bounty in bounty_data:
-        owner = bounty["owner"]
-        if owner not in orgs:
-            orgs[owner] = []
-        orgs[owner].append(bounty)
-
-    # Group bounties by currency
-    currencies_dict = {}
-    for bounty in bounty_data:
-        currency = bounty["currency"]
-        if currency not in currencies_dict:
-            currencies_dict[currency] = []
-        currencies_dict[currency].append(bounty)
-
+    
+    # Initialize processor
+    processor = BountyProcessor(config.github_token, conversion_rates)
+    
+    # Process organizations to find repositories
+    repos_to_query = processor.process_organizations(orgs_to_query, repos_to_query)
+    
+    # Process repositories to find bounties
+    logger.info(f"Processing {len(repos_to_query)} repositories")
+    processor.process_repositories(repos_to_query)
+    
+    # Get processed data
+    bounty_data = processor.get_bounty_data()
+    project_totals = processor.get_project_totals()
+    total_bounties, total_value = processor.get_total_stats()
+    
+    # Group data
+    languages = processor.group_by_language()
+    orgs = processor.group_by_organization()
+    currencies_dict = processor.group_by_currency()
+    
+    # Generate output files
+    logger.info("Generating output files")
+    
     # Generate language-specific files
     generate_language_files(
         bounty_data, 
@@ -255,20 +171,16 @@ def main():
         len(languages),
         len(currencies_dict),
         len(orgs),
-        len(conversion_rates)
+        len(conversion_rates),
+        languages=languages,
+        bounty_data=bounty_data,
+        conversion_rates=conversion_rates
     )
 
     # Print summary
-    print(f"Main bounty file written to: {bounties_dir}/all.md")
-    print(f"Summary file written to: {bounties_dir}/summary.md")
-    print(f"Language-specific files written to: {bounties_dir}/by_language/")
-    print(f"Organization-specific files written to: {bounties_dir}/by_org/")
-    print(f"Currency-specific files written to: {bounties_dir}/by_currency/")
-    print(f"Currency price table written to: {bounties_dir}/currency_prices.md")
-    print(f"Featured bounties file written to: {bounties_dir}/featured_bounties.md")
-    print(f"README.md table and badges updated with latest bounty counts and values")
-    print(f"Total bounties found: {total_bounties}")
-    print(f"Total ERG equivalent value: {total_value:.2f}")
+    logger.info(f"Total bounties found: {total_bounties}")
+    logger.info(f"Total ERG equivalent value: {total_value:.2f}")
+    logger.info("Bounty finder completed successfully")
 
 if __name__ == "__main__":
     main()

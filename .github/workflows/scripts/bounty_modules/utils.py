@@ -1,34 +1,55 @@
 import os
 import json
+import logging
 import urllib.parse
 from datetime import datetime
+from typing import Dict, Any, Union, Optional
 
-def ensure_directory(directory):
+# Configure logging
+logger = logging.getLogger('utils')
+
+def ensure_directory(directory: str) -> None:
     """
     Ensure a directory exists, creating it if necessary.
     
     Args:
-        directory (str): Directory path
+        directory: Directory path to create
     """
-    os.makedirs(directory, exist_ok=True)
+    try:
+        os.makedirs(directory, exist_ok=True)
+        logger.debug(f"Ensured directory exists: {directory}")
+    except Exception as e:
+        logger.error(f"Error creating directory {directory}: {e}")
+        raise
 
-def create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator):
+def create_claim_url(
+    owner: str, 
+    repo_name: str, 
+    issue_number: int, 
+    title: str, 
+    url: str, 
+    currency: str, 
+    amount: str, 
+    creator: str
+) -> str:
     """
-    Create a URL for claiming a bounty.
+    Create a URL for claiming a bounty through a GitHub PR.
     
     Args:
-        owner (str): Repository owner
-        repo_name (str): Repository name
-        issue_number (int): Issue number
-        title (str): Issue title
-        url (str): Issue URL
-        currency (str): Bounty currency
-        amount (str): Bounty amount
-        creator (str): Issue creator
+        owner: Repository owner
+        repo_name: Repository name
+        issue_number: Issue number
+        title: Issue title
+        url: Issue URL
+        currency: Bounty currency
+        amount: Bounty amount
+        creator: Issue creator
         
     Returns:
-        str: Claim URL
+        URL that opens a GitHub PR with pre-filled template
     """
+    logger.debug(f"Creating claim URL for {owner}/{repo_name}#{issue_number}")
+    
     # Create JSON template using json.dumps to properly escape special characters
     template_data = {
         "contributor": "YOUR_GITHUB_USERNAME",
@@ -54,30 +75,45 @@ def create_claim_url(owner, repo_name, issue_number, title, url, currency, amoun
     encoded_json = urllib.parse.quote(json_content)
     
     # Create the claim URL
-    claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
+    claim_url = (
+        f"https://github.com/ErgoDevs/Ergo-Bounties/new/main"
+        f"?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json"
+        f"&value={encoded_json}"
+        f"&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}"
+        f"&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
+    )
     
     return claim_url
 
-def get_current_timestamp():
+def get_current_timestamp() -> str:
     """
     Get current timestamp in a formatted string.
     
     Returns:
-        str: Formatted timestamp
+        Formatted timestamp (YYYY-MM-DD HH:MM:SS)
     """
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-def calculate_erg_value(amount, currency, conversion_rates):
+def calculate_erg_value(
+    amount: str, 
+    currency: str, 
+    conversion_rates: Dict[str, float]
+) -> float:
     """
     Calculate ERG value from amount and currency.
     
     Args:
-        amount (str): Amount
-        currency (str): Currency
-        conversion_rates (dict): Conversion rates
+        amount: Amount as a string
+        currency: Currency code
+        conversion_rates: Dictionary of conversion rates
         
     Returns:
-        float: ERG value or 0 if conversion not possible
+        ERG value as a float, or 0 if conversion not possible
+    
+    Examples:
+        - calculate_erg_value("100", "ERG", rates) -> 100.0
+        - calculate_erg_value("50", "SigUSD", rates) -> ERG equivalent of 50 SigUSD
+        - calculate_erg_value("2", "g GOLD", rates) -> ERG equivalent of 2g of gold
     """
     if amount == "Not specified":
         return 0.0
@@ -96,24 +132,33 @@ def calculate_erg_value(amount, currency, conversion_rates):
         elif currency == "g GOLD" and "gGOLD" in conversion_rates:
             return float(amount) * conversion_rates["gGOLD"]
         else:
-            return 0.0  # For unknown currencies
-    except ValueError:
+            logger.warning(f"Unknown currency or missing conversion rate: {currency}")
+            return 0.0
+    except ValueError as e:
+        logger.error(f"Error converting {amount} {currency} to ERG: {e}")
         return 0.0
 
-def format_navigation_badges(total_bounties, languages_count, currencies_count, orgs_count, conversion_rates_count, relative_path=""):
+def format_navigation_badges(
+    total_bounties: int, 
+    languages_count: int, 
+    currencies_count: int, 
+    orgs_count: int, 
+    conversion_rates_count: int, 
+    relative_path: str = ""
+) -> str:
     """
     Format navigation badges for markdown files.
     
     Args:
-        total_bounties (int): Total number of bounties
-        languages_count (int): Number of languages
-        currencies_count (int): Number of currencies
-        orgs_count (int): Number of organizations
-        conversion_rates_count (int): Number of conversion rates
-        relative_path (str): Relative path for links
+        total_bounties: Total number of bounties
+        languages_count: Number of languages
+        currencies_count: Number of currencies
+        orgs_count: Number of organizations
+        conversion_rates_count: Number of conversion rates
+        relative_path: Relative path for links (e.g., "../" for subdirectories)
         
     Returns:
-        str: Formatted navigation badges
+        Formatted navigation badges as markdown
     """
     badges = []
     badges.append(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)]({relative_path}all.md)")

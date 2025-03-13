@@ -8,12 +8,23 @@ The code has been modularized for better maintainability:
 
 - `bounty_finder.py`: Main script that orchestrates the process
 - `run_bounty_finder.py`: Wrapper script to run the bounty finder
+- `tests/`: Directory containing test scripts
+  - `test_gold_price.py`: Test script for gold price functionality
+  - `test_api.py`: Test script for API functionality
+  - `test_config.py`: Test script for configuration functionality
 - `bounty_modules/`: Directory containing the modules
   - `api_client.py`: Functions for GitHub API interactions
-  - `extractors.py`: Functions for extracting bounty information from issues
+  - `config.py`: Configuration handling
   - `conversion_rates.py`: Functions for fetching and handling currency conversion rates
-  - `generators.py`: Functions for generating the various markdown files
+  - `extractors.py`: Functions for extracting bounty information from issues
+  - `processor.py`: Data processing functionality
   - `utils.py`: Utility functions used across the codebase
+  - `generators/`: Directory containing generator modules
+    - `language_generator.py`: Functions for generating language-specific files
+    - `organization_generator.py`: Functions for generating organization-specific files
+    - `currency_generator.py`: Functions for generating currency-specific files
+    - `summary_generator.py`: Functions for generating summary files
+    - `readme_updater.py`: Functions for updating the README.md file
 
 ## Generated Files
 
@@ -49,6 +60,17 @@ The script requires a GitHub token to be set as an environment variable:
 
 ```bash
 export GITHUB_TOKEN=your_github_token
+```
+
+### Running Tests
+
+To run the tests:
+
+```bash
+cd .github/workflows/scripts
+python -m tests.test_gold_price  # Gold price tests
+python -m tests.test_api         # API tests
+python -m tests.test_config      # Configuration tests
 ```
 
 ### Running from GitHub Actions

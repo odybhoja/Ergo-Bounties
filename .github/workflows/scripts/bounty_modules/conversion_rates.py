@@ -1,4 +1,17 @@
 import requests
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger('conversion_rates')
+
+# Constants
+SPECTRUM_API_URL = "https://api.spectrum.fi/v1/price-tracking/markets"
+XAU_ERG_ORACLE_NFT = "3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a"
+ERGO_EXPLORER_API = "https://api.ergoplatform.com/api/v1"
 
 def get_conversion_rates():
     """
@@ -12,80 +25,74 @@ def get_conversion_rates():
     
     try:
         # Get Spectrum API data for crypto rates
-        spectrum_response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
+        logger.info("Fetching market data from Spectrum API")
+        spectrum_response = requests.get(SPECTRUM_API_URL, timeout=30)
+        
         if spectrum_response.status_code != 200:
-            print(f"Warning: Error fetching Spectrum API conversion rates: {spectrum_response.status_code}")
+            logger.error(f"Error fetching Spectrum API conversion rates: {spectrum_response.status_code}")
             raise Exception("Failed to fetch Spectrum API data")
             
         markets = spectrum_response.json()
-        print(f"Spectrum API returned {len(markets)} markets")
+        logger.debug(f"Spectrum API returned {len(markets)} markets")
         
-        # Find ERG/SigUSD pairs (where baseSymbol is ERG and quoteSymbol is SigUSD)
+        # Process SigUSD rate
         sigusd_markets = [m for m in markets if m.get("quoteSymbol") == "SigUSD" and 
                          m.get("baseSymbol") == "ERG"]
         if sigusd_markets:
             # Sort by volume if available, otherwise use the first market
             if 'baseVolume' in sigusd_markets[0]:
                 sigusd_markets.sort(key=lambda m: float(m.get('baseVolume', {}).get('value', 0)), reverse=True)
-                print(f"Sorted SigUSD markets by volume, using the most liquid market")
             
             # Use the first (or most liquid) market
             rates["SigUSD"] = float(sigusd_markets[0].get("lastPrice"))
-            print(f"Found SigUSD rate: {rates['SigUSD']} from market {sigusd_markets[0].get('baseSymbol')}/{sigusd_markets[0].get('quoteSymbol')}")
+            logger.info(f"Found SigUSD rate: {rates['SigUSD']}")
         else:
-            print(f"No SigUSD markets found, cannot proceed without SigUSD rate")
+            logger.error("No SigUSD markets found, cannot proceed without SigUSD rate")
             raise Exception("SigUSD rate not found in API data")
         
-        # Find ERG/GORT pairs
+        # Process GORT rate
         gort_markets = [m for m in markets if m.get("quoteSymbol") == "GORT" and 
                        m.get("baseSymbol") == "ERG"]
         if gort_markets:
-            # Use the first market's price
             rates["GORT"] = float(gort_markets[0].get("lastPrice"))
-            print(f"Found GORT rate: {rates['GORT']}")
+            logger.info(f"Found GORT rate: {rates['GORT']}")
         else:
-            print(f"No GORT markets found in API data")
-            raise Exception("GORT rate not found in API data")
+            logger.warning("No GORT markets found in API data")
+            # Continue without GORT rate
         
-        # Find ERG/RSN pairs
+        # Process RSN rate
         rsn_markets = [m for m in markets if m.get("quoteSymbol") == "RSN" and 
                       m.get("baseSymbol") == "ERG"]
         if rsn_markets:
-            # Use the first market's price
             rates["RSN"] = float(rsn_markets[0].get("lastPrice"))
-            print(f"Found RSN rate: {rates['RSN']}")
+            logger.info(f"Found RSN rate: {rates['RSN']}")
         else:
-            print(f"No RSN markets found in API data")
-            raise Exception("RSN rate not found in API data")
+            logger.warning("No RSN markets found in API data")
+            # Continue without RSN rate
         
         # Set BENE to $1 worth of ERG
         if "SigUSD" in rates:
             rates["BENE"] = rates["SigUSD"]
-            print(f"Setting BENE rate to {rates['BENE']} (equivalent to $1 worth of ERG)")
+            logger.info(f"Setting BENE rate to {rates['BENE']} (equivalent to $1 worth of ERG)")
         else:
             rates["BENE"] = 0.0
-            print(f"Warning: SigUSD rate not available, setting BENE to 0")
+            logger.warning("SigUSD rate not available, setting BENE to 0")
         
         # Get gold price from XAU/ERG oracle pool
-        print("Getting gold price from XAU/ERG oracle pool...")
+        logger.info("Getting gold price from XAU/ERG oracle pool")
         
-        # Oracle pool NFT ID for ERG/XAU
-        xau_erg_oracle_nft = "3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a"
-        
-        # Direct API call to get boxes containing the oracle pool NFT
         try:
             # Using the explorer API to get boxes containing the oracle pool NFT
-            oracle_url = f"https://api.ergoplatform.com/api/v1/boxes/unspent/byTokenId/{xau_erg_oracle_nft}"
-            print(f"Querying oracle pool at: {oracle_url}")
+            oracle_url = f"{ERGO_EXPLORER_API}/boxes/unspent/byTokenId/{XAU_ERG_ORACLE_NFT}"
             
-            response = requests.get(oracle_url, timeout=60)  # Increase timeout to 60 seconds
+            response = requests.get(oracle_url, timeout=60)
             if response.status_code != 200:
-                print(f"Error: Oracle API returned status code {response.status_code}")
+                logger.error(f"Oracle API returned status code {response.status_code}")
                 raise Exception(f"Failed to access oracle API: {response.status_code}")
                 
             oracle_data = response.json()
             if not oracle_data.get('items') or len(oracle_data['items']) == 0:
-                print("Error: No oracle pool boxes found")
+                logger.error("No oracle pool boxes found")
                 raise Exception("No oracle pool boxes found")
                 
             # Get the most recent box (usually the first one)
@@ -93,7 +100,7 @@ def get_conversion_rates():
             
             # Extract the R4 register value
             if 'additionalRegisters' not in latest_box or 'R4' not in latest_box['additionalRegisters']:
-                print("Error: R4 register not found in oracle pool box")
+                logger.error("R4 register not found in oracle pool box")
                 raise Exception("R4 register not found")
                 
             r4_register = latest_box['additionalRegisters']['R4']
@@ -105,34 +112,27 @@ def get_conversion_rates():
                 r4_value = r4_register['value']
                 
             if not r4_value:
-                print("Error: Could not extract R4 value from register")
+                logger.error("Could not extract R4 value from register")
                 raise Exception("R4 value not found")
                 
-            print(f"Raw R4 value from oracle: {r4_value}")
-            
             # Convert R4 value to float
             r4_value = float(r4_value)
-            
-            # For XAU/ERG oracle, the R4 value needs to be properly scaled
-            # Based on the observed value and expected result (~122.635 ERG per gram)
-            # We need to scale the R4 value appropriately
             
             # Calculate the gold price using the formula: 10^18 / (R4_value * 100)
             # This scaling factor is derived from the oracle pool's data format and testing
             gold_price_per_gram_erg = (10**18) / (r4_value * 100)
             
-            print(f"Gold price from oracle: {gold_price_per_gram_erg:.6f} ERG per gram")
+            logger.info(f"Gold price from oracle: {gold_price_per_gram_erg:.6f} ERG per gram")
             rates["gGOLD"] = gold_price_per_gram_erg
             
         except Exception as e:
-            print(f"Error getting gold price from oracle: {e}")
+            logger.error(f"Error getting gold price from oracle: {e}")
             # No fallbacks - if we can't get the oracle price, we don't set a value
-            print("No fallback implemented - gold price will not be available")
         
-        print(f"Using conversion rates: {rates}")
+        logger.info(f"Using conversion rates: {rates}")
         return rates
     except Exception as e:
-        print(f"Warning: Exception fetching conversion rates: {e}")
+        logger.error(f"Exception fetching conversion rates: {e}")
         return rates  # Return what we have so far
 
 def convert_to_erg(amount, currency, conversion_rates):

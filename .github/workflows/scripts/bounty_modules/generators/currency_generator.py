@@ -1,0 +1,191 @@
+"""
+Module for generating currency-specific markdown files.
+"""
+
+import logging
+from datetime import datetime
+from typing import Dict, List, Any
+
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges
+from ..conversion_rates import convert_to_erg
+
+# Configure logging
+logger = logging.getLogger('currency_generator')
+
+def generate_currency_files(
+    bounty_data: List[Dict[str, Any]], 
+    currencies_dict: Dict[str, List[Dict[str, Any]]], 
+    conversion_rates: Dict[str, float], 
+    total_bounties: int, 
+    languages: Dict[str, List[Dict[str, Any]]], 
+    orgs: Dict[str, List[Dict[str, Any]]], 
+    bounties_dir: str
+) -> None:
+    """
+    Generate currency-specific markdown files.
+    
+    Args:
+        bounty_data: List of bounty data
+        currencies_dict: Dictionary of currencies and their bounties
+        conversion_rates: Dictionary of conversion rates
+        total_bounties: Total number of bounties
+        languages: Dictionary of languages and their bounties
+        orgs: Dictionary of organizations and their bounties
+        bounties_dir: Bounties directory
+    """
+    logger.info(f"Generating currency-specific files for {len(currencies_dict)} currencies")
+    
+    # Create a directory for currency-specific files if it doesn't exist
+    currency_dir = f'{bounties_dir}/by_currency'
+    ensure_directory(currency_dir)
+    
+    # Write currency-specific Markdown files
+    for currency, currency_bounties in currencies_dict.items():
+        # Format the currency name for the file
+        if currency == "Not specified":
+            currency_file_name = "not_specified"
+        elif currency == "g GOLD":
+            currency_file_name = "gold"
+        else:
+            currency_file_name = currency.lower()
+        
+        currency_file = f'{currency_dir}/{currency_file_name}.md'
+        logger.debug(f"Writing currency file: {currency_file}")
+        
+        with open(currency_file, 'w', encoding='utf-8') as f:
+            # Write header
+            f.write(f"# {currency} Bounties\n\n")
+            f.write(f"*Report generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+            f.write(f"Total {currency} bounties: **{len(currency_bounties)}**\n\n")
+            
+            # Add navigation badges
+            f.write("## Navigation\n\n")
+            f.write(format_navigation_badges(
+                total_bounties, 
+                len(languages), 
+                len(currencies_dict), 
+                len(orgs), 
+                len(conversion_rates), 
+                "../"
+            ))
+            f.write("\n\n")
+            
+            # Add conversion rate if available
+            if currency in conversion_rates:
+                f.write(f"## Current {currency} Rate\n\n")
+                
+                # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+                display_rate = conversion_rates[currency]
+                if currency != "gGOLD":
+                    display_rate = 1.0 / display_rate if display_rate > 0 else 0.0
+                
+                f.write(f"1 {currency} = {display_rate:.6f} ERG\n\n")
+            
+            f.write("|Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|\n")
+            f.write("|---|---|---|---|---|---|\n")
+            
+            # Sort bounties by owner and title
+            currency_bounties.sort(key=lambda x: (x["owner"], x["title"]))
+            
+            # Add rows for each bounty
+            for bounty in currency_bounties:
+                owner = bounty["owner"]
+                title = bounty["title"]
+                url = bounty["url"]
+                amount = bounty["amount"]
+                primary_lang = bounty["primary_lang"]
+                
+                # Try to convert to ERG equivalent
+                erg_equiv = convert_to_erg(amount, currency, conversion_rates)
+                
+                # Create a claim link that opens a PR template
+                issue_number = bounty["issue_number"]
+                creator = bounty["creator"]
+                repo_name = bounty["repo"]
+                
+                claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
+                
+                # Add organization and language links
+                org_link = f"[{owner}](../by_org/{owner.lower()}.md)"
+                primary_lang_link = f"[{primary_lang}](../by_language/{primary_lang.lower()}.md)"
+                
+                f.write(f"| {org_link} | [{title}]({url}) | {amount} | {erg_equiv} | {primary_lang_link} | [Claim]({claim_url}) |\n")
+    
+    logger.info(f"Generated {len(currencies_dict)} currency-specific files")
+
+def generate_price_table(
+    conversion_rates: Dict[str, float], 
+    total_bounties: int, 
+    languages: Dict[str, List[Dict[str, Any]]], 
+    currencies_dict: Dict[str, List[Dict[str, Any]]], 
+    orgs: Dict[str, List[Dict[str, Any]]], 
+    bounties_dir: str
+) -> None:
+    """
+    Generate a currency price table markdown file.
+    
+    Args:
+        conversion_rates: Dictionary of conversion rates
+        total_bounties: Total number of bounties
+        languages: Dictionary of languages and their bounties
+        currencies_dict: Dictionary of currencies and their bounties
+        orgs: Dictionary of organizations and their bounties
+        bounties_dir: Bounties directory
+    """
+    logger.info("Generating currency price table")
+    
+    price_table_file = f'{bounties_dir}/currency_prices.md'
+    with open(price_table_file, 'w', encoding='utf-8') as f:
+        # Write header
+        f.write("# Currency Prices\n\n")
+        f.write(f"*Report generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+        
+        # Add navigation badges
+        f.write("## Navigation\n\n")
+        f.write(format_navigation_badges(
+            total_bounties, 
+            len(languages), 
+            len(currencies_dict), 
+            len(orgs), 
+            len(conversion_rates)
+        ))
+        f.write("\n\n")
+        
+        # Write price table
+        f.write("## Current Prices\n\n")
+        f.write("| Currency | ERG Equivalent | Notes |\n")
+        f.write("|----------|----------------|-------|\n")
+        
+        # Add rows for each currency with known conversion rates
+        for currency, rate in sorted(conversion_rates.items()):
+            notes = ""
+            if currency == "SigUSD":
+                notes = "Stablecoin pegged to USD"
+            elif currency == "BENE":
+                notes = "No market value"
+            elif currency == "gGOLD":
+                notes = "Price per gram of gold"
+            
+            # Format the currency name for display
+            display_currency = currency
+            if currency == "gGOLD":
+                display_currency = "g GOLD"
+            
+            # Add link to currency page if it exists
+            # Format the currency name for the file link
+            file_currency = display_currency
+            if display_currency == "g GOLD":
+                file_currency = "gold"
+            
+            currency_link = f"[{display_currency}](by_currency/{file_currency.lower()}.md)"
+            
+            # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+            display_rate = rate
+            if currency != "gGOLD":
+                display_rate = 1.0 / rate if rate > 0 else 0.0
+            
+            f.write(f"| {currency_link} | {display_rate:.6f} | {notes} |\n")
+        
+        f.write("\n*Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*\n")
+    
+    logger.info("Generated currency price table")
