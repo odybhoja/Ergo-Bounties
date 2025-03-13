@@ -516,7 +516,7 @@ with open(md_file, 'w', encoding='utf-8') as f:
         f.write(f"| [{lang}](by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
     
     f.write("\n## Detailed Bounties\n\n")
-    f.write("|Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|Claim|\n")
+    f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Claim|\n")
     f.write("|---|---|---|---|---|---|\n")
     
     # Group bounties by owner
@@ -587,7 +587,7 @@ with open(md_file, 'w', encoding='utf-8') as f:
             # Create the claim URL
             claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
             
-            f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} | [Claim]({claim_url}) |\n")
+            f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {amount} {currency} | [Claim]({claim_url}) |\n")
             owner_count += 1
             global_count += 1
     
