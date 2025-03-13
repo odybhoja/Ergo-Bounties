@@ -36,14 +36,6 @@ You can now browse bounties by programming language! This makes it easier to fin
   </p>
 </div>
 
-**Popular Languages:**
-- [Scala](/bounties/by_language/scala.md) - Ergo's primary implementation language
-- [Rust](/bounties/by_language/rust.md) - Used for sigma-rust and other performance-critical components
-- [JavaScript](/bounties/by_language/javascript.md) - For web applications and dApps
-- [TypeScript](/bounties/by_language/typescript.md) - Type-safe JavaScript for larger applications
-- [Python](/bounties/by_language/python.md) - Used for tools, scripts and integrations
-- [Java](/bounties/by_language/java.md) - For Android and enterprise applications
-- [C++](/bounties/by_language/c++.md) - Performance-critical components and libraries
 
 **[View All Languages →](/bounties/by_language/)**
 
