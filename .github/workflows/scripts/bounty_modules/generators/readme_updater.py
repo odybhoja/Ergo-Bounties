@@ -3,7 +3,9 @@ Module for updating the README.md file with bounty information.
 """
 
 import re
+import json
 import logging
+import os
 from datetime import datetime
 from typing import Dict, List, Any
 
@@ -44,16 +46,29 @@ def update_readme_table(
         with open(readme_file, 'r', encoding='utf-8') as f:
             readme_content = f.read()
         
+        # Load constants from constants.json
+        constants_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'constants.json')
+        try:
+            with open(constants_path, 'r', encoding='utf-8') as f:
+                constants = json.load(f)
+                logger.info(f"Loaded constants from {constants_path}")
+        except Exception as e:
+            logger.error(f"Error loading constants from {constants_path}: {e}")
+            raise
+        
         # Get the current date
         current_date = datetime.now().strftime("%b %d, %Y")
         
         # Create the new table row for the current date
         new_row = f"| {current_date} | {total_bounties} | **{total_value:,.2f} ERG**|"
         
+        # Get fixed bounties from constants
+        fleet_sdk = constants["fixed_bounties"]["fleet_sdk"]
+        keystone = constants["fixed_bounties"]["keystone"]
+        
         # Calculate the new total (fixed values + dynamic value)
-        # Fixed values: 3,000 ERG (Keystone) + 775 SigUSD (Fleet SDK)
-        total_count = total_bounties + 7 + 1  # 7 Fleet SDK + 1 Keystone
-        total_erg_value = total_value + 3000  # 3000 ERG for Keystone
+        total_count = total_bounties + fleet_sdk["count"] + keystone["count"]
+        total_erg_value = total_value + keystone["amount"]  # Keystone is in ERG
         
         # Create the new total row
         new_total_row = f"| **Total**                   | **{total_count}**     | **{total_erg_value:,.2f} ERG**|"
@@ -61,33 +76,31 @@ def update_readme_table(
         # Find the table in the README.md file and update the third row and total row
         table_pattern = r"\| Week\s*\|\s*(?:Count of Open Issues|Open Issues)\s*\|\s*(?:ERG Bounties|Rewards)\s*\|\s*\n\|[-\s|]*\n\|[^\n]*\n\|[^\n]*\n\|[^\n]*\n\|[^\n]*\n"
         
-        # Create the replacement table
+        # Create the replacement table using values from constants
         replacement_table = f"""| Week                        | Open Issues | Rewards         |
 |-----------------------------|-------------|-----------------|
-| Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **3,000 ERG**   |
-| [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | 7           | **775 SigUSD**  |
+| Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **{keystone["amount"]:,} {keystone["currency"]}**   |
+| [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | {fleet_sdk["count"]}           | **{fleet_sdk["amount"]} {fleet_sdk["currency"]}**  |
 | {current_date}                | {total_bounties}         | **{total_value:,.2f} ERG**|
 | **Total**                   | **{total_count}**     | **{total_erg_value:,.2f} ERG**|"""
         
-        # Replace the table in the README.md file
-        updated_readme = re.sub(table_pattern, replacement_table, readme_content)
+        # Instead of updating an existing README, we'll generate a completely new one
+        # with the desired format, while preserving the dynamic badge updates
         
-        # Update the badges in the README.md file
-        # Update the Open Bounties badge
-        open_bounties_pattern = r'<a href="/bounties/all\.md"><img src="https://img\.shields\.io/badge/Open%20Bounties-\d+%2B-brightgreen" alt="Open Bounties"></a>'
-        open_bounties_replacement = f'<a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-brightgreen" alt="Open Bounties"></a>'
-        updated_readme = re.sub(open_bounties_pattern, open_bounties_replacement, updated_readme)
+        # Get language colors from constants
+        language_colors = constants["language_colors"]
         
-        # Update the High Value badge - calculate from actual bounty data if available
-        high_value_pattern = r'<a href="/bounties/all\.md"><img src="https://img\.shields\.io/badge/🌟%20High%20Value-\d+%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>'
+        # Use the languages parameter to get language counts
+        language_counts = {}
+        if languages:
+            language_counts = {lang: len(bounties) for lang, bounties in languages.items()}
         
         # Calculate high value bounty count if bounty_data and conversion_rates are provided
-        high_value_count = 3  # Default value
+        high_value_count = 0
         if bounty_data and conversion_rates:
             from ..utils import calculate_erg_value
             
             # Count bounties with value over 1000 ERG
-            high_value_count = 0
             for bounty in bounty_data:
                 amount = bounty["amount"]
                 currency = bounty["currency"]
@@ -103,17 +116,10 @@ def update_readme_table(
             
             logger.info(f"Found {high_value_count} high value bounties (>= 1000 ERG)")
         
-        high_value_replacement = f'<a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>'
-        updated_readme = re.sub(high_value_pattern, high_value_replacement, updated_readme)
-        
-        # Update the Beginner Friendly badge - calculate from actual bounty data if available
-        beginner_friendly_pattern = r'<a href="/bounties/all\.md"><img src="https://img\.shields\.io/badge/🚀%20Beginner%20Friendly-\d+%2B%20Bounties-success" alt="Beginner Friendly"></a>'
-        
         # Calculate beginner friendly bounty count if bounty_data is provided
-        beginner_friendly_count = 15  # Default value
+        beginner_friendly_count = 0
         if bounty_data:
             # Count bounties with "beginner" or "beginner-friendly" in labels
-            beginner_friendly_count = 0
             for bounty in bounty_data:
                 labels = bounty.get("labels", [])
                 if any("beginner" in label.lower() for label in labels):
@@ -121,30 +127,53 @@ def update_readme_table(
             
             logger.info(f"Found {beginner_friendly_count} beginner-friendly bounties")
         
-        beginner_friendly_replacement = f'<a href="/bounties/all.md"><img src="https://img.shields.io/badge/🚀%20Beginner%20Friendly-{beginner_friendly_count}%2B%20Bounties-success" alt="Beginner Friendly"></a>'
-        updated_readme = re.sub(beginner_friendly_pattern, beginner_friendly_replacement, updated_readme)
+        # Generate language badges HTML
+        language_badges = ""
+        for lang, count in language_counts.items():
+            color = language_colors.get(lang, "DC322F")
+            language_badges += f'    <a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{lang}-{count}-{color}"></a>\n'
         
-        # Update the language badges based on actual language counts
-        language_colors = {
-            "Scala": "DC322F",
-            "Rust": "B7410E",
-            "JavaScript": "F7DF1E",
-            "TypeScript": "3178C6",
-            "Python": "3776AB",
-            "Java": "007396"
-        }
+        # Create the new README content with the desired format
+        new_readme = f'''<div align="center">
+  <h1>🏆 Ergo Ecosystem Bounties</h1>
+  <p><strong>Your Central Hub for Tracking, Claiming, and Managing Bounties on Ergo</strong></p>
+
+  <p>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-brightgreen" alt="Open Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/💎%20Donate-ff69b4"></a>
+  </p>
+
+  <p>
+{language_badges.rstrip()}
+    <a href="/bounties/by_language/"><img src="https://img.shields.io/badge/🌐%20All%20Languages-purple"></a>
+  </p>
+
+  <h2>🚀 Quick Actions</h2>
+  <p>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse-blue"></a> | 
+    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🔒%20Reserve-green"></a> | 
+    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🚩%20Submit-orange"></a> | 
+    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-yellow"></a>
+  </p>
+  
+  <p>
+    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/📖%20Claim%20Guide-blue" alt="Claim Guide"></a>
+    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-blue" alt="Add Bounty"></a>
+    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/🤝%20Contribute-orange" alt="Contribute"></a>
+  </p>
+</div>
+
+---
+
+## 📅 Automated Daily Updates
+
+Daily tracking and updates via GitHub Actions at Midnight UTC.
+'''
         
-        # If languages data is provided, use it to update the badges
-        if languages:
-            # Calculate language counts from the provided data
-            language_counts = {lang: len(bounties) for lang, bounties in languages.items()}
-            
-            # Update badges for each language
-            for lang, count in language_counts.items():
-                lang_pattern = rf'<a href="/bounties/by_language/{lang.lower()}\.md"><img src="https://img\.shields\.io/badge/{lang}-\d+%20Bounties-[0-9A-F]{{6}}" alt="{lang}"></a>'
-                lang_color = language_colors.get(lang, "DC322F")
-                lang_replacement = f'<a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{lang}-{count}%20Bounties-{lang_color}" alt="{lang}"></a>'
-                updated_readme = re.sub(lang_pattern, lang_replacement, updated_readme)
+        # Use the new README content
+        updated_readme = new_readme
         
         # Write the updated README.md file
         with open(readme_file, 'w', encoding='utf-8') as f:

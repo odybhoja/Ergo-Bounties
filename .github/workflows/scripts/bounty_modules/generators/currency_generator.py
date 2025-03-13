@@ -2,7 +2,9 @@
 Module for generating currency-specific markdown files.
 """
 
+import json
 import logging
+import os
 from datetime import datetime
 from typing import Dict, List, Any
 
@@ -11,6 +13,26 @@ from ..conversion_rates import convert_to_erg
 
 # Configure logging
 logger = logging.getLogger('currency_generator')
+
+def load_constants() -> Dict[str, Any]:
+    """
+    Load constants from constants.json file.
+    
+    Returns:
+        Dictionary of constants
+        
+    Raises:
+        Exception: If constants.json file can't be loaded
+    """
+    constants_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'constants.json')
+    try:
+        with open(constants_path, 'r', encoding='utf-8') as f:
+            constants = json.load(f)
+            logger.info(f"Loaded constants from {constants_path}")
+            return constants
+    except Exception as e:
+        logger.error(f"Error loading constants from {constants_path}: {e}")
+        raise
 
 def generate_currency_files(
     bounty_data: List[Dict[str, Any]], 
@@ -39,13 +61,15 @@ def generate_currency_files(
     currency_dir = f'{bounties_dir}/by_currency'
     ensure_directory(currency_dir)
     
+    # Load constants
+    constants = load_constants()
+    currency_file_names = constants.get("currency_file_names", {})
+    
     # Write currency-specific Markdown files
     for currency, currency_bounties in currencies_dict.items():
-        # Format the currency name for the file
-        if currency == "Not specified":
-            currency_file_name = "not_specified"
-        elif currency == "g GOLD":
-            currency_file_name = "gold"
+        # Format the currency name for the file using constants
+        if currency in currency_file_names:
+            currency_file_name = currency_file_names[currency]
         else:
             currency_file_name = currency.lower()
         
@@ -74,9 +98,12 @@ def generate_currency_files(
             if currency in conversion_rates:
                 f.write(f"## Current {currency} Rate\n\n")
                 
-                # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+                # Get list of currencies that don't need rate inversion
+                no_rate_inversion = constants.get("no_rate_inversion", ["gGOLD"])
+                
+                # Invert the rate to show ERG per token (except for currencies in no_rate_inversion)
                 display_rate = conversion_rates[currency]
-                if currency != "gGOLD":
+                if currency not in no_rate_inversion:
                     display_rate = 1.0 / display_rate if display_rate > 0 else 0.0
                 
                 f.write(f"1 {currency} = {display_rate:.6f} ERG\n\n")
@@ -156,32 +183,34 @@ def generate_price_table(
         f.write("| Currency | ERG Equivalent | Notes |\n")
         f.write("|----------|----------------|-------|\n")
         
+        # Load constants
+        constants = load_constants()
+        currency_notes = constants.get("currency_notes", {})
+        currency_display_names = constants.get("currency_display_names", {})
+        currency_file_names = constants.get("currency_file_names", {})
+        
         # Add rows for each currency with known conversion rates
         for currency, rate in sorted(conversion_rates.items()):
-            notes = ""
-            if currency == "SigUSD":
-                notes = "Stablecoin pegged to USD"
-            elif currency == "BENE":
-                notes = "No market value"
-            elif currency == "gGOLD":
-                notes = "Price per gram of gold"
+            # Get notes from constants
+            notes = currency_notes.get(currency, "")
             
-            # Format the currency name for display
-            display_currency = currency
-            if currency == "gGOLD":
-                display_currency = "g GOLD"
+            # Format the currency name for display using constants
+            display_currency = currency_display_names.get(currency, currency)
             
-            # Add link to currency page if it exists
-            # Format the currency name for the file link
-            file_currency = display_currency
-            if display_currency == "g GOLD":
-                file_currency = "gold"
+            # Format the currency name for the file link using constants
+            if display_currency in currency_file_names:
+                file_currency = currency_file_names[display_currency]
+            else:
+                file_currency = display_currency.lower()
             
             currency_link = f"[{display_currency}](by_currency/{file_currency.lower()}.md)"
             
-            # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+            # Get list of currencies that don't need rate inversion
+            no_rate_inversion = constants.get("no_rate_inversion", ["gGOLD"])
+            
+            # Invert the rate to show ERG per token (except for currencies in no_rate_inversion)
             display_rate = rate
-            if currency != "gGOLD":
+            if currency not in no_rate_inversion:
                 display_rate = 1.0 / rate if rate > 0 else 0.0
             
             f.write(f"| {currency_link} | {display_rate:.6f} | {notes} |\n")
