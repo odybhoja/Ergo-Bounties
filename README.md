@@ -3,14 +3,14 @@
   <p><strong>Your Central Hub for Tracking, Claiming, and Managing Bounties on the Ergo Blockchain</strong></p>
 
   <p>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-100%2B-brightgreen" alt="Open Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-103%2B-brightgreen" alt="Open Bounties"></a>
     <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/📖%20Claim%20Guide-blue" alt="Claim Bounty Guide"></a>
     <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-blue" alt="Add Missing Bounty"></a>
     <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/🤝%20Contribute-orange" alt="Contributions Welcome"></a>
   </p>
 
   <p>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-10%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-0%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🚀%20Beginner%20Friendly-15%2B%20Bounties-success" alt="Beginner Friendly"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
   </p>
@@ -63,8 +63,7 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 | Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **3,000 ERG**   |
 | [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | 7           | **775 SigUSD**  |
 | Mar 13, 2025                | 103         | **45,905.51 ERG**|
-| **Total**                   | **111**     | **48,905.51 ERG**|
-</div>
+| **Total**                   | **111**     | **48,905.51 ERG**|</div>
 
 ---
 
