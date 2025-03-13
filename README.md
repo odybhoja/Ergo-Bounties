@@ -4,7 +4,7 @@
 
   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-104%2B-brightgreen" alt="Open Bounties"></a>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-49,650.12%20ERG-success" alt="Total Value"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-49,645.38%20ERG-success" alt="Total Value"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
    </p>
    
@@ -31,3 +31,5 @@
     <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-red"></a>
   </p>
 </div>
+
+
