@@ -1,4 +1,4 @@
-# ⚙️ How Ergo Ecosystem Bounties Works
+# 🤖 Automated Bounty Tracking System
 
 This document explains the technical details of how the Ergo Ecosystem Bounties repository automatically tracks and updates bounties across the Ergo blockchain ecosystem.
 
