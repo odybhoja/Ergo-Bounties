@@ -128,33 +128,39 @@ def generate_main_file(
         f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Claim|\n")
         f.write("|---|---|---|---|---|---|\n")
         
-        # Group bounties by owner
-        owners = {}
+        # Calculate ERG equivalent for each bounty for sorting
         for bounty in bounty_data:
-            owner = bounty["owner"]
-            if owner not in owners:
-                owners[owner] = []
-            owners[owner].append(bounty)
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            try:
+                # Calculate ERG value for sorting
+                erg_value = calculate_erg_value(amount, currency, conversion_rates)
+                bounty["erg_value"] = erg_value
+            except (ValueError, TypeError):
+                bounty["erg_value"] = 0.0
         
-        # Add rows for each bounty, grouped by owner
-        for owner, owner_bounties in owners.items():
-            for bounty in owner_bounties:
-                title = bounty["title"]
-                url = bounty["url"]
-                amount = bounty["amount"]
-                currency = bounty["currency"]
-                
-                # Try to convert to ERG equivalent
-                erg_equiv = convert_to_erg(amount, currency, conversion_rates)
-                
-                # Create a claim link that opens a PR template
-                issue_number = bounty["issue_number"]
-                creator = bounty["creator"]
-                repo_name = bounty["repo"]
-                
-                claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
-                
-                f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {amount} {currency} | [Claim]({claim_url}) |\n")
+        # Sort all bounties by ERG value (highest first)
+        sorted_bounties = sorted(bounty_data, key=lambda x: x.get("erg_value", 0.0), reverse=True)
+        
+        # Add rows for each bounty
+        for bounty in sorted_bounties:
+            owner = bounty["owner"]
+            title = bounty["title"]
+            url = bounty["url"]
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            
+            # Try to convert to ERG equivalent
+            erg_equiv = convert_to_erg(amount, currency, conversion_rates)
+            
+            # Create a claim link that opens a PR template
+            issue_number = bounty["issue_number"]
+            creator = bounty["creator"]
+            repo_name = bounty["repo"]
+            
+            claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
+            
+            f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {amount} {currency} | [Claim]({claim_url}) |\n")
     
     logger.info("Generated main bounty file")
 

@@ -65,6 +65,8 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 | Mar 13, 2025                | 103         | **46,597.98 ERG**|
 | **Total**                   | **111**     | **49,597.98 ERG**|
 
+---
+
 ## 🚩 How It Works
 
 | Action              | Process                                                             |
@@ -72,11 +74,12 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 | **Reserving** 🔒    | Submit PR with JSON marked `in-progress` before starting            |
 | **Submitting** 🚀   | Submit PR with completed work details, set to `awaiting-review`     |
 
-- **First-come, first-served!**
+**First-come, first-served!**
 
 <div align="center">
   <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/📝%20How%20to%20Claim%20-→-blue?style=for-the-badge"></a>
 </div>
+
 
 ---
 
@@ -88,19 +91,21 @@ Know a bounty that's missing? Submit a PR to include it!
   <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/📢%20Add%20Bounty%20Guide-→-blue?style=for-the-badge"></a>
 </div>
 
+
 ---
 
 ## 🤖 Automation & Tracking
 
 This repository uses GitHub Actions to provide daily automated updates at Midnight UTC:
 
-- 📅 Daily updates
-- 🔍 Tracks 25+ repositories
-- 💬 Automatically generates bounty details
+📅 Daily updates
+🔍 Tracks 25+ repositories
+💬 Automatically generates bounty details
 
 <div align="center">
   <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20Learn%20How%20It%20Works-→-blue?style=for-the-badge"></a>
 </div>
+
 
 ---
 
