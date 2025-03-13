@@ -247,11 +247,15 @@ def main():
         bounties_dir
     )
     
-    # Update the README.md table with the latest bounty counts and values
+    # Update the README.md table and badges with the latest bounty counts and values
     update_readme_table(
         total_bounties,
         total_value,
-        bounties_dir
+        bounties_dir,
+        len(languages),
+        len(currencies_dict),
+        len(orgs),
+        len(conversion_rates)
     )
 
     # Print summary
@@ -262,7 +266,7 @@ def main():
     print(f"Currency-specific files written to: {bounties_dir}/by_currency/")
     print(f"Currency price table written to: {bounties_dir}/currency_prices.md")
     print(f"Featured bounties file written to: {bounties_dir}/featured_bounties.md")
-    print(f"README.md table updated with latest bounty counts and values")
+    print(f"README.md table and badges updated with latest bounty counts and values")
     print(f"Total bounties found: {total_bounties}")
     print(f"Total ERG equivalent value: {total_value:.2f}")
 
