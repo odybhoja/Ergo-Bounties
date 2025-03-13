@@ -491,7 +491,7 @@ def generate_summary_file(project_totals, languages, currencies_dict, orgs, conv
         
         f.write(f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n")
 
-def generate_featured_bounties_file(bounty_data, conversion_rates, total_bounties, languages, currencies_dict, orgs, bounties_dir):
+def generate_featured_bounties_file(bounty_data, conversion_rates, total_bounties, total_value, languages, currencies_dict, orgs, bounties_dir):
     """
     Generate a featured bounties markdown file.
     
@@ -499,6 +499,7 @@ def generate_featured_bounties_file(bounty_data, conversion_rates, total_bountie
         bounty_data (list): List of bounty data
         conversion_rates (dict): Dictionary of conversion rates
         total_bounties (int): Total number of bounties
+        total_value (float): Total value of bounties
         languages (dict): Dictionary of languages and their bounties
         currencies_dict (dict): Dictionary of currencies and their bounties
         orgs (dict): Dictionary of organizations and their bounties

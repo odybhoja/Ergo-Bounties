@@ -239,6 +239,7 @@ def main():
         bounty_data, 
         conversion_rates, 
         total_bounties, 
+        total_value,
         languages, 
         currencies_dict, 
         orgs, 
