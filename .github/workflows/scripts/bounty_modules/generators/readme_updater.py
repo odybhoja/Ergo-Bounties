@@ -144,22 +144,26 @@ def update_readme_table(
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
    </p>
    
+   <p><strong>Browse Bounties by Language</strong></p>
+   
    <p>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
-    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
-    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/❤️%20Donate-ff69b4"></a>
-  </p>
-
-  <p>
 {language_badges.rstrip()}
     <a href="/bounties/by_language/"><img src="https://img.shields.io/badge/🌐%20All%20Languages-purple"></a>
   </p>
+
+  <p><strong>Contributing</strong></p>
 
   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse-blue"></a> | 
     <a href="/docs/claim-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-green"></a> | 
     <a href="/docs/claim-guide.md#step-by-step-submission-process"><img src="https://img.shields.io/badge/🚩%20Submit-orange"></a> | 
     <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-red"></a>
+  </p>
+  
+  <p>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/❤️%20Donate-ff69b4"></a>
   </p>
 </div>
 

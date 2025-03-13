@@ -1,4 +1,4 @@
-# Claiming Ergo Bounties: Guide
+# Claiming Ergo Bounties: Submission Guide
 
 This guide provides detailed instructions for claiming bounties by submitting your completed work to the Ergo ecosystem. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
 
@@ -22,7 +22,15 @@ Reserving a bounty helps:
 - Give you a reasonable timeframe to complete the work
 - Establish a first-come, first-served system for popular bounties
 
-### How to Reserve a Bounty
+### Quick Method (Using the UI)
+
+1. Navigate to the bounty you want to work on in the [bounties list](/bounties/all.md)
+2. Click the "Claim" button next to the bounty
+3. This will open a new GitHub issue in the repository with a pre-filled template
+4. Fill in any additional information requested in the template
+5. Submit the issue to reserve the bounty
+
+### Manual Method (Using JSON)
 
 1. **First, check if the bounty is already reserved**:
    - Review [open pull requests](https://github.com/ErgoDevs/Ergo-Bounties/pulls) to see if anyone is already working on your target bounty
@@ -51,15 +59,6 @@ Reserving a bounty helps:
    - The open PR serves as your reservation
    - You can update the PR description or JSON file with progress updates if you wish
 
-5. **When you complete the work**:
-   - Update your existing PR with:
-     - New title: `[READY] Bounty repo#issue - Brief description`
-     - Updated JSON file:
-       - Fill in the `work_link` with your implementation PR
-       - Change `status` to `awaiting-review`
-       - Add today's date as `submission_date`
-       - Update the `description` with details of your completed work
-
 ### Reservation Duration
 
 - The community expects reservations to be completed within a reasonable timeframe
@@ -69,14 +68,26 @@ Reserving a bounty helps:
 
 ## Step-by-Step Submission Process
 
-### 1. Fork & Clone the Repository
+### Quick Method (Using the UI)
+
+Once you've completed the work for a bounty, follow these steps to submit your solution:
+
+1. Ensure your work meets all the requirements specified in the bounty
+2. Create a pull request (PR) to the repository with your solution
+3. In your PR description, reference the original bounty issue number
+4. If you previously reserved the bounty, also reference your reservation issue
+5. Wait for the project maintainers to review your submission
+
+### Manual Method (Using JSON)
+
+#### 1. Fork & Clone the Repository
 
 ```bash
 git clone https://github.com/ErgoDevs/Ergo-Bounties.git
 cd Ergo-Bounties
 ```
 
-### 2. Create a JSON Submission File
+#### 2. Create a JSON Submission File
 
 Create a new JSON file in the `submissions/` directory with the naming convention:
 
@@ -89,7 +100,7 @@ For example:
 user123-ergoscript-fsmtest.json
 ```
 
-### 3. Fill Out the JSON File
+#### 3. Fill Out the JSON File
 
 Copy the template from `templates/submission-template.json` and fill in your details:
 
@@ -114,7 +125,7 @@ Copy the template from `templates/submission-template.json` and fill in your det
 }
 ```
 
-#### Required Fields
+##### Required Fields
 
 - **contributor**: Your GitHub username
 - **wallet_address**: The address where payment should be sent
@@ -125,20 +136,20 @@ Copy the template from `templates/submission-template.json` and fill in your det
 - **status**: Set this to `awaiting-review`
 - **submission_date**: Date of submission (YYYY-MM-DD)
 
-#### Recommended Fields
+##### Recommended Fields
 
 - **bounty_id**: The GitHub issue number in `{repo}#{issue_number}` format (if applicable)
 - **contact_method**: A way for reviewers to reach out if they have questions
 - **original_issue_link**: The full URL to the original issue or bounty
 - **description**: A brief summary of the work completed
 
-#### Fields for Reviewers (Leave Empty)
+##### Fields for Reviewers (Leave Empty)
 
 - **review_notes**: Will be filled by reviewers
 - **payment_tx_id**: Will be filled after payment
 - **payment_date**: Will be filled after payment
 
-### 4. Commit & Push Changes
+#### 4. Commit & Push Changes
 
 ```bash
 git add submissions/user123-ergoscript-fsmtest.json
@@ -146,7 +157,7 @@ git commit -m "Submission for ErgoScript FSM Test Implementation"
 git push origin main
 ```
 
-### 5. Open a Pull Request
+#### 5. Open a Pull Request
 
 1. Go to GitHub and open a pull request with a descriptive title
 2. Provide a brief summary in the PR description
@@ -172,6 +183,14 @@ git push origin main
    - `payment_date`: The date of payment
 3. These updates will be committed to the repository
 
+## Tips for Successful Submissions
+
+- Read the bounty description carefully to understand all requirements
+- Ask questions in the bounty issue if anything is unclear
+- Provide thorough documentation with your submission
+- Include tests where appropriate
+- Be responsive to feedback and requests for changes
+
 ## Troubleshooting
 
 If you encounter issues with your submission:
@@ -180,9 +199,11 @@ If you encounter issues with your submission:
 2. Make any requested changes to your submission
 3. If your PR is closed without merging, you may need to create a new PR with corrections
 
-## Questions or Support
+## Need Help?
 
-If you have questions about the bounty submission process, please:
+If you have any questions about the bounty claiming or submission process, you can:
 
-1. Open an issue in the Ergo-Bounties repository
-2. Reach out on the Ergo Discord server
+- Ask in the original bounty issue
+- Open an issue in the Ergo-Bounties repository
+- Join the [Ergo Discord](https://discord.gg/ergo) and ask in the appropriate channel
+- Contact the bounty creator directly through GitHub

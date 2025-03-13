@@ -56,6 +56,35 @@ def generate_main_file(
         ))
         f.write("\n\n")
         
+        # Add language and currency sections
+        f.write("### Programming Languages\n\n")
+        lang_links = []
+        for lang, lang_bounties in languages.items():
+            lang_links.append(f"[{lang} ({len(lang_bounties)})](by_language/{lang.lower()}.md)")
+        f.write(" • ".join(lang_links))
+        f.write("\n\n")
+        
+        f.write("### Currencies\n\n")
+        currency_links = []
+        for currency, currency_bounties in currencies_dict.items():
+            # Format the currency name for the file link
+            if currency == "Not specified":
+                currency_file_name = "not_specified"
+            elif currency == "g GOLD":
+                currency_file_name = "gold"
+            else:
+                currency_file_name = currency.lower()
+            currency_links.append(f"[{currency} ({len(currency_bounties)})](by_currency/{currency_file_name}.md)")
+        f.write(" • ".join(currency_links))
+        f.write("\n\n")
+        
+        f.write("### Organizations\n\n")
+        org_links = []
+        for org, org_bounties in orgs.items():
+            org_links.append(f"[{org} ({len(org_bounties)})](by_org/{org.lower()}.md)")
+        f.write(" • ".join(org_links))
+        f.write("\n\n")
+        
         
         # Write all bounties table
         f.write("## All Bounties\n\n")

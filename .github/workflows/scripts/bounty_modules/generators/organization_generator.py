@@ -14,10 +14,11 @@ logger = logging.getLogger('organization_generator')
 
 def generate_organization_files(
     bounty_data: List[Dict[str, Any]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
+    orgs: Dict[str, List[Dict[str, Any]]],
+    languages: Dict[str, List[Dict[str, Any]]],
+    currencies_dict: Dict[str, List[Dict[str, Any]]],
     conversion_rates: Dict[str, float], 
     total_bounties: int, 
-    languages: Dict[str, List[Dict[str, Any]]], 
     currencies_count: int, 
     bounties_dir: str
 ) -> None:
@@ -60,6 +61,35 @@ def generate_organization_files(
                 len(conversion_rates), 
                 "../"
             ))
+            f.write("\n\n")
+            
+            # Add language and currency sections
+            f.write("### Programming Languages\n\n")
+            lang_links = []
+            for lang_name, lang_bounties_list in languages.items():
+                lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](../by_language/{lang_name.lower()}.md)")
+            f.write(" • ".join(lang_links))
+            f.write("\n\n")
+            
+            f.write("### Currencies\n\n")
+            currency_links = []
+            for currency_name, currency_bounties_list in currencies_dict.items():
+                # Format the currency name for the file link
+                if currency_name == "Not specified":
+                    currency_file_name = "not_specified"
+                elif currency_name == "g GOLD":
+                    currency_file_name = "gold"
+                else:
+                    currency_file_name = currency_name.lower()
+                currency_links.append(f"[{currency_name} ({len(currency_bounties_list)})](../by_currency/{currency_file_name}.md)")
+            f.write(" • ".join(currency_links))
+            f.write("\n\n")
+            
+            f.write("### Organizations\n\n")
+            org_links = []
+            for org_name, org_bounties_list in orgs.items():
+                org_links.append(f"[{org_name} ({len(org_bounties_list)})](../by_org/{org_name.lower()}.md)")
+            f.write(" • ".join(org_links))
             f.write("\n\n")
             
             f.write("|Title & Link|Bounty Amount|Paid in|Primary Language|Secondary Language|Claim|\n")
