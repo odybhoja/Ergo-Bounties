@@ -14,6 +14,25 @@
     </a>
   </p>
 
+  <h2>🚀 Get Started</h2>
+  
+  <p><em>Find, claim, and contribute to Ergo ecosystem bounties across 18+ indexed repositories</em></p>
+
+  <p>
+    <a href="/bounties/all.md">
+      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
+    </a>
+    <a href="/docs/claim-guide.md#reserving-a-bounty">
+      <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Claim a Bounty">
+    </a>
+    <a href="/docs/claim-guide.md#step-by-step-submission-process">
+      <img src="https://img.shields.io/badge/🚩%20Submit-orange" alt="Submit Work">
+    </a>
+    <a href="/docs/add-missing-bounty-guide.md">
+      <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
+    </a>
+  </p>
+
   <h2>📚 Explore Bounties by Language</h2>
 
   <p>
@@ -24,23 +43,6 @@
     <a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-6-3178C6"></a>
     <a href="/bounties/by_language/">
       <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
-    </a>
-  </p>
-
-  <h2>🚀 Get Started</h2>
-
-  <p>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
-    </a>
-    <a href="/docs/claim-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Reserve%20a%20Bounty-009688" alt="Reserve a Bounty">
-    </a>
-    <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/🚩%20Submit%20Work-FF5722" alt="Submit Work">
-    </a>
-    <a href="/docs/add-missing-bounty-guide.md">
-      <img src="https://img.shields.io/badge/➕%20Add%20a%20New%20Bounty-E91E63" alt="Add a New Bounty">
     </a>
   </p>
 
