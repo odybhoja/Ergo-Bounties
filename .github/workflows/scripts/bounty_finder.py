@@ -13,20 +13,20 @@ if not github_token:
     print("Error: GITHUB_TOKEN environment variable is required")
     sys.exit(1)
 
-# Read repositories from tracked_repos.json
+# Read repositories from bounties/tracked_repos.json
 try:
-    with open('tracked_repos.json', 'r') as f:
+    with open('bounties/tracked_repos.json', 'r') as f:
         repos_to_query = json.load(f)
 except Exception as e:
-    print(f"Error reading tracked_repos.json: {e}")
+    print(f"Error reading bounties/tracked_repos.json: {e}")
     sys.exit(1)
 
-# Read organizations from tracked_orgs.json
+# Read organizations from bounties/tracked_orgs.json
 try:
-    with open('tracked_orgs.json', 'r') as f:
+    with open('bounties/tracked_orgs.json', 'r') as f:
         orgs_to_query = json.load(f)
 except Exception as e:
-    print(f"Warning: Error reading tracked_orgs.json: {e}")
+    print(f"Warning: Error reading bounties/tracked_orgs.json: {e}")
     orgs_to_query = []
 
 # Function to get all repositories for an organization
@@ -191,6 +191,7 @@ def get_conversion_rates():
     default_rates = {
         "SigUSD": 1.5,
         "GORT": 0.01,
+        "RSN": 20.0,
         "gGOLD": 5.0
     }
     
@@ -204,35 +205,61 @@ def get_conversion_rates():
         
         # Print the first few markets to help debug
         print(f"API returned {len(markets)} markets")
-        if len(markets) > 0:
-            print(f"First market: {markets[0]}")
         
         # Initialize with default rates
         rates = default_rates.copy()
         
-        # Look for our target currencies in the markets data
-        for market in markets:
-            base_symbol = market.get("baseSymbol", "")
-            quote_symbol = market.get("quoteSymbol", "")
+        # Find ERG/SigUSD pairs (where baseSymbol is ERG and quoteSymbol is SigUSD)
+        sigusd_markets = [m for m in markets if m.get("quoteSymbol") == "SigUSD" and 
+                         m.get("baseSymbol") == "ERG"]
+        if sigusd_markets:
+            # Sort by volume if available, otherwise use the first market
+            if 'baseVolume' in sigusd_markets[0]:
+                sigusd_markets.sort(key=lambda m: float(m.get('baseVolume', {}).get('value', 0)), reverse=True)
+                print(f"Sorted SigUSD markets by volume, using the most liquid market")
             
-            # Debug output for symbols
-            if "SigUSD" in base_symbol or "GORT" in base_symbol or "GluonW" in base_symbol or "GAUC" in base_symbol:
-                print(f"Found potential match: {base_symbol} / {quote_symbol}")
-            
-            # Check for SigUSD (might be wrapped as WT_SigUSD)
-            if ("SigUSD" in base_symbol and "ERG" in quote_symbol) or (base_symbol == "SigUSD" and quote_symbol == "ERG"):
-                rates["SigUSD"] = float(market.get("lastPrice"))
-                print(f"Found SigUSD rate: {rates['SigUSD']}")
-            
-            # Check for GORT (might be wrapped)
-            elif ("GORT" in base_symbol and "ERG" in quote_symbol) or (base_symbol == "GORT" and quote_symbol == "ERG"):
-                rates["GORT"] = float(market.get("lastPrice"))
-                print(f"Found GORT rate: {rates['GORT']}")
-            
-            # Check for gGOLD (might be listed as GluonW GAUC or similar)
-            elif (("GluonW" in base_symbol or "GAUC" in base_symbol) and "ERG" in quote_symbol):
-                rates["gGOLD"] = float(market.get("lastPrice"))
-                print(f"Found gGOLD rate: {rates['gGOLD']}")
+            # Use the first (or most liquid) market
+            rates["SigUSD"] = float(sigusd_markets[0].get("lastPrice", default_rates["SigUSD"]))
+            print(f"Found SigUSD rate: {rates['SigUSD']} from market {sigusd_markets[0].get('baseSymbol')}/{sigusd_markets[0].get('quoteSymbol')}")
+        else:
+            print(f"No SigUSD markets found, using default: {default_rates['SigUSD']}")
+        
+        # Find ERG/GORT pairs
+        gort_markets = [m for m in markets if m.get("quoteSymbol") == "GORT" and 
+                       m.get("baseSymbol") == "ERG"]
+        if gort_markets:
+            # Use the first market's price
+            rates["GORT"] = float(gort_markets[0].get("lastPrice", default_rates["GORT"]))
+            print(f"Found GORT rate: {rates['GORT']}")
+        else:
+            print(f"No GORT markets found, using default: {default_rates['GORT']}")
+        
+        # Find ERG/RSN pairs
+        rsn_markets = [m for m in markets if m.get("quoteSymbol") == "RSN" and 
+                      m.get("baseSymbol") == "ERG"]
+        if rsn_markets:
+            # Use the first market's price
+            rates["RSN"] = float(rsn_markets[0].get("lastPrice", default_rates["RSN"]))
+            print(f"Found RSN rate: {rates['RSN']}")
+        else:
+            print(f"No RSN markets found, using default: {default_rates['RSN']}")
+        
+        # For gGOLD (listed as "GluonW GAU")
+        # This is kept for backward compatibility
+        gold_markets = [m for m in markets if m.get("quoteSymbol") == "GluonW GAU"]
+        if gold_markets:
+            rates["gGOLD"] = float(gold_markets[0].get("lastPrice", default_rates["gGOLD"]))
+            print(f"Found gGOLD rate: {rates['gGOLD']}")
+        else:
+            # Try alternative symbols
+            alt_gold_markets = [m for m in markets if 
+                               (m.get("quoteSymbol") in ["GAU", "GAUC"] or 
+                                "GluonW" in m.get("quoteSymbol", ""))]
+            if alt_gold_markets:
+                rates["gGOLD"] = float(alt_gold_markets[0].get("lastPrice", default_rates["gGOLD"]))
+                print(f"Found gGOLD rate (alternative): {rates['gGOLD']}")
+            else:
+                print(f"No gGOLD markets found, using default: {default_rates['gGOLD']}")
         
         print(f"Using conversion rates: {rates}")
         return rates
