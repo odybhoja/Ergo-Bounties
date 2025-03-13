@@ -80,6 +80,7 @@ def generate_language_files(
             lang_bounties.sort(key=lambda x: x.get("erg_value", 0.0), reverse=True)
             
             # Add rows for each bounty (excluding those with "Not specified" amounts)
+            has_written_row = False
             for bounty in lang_bounties:
                 owner = bounty["owner"]
                 title = bounty["title"]
@@ -89,7 +90,7 @@ def generate_language_files(
                 secondary_lang = bounty["secondary_lang"]
                 
                 # Skip bounties with "Not specified" amounts, but keep at least one row for the language
-                if amount == "Not specified" and len(f.tell()) > 0:
+                if amount == "Not specified" and has_written_row:
                     continue
                 
                 # Try to convert to ERG equivalent
@@ -110,5 +111,6 @@ def generate_language_files(
                     currency_file_name = "not_specified"
                 
                 f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency_file_name}.md) | {secondary_lang} | [Claim]({claim_url}) |\n")
+                has_written_row = True
     
     logger.info(f"Generated {len(languages)} language-specific files")
