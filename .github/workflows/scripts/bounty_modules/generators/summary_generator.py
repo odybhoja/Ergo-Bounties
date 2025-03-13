@@ -42,7 +42,7 @@ def generate_main_file(
     md_file = f'{bounties_dir}/all.md'
     with open(md_file, 'w', encoding='utf-8') as f:
         # Write header
-        f.write("# Open Bounties\n\n")
+        f.write("# All Open Bounties\n\n")
         f.write(f"*Report generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
         
         # Add navigation badges
@@ -56,50 +56,24 @@ def generate_main_file(
         ))
         f.write("\n\n")
         
-        # Write summary section
-        f.write("## Summary\n\n")
-        f.write("| Project | Count | ERG Equivalent |\n")
-        f.write("|---------|-------|---------------|\n")
+        # Add links to other pages
+        f.write("## Browse By Category\n\n")
         
-        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
-            if totals["count"] > 0:
-                # Add link to organization page
-                org_link = f"[{owner}](by_org/{owner.lower()}.md)"
-                f.write(f"| {org_link} | {totals['count']} | {totals['value']:.2f} |\n")
+        # Add language links
+        f.write("### Programming Languages\n\n")
+        language_links = []
+        for lang in sorted(languages.keys()):
+            count = len(languages[lang])
+            language_links.append(f"[{lang} ({count})](by_language/{lang.lower()}.md)")
+        f.write(" • ".join(language_links))
+        f.write("\n\n")
         
-        f.write(f"| **Overall Total** | **{total_bounties}** | **{total_value:.2f}** |\n\n")
-        
-        # Write language breakdown section
-        f.write("## Bounties by Programming Language\n\n")
-        f.write("| Language | Count | Percentage |\n")
-        f.write("|----------|-------|------------|\n")
-        
-        for lang, lang_bounties in sorted(languages.items(), key=lambda x: len(x[1]), reverse=True):
-            count = len(lang_bounties)
-            percentage = (count / total_bounties) * 100 if total_bounties > 0 else 0
-            f.write(f"| [{lang}](by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
-        
-        # Write currency breakdown section
-        f.write("\n## Bounties by Currency\n\n")
-        f.write("| Currency | Count | Total Value (ERG) |\n")
-        f.write("|----------|-------|------------------|\n")
-        
-        # Calculate totals by currency
-        currency_totals = {}
-        for bounty in bounty_data:
-            currency = bounty["currency"]
-            amount = bounty["amount"]
+        # Add currency links
+        f.write("### Currencies\n\n")
+        currency_links = []
+        for currency in sorted(currencies_dict.keys()):
+            count = len(currencies_dict[currency])
             
-            if currency not in currency_totals:
-                currency_totals[currency] = {"count": 0, "value": 0.0}
-            
-            currency_totals[currency]["count"] += 1
-            
-            # Try to convert to ERG equivalent for total
-            currency_totals[currency]["value"] += calculate_erg_value(amount, currency, conversion_rates)
-        
-        # Write currency rows
-        for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["value"], reverse=True):
             # Format the currency name for the file link
             if currency == "Not specified":
                 currency_file_name = "not_specified"
@@ -107,26 +81,24 @@ def generate_main_file(
                 currency_file_name = "gold"
             else:
                 currency_file_name = currency.lower()
-            
-            # Add link to currency page
-            currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
-            
-            f.write(f"| {currency_link} | {totals['count']} | {totals['value']:.2f} |\n")
+                
+            currency_links.append(f"[{currency} ({count})](by_currency/{currency_file_name}.md)")
+        f.write(" • ".join(currency_links))
+        f.write("\n\n")
         
-        # Write organization breakdown section
-        f.write("\n## Bounties by Organization\n\n")
-        f.write("| Organization | Count | Total Value (ERG) |\n")
-        f.write("|--------------|-------|------------------|\n")
+        # Add organization links
+        f.write("### Organizations\n\n")
+        org_links = []
+        for org in sorted(orgs.keys()):
+            count = len(orgs[org])
+            org_links.append(f"[{org} ({count})](by_org/{org.lower()}.md)")
+        f.write(" • ".join(org_links))
+        f.write("\n\n")
         
-        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
-            if totals["count"] > 0:
-                # Add link to organization page
-                org_link = f"[{owner}](by_org/{owner.lower()}.md)"
-                f.write(f"| {org_link} | {totals['count']} | {totals['value']:.2f} |\n")
-        
-        f.write("\n## Detailed Bounties\n\n")
-        f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Claim|\n")
-        f.write("|---|---|---|---|---|---|\n")
+        # Write all bounties table
+        f.write("## All Bounties\n\n")
+        f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Primary Language|Claim|\n")
+        f.write("|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
         for bounty in bounty_data:
@@ -149,6 +121,7 @@ def generate_main_file(
             url = bounty["url"]
             amount = bounty["amount"]
             currency = bounty["currency"]
+            primary_lang = bounty["primary_lang"]
             
             # Try to convert to ERG equivalent
             erg_equiv = convert_to_erg(amount, currency, conversion_rates)
@@ -160,7 +133,20 @@ def generate_main_file(
             
             claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
             
-            f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {amount} {currency} | [Claim]({claim_url}) |\n")
+            # Format the currency name for the file link
+            if currency == "Not specified":
+                currency_file_name = "not_specified"
+            elif currency == "g GOLD":
+                currency_file_name = "gold"
+            else:
+                currency_file_name = currency.lower()
+            
+            # Add links to organization, language, and currency pages
+            org_link = f"[{owner}](by_org/{owner.lower()}.md)"
+            currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
+            primary_lang_link = f"[{primary_lang}](by_language/{primary_lang.lower()}.md)"
+            
+            f.write(f"| {org_link} | [{title}]({url}) | {erg_equiv} | {currency_link} | {amount} {currency} | {primary_lang_link} | [Claim]({claim_url}) |\n")
     
     logger.info("Generated main bounty file")
 

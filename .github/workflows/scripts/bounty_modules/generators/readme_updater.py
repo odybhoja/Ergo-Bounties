@@ -140,6 +140,8 @@ def update_readme_table(
 
   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-brightgreen" alt="Open Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-success" alt="Total Value"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/💎%20Donate-ff69b4"></a>
@@ -150,18 +152,11 @@ def update_readme_table(
     <a href="/bounties/by_language/"><img src="https://img.shields.io/badge/🌐%20All%20Languages-purple"></a>
   </p>
 
-  <h2>🚀 Quick Actions</h2>
   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse-blue"></a> | 
     <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🔒%20Reserve-green"></a> | 
     <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🚩%20Submit-orange"></a> | 
     <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-yellow"></a>
-  </p>
-  
-  <p>
-    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/📖%20Claim%20Guide-blue" alt="Claim Guide"></a>
-    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-blue" alt="Add Bounty"></a>
-    <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/🤝%20Contribute-orange" alt="Contribute"></a>
   </p>
 </div>
 
