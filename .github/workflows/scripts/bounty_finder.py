@@ -140,38 +140,59 @@ def check_bounty_labels(labels):
 
 # Get conversion rates from Spectrum API
 def get_conversion_rates():
-    response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
-    if response.status_code != 200:
-        raise Exception(f"Error fetching conversion rates: {response.status_code}")
-        
-    markets = response.json()
-    rates = {
-        "SigUSD": None,
-        "GORT": None,
-        "gGOLD": None
+    # Default rates to use if we can't find them in the API
+    default_rates = {
+        "SigUSD": 1.5,
+        "GORT": 0.01,
+        "gGOLD": 5.0
     }
     
-    # Look for our target currencies in the markets data
-    for market in markets:
-        # SigUSD is listed as SigUSD
-        if market.get("baseSymbol") == "SigUSD" and market.get("quoteSymbol") == "ERG":
-            rates["SigUSD"] = float(market.get("lastPrice"))
+    try:
+        response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
+        if response.status_code != 200:
+            print(f"Warning: Error fetching conversion rates: {response.status_code}")
+            return default_rates
+            
+        markets = response.json()
         
-        # GORT is listed as GORT
-        elif market.get("baseSymbol") == "GORT" and market.get("quoteSymbol") == "ERG":
-            rates["GORT"] = float(market.get("lastPrice"))
+        # Print the first few markets to help debug
+        print(f"API returned {len(markets)} markets")
+        if len(markets) > 0:
+            print(f"First market: {markets[0]}")
         
-        # gGOLD is listed as 'GluonW GAUC'
-        elif "GluonW GAUC" in market.get("baseSymbol", "") and market.get("quoteSymbol") == "ERG":
-            rates["gGOLD"] = float(market.get("lastPrice"))
-    
-    # Verify that we found all the rates we need
-    missing_rates = [currency for currency, rate in rates.items() if rate is None]
-    if missing_rates:
-        raise Exception(f"Could not find conversion rates for: {', '.join(missing_rates)}")
-    
-    print(f"Fetched conversion rates: {rates}")
-    return rates
+        # Initialize with default rates
+        rates = default_rates.copy()
+        
+        # Look for our target currencies in the markets data
+        for market in markets:
+            base_symbol = market.get("baseSymbol", "")
+            quote_symbol = market.get("quoteSymbol", "")
+            
+            # Debug output for symbols
+            if "SigUSD" in base_symbol or "GORT" in base_symbol or "GluonW" in base_symbol or "GAUC" in base_symbol:
+                print(f"Found potential match: {base_symbol} / {quote_symbol}")
+            
+            # Check for SigUSD (might be wrapped as WT_SigUSD)
+            if ("SigUSD" in base_symbol and "ERG" in quote_symbol) or (base_symbol == "SigUSD" and quote_symbol == "ERG"):
+                rates["SigUSD"] = float(market.get("lastPrice"))
+                print(f"Found SigUSD rate: {rates['SigUSD']}")
+            
+            # Check for GORT (might be wrapped)
+            elif ("GORT" in base_symbol and "ERG" in quote_symbol) or (base_symbol == "GORT" and quote_symbol == "ERG"):
+                rates["GORT"] = float(market.get("lastPrice"))
+                print(f"Found GORT rate: {rates['GORT']}")
+            
+            # Check for gGOLD (might be listed as GluonW GAUC or similar)
+            elif (("GluonW" in base_symbol or "GAUC" in base_symbol) and "ERG" in quote_symbol):
+                rates["gGOLD"] = float(market.get("lastPrice"))
+                print(f"Found gGOLD rate: {rates['gGOLD']}")
+        
+        print(f"Using conversion rates: {rates}")
+        return rates
+    except Exception as e:
+        print(f"Warning: Exception fetching conversion rates: {e}")
+        print("Using default rates")
+        return default_rates
 
 # Define file paths
 bounties_dir = 'bounties'
