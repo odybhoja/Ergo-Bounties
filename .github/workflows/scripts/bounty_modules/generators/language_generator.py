@@ -15,8 +15,6 @@ logger = logging.getLogger('language_generator')
 def generate_language_files(
     bounty_data: List[Dict[str, Any]], 
     languages: Dict[str, List[Dict[str, Any]]],
-    currencies_dict: Dict[str, List[Dict[str, Any]]],
-    orgs: Dict[str, List[Dict[str, Any]]],
     conversion_rates: Dict[str, float], 
     total_bounties: int, 
     currencies_count: int, 
@@ -36,6 +34,12 @@ def generate_language_files(
         bounties_dir: Bounties directory
     """
     logger.info(f"Generating language-specific files for {len(languages)} languages")
+    
+    # Get currencies_dict and orgs from the processor
+    from ..processor import BountyProcessor
+    processor = BountyProcessor.get_instance()
+    currencies_dict = processor.group_by_currency()
+    orgs = processor.group_by_organization()
     
     # Create a directory for language-specific files if it doesn't exist
     lang_dir = f'{bounties_dir}/by_language'

@@ -15,7 +15,24 @@ class BountyProcessor:
     Handles fetching and processing bounty information from GitHub.
     """
     
+    # Class variable to store the singleton instance
+    _instance = None
+    
+    @classmethod
+    def get_instance(cls) -> 'BountyProcessor':
+        """
+        Get the singleton instance of the BountyProcessor.
+        
+        Returns:
+            The BountyProcessor instance
+        """
+        if cls._instance is None:
+            raise RuntimeError("BountyProcessor instance not initialized. Call the constructor first.")
+        return cls._instance
+    
     def __init__(self, github_token: str, conversion_rates: Dict[str, float]):
+        # Set the singleton instance
+        BountyProcessor._instance = self
         """
         Initialize the bounty processor.
         

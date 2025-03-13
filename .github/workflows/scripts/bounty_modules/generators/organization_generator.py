@@ -14,11 +14,10 @@ logger = logging.getLogger('organization_generator')
 
 def generate_organization_files(
     bounty_data: List[Dict[str, Any]], 
-    orgs: Dict[str, List[Dict[str, Any]]],
-    languages: Dict[str, List[Dict[str, Any]]],
-    currencies_dict: Dict[str, List[Dict[str, Any]]],
+    orgs: Dict[str, List[Dict[str, Any]]], 
     conversion_rates: Dict[str, float], 
     total_bounties: int, 
+    languages: Dict[str, List[Dict[str, Any]]], 
     currencies_count: int, 
     bounties_dir: str
 ) -> None:
@@ -35,6 +34,11 @@ def generate_organization_files(
         bounties_dir: Bounties directory
     """
     logger.info(f"Generating organization-specific files for {len(orgs)} organizations")
+    
+    # Get currencies_dict from the processor
+    from ..processor import BountyProcessor
+    processor = BountyProcessor.get_instance()
+    currencies_dict = processor.group_by_currency()
     
     # Create a directory for organization-specific files if it doesn't exist
     org_dir = f'{bounties_dir}/by_org'

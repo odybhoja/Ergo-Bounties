@@ -37,10 +37,10 @@ def load_constants() -> Dict[str, Any]:
 def generate_currency_files(
     bounty_data: List[Dict[str, Any]], 
     currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
     conversion_rates: Dict[str, float], 
     total_bounties: int, 
+    languages: Dict[str, List[Dict[str, Any]]], 
+    orgs: Dict[str, List[Dict[str, Any]]], 
     bounties_dir: str
 ) -> None:
     """
