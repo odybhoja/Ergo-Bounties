@@ -1,6 +1,6 @@
 # Open Bounties
 
-*Report generated: 2025-03-13 17:04:38 UTC*
+*Report generated: 2025-03-13 17:14:01 UTC*
 
 ## Navigation
 
@@ -35,7 +35,7 @@
 | [SigUSD](by_currency/sigusd.md) | 54 | 41099.00 |
 | [ERG](by_currency/erg.md) | 25 | 4500.00 |
 | [GORT](by_currency/gort.md) | 7 | 193.38 |
-| [g GOLD](by_currency/g gold.md) | 6 | 0.00 |
+| [g GOLD](by_currency/gold.md) | 6 | 0.00 |
 | [RSN](by_currency/rsn.md) | 6 | 113.13 |
 | [Not specified](by_currency/not_specified.md) | 3 | 0.00 |
 | [BENE](by_currency/bene.md) | 2 | 0.00 |

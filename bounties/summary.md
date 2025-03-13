@@ -24,7 +24,7 @@
 | [SigUSD](/bounties/by_currency/sigusd.md) | 54 | 41099.00 |
 | [ERG](/bounties/by_currency/erg.md) | 25 | 4500.00 |
 | [GORT](/bounties/by_currency/gort.md) | 7 | 193.38 |
-| [g GOLD](/bounties/by_currency/g gold.md) | 6 | 0.00 |
+| [g GOLD](/bounties/by_currency/gold.md) | 6 | 0.00 |
 | [RSN](/bounties/by_currency/rsn.md) | 6 | 113.13 |
 
 [View all currencies →](/bounties/all.md#bounties-by-currency)
