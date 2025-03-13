@@ -10,8 +10,8 @@
   </p>
 
   <p>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-0%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🚀%20Beginner%20Friendly-15%2B%20Bounties-success" alt="Beginner Friendly"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/🚀%20Beginner%20Friendly-0%2B%20Bounties-success" alt="Beginner Friendly"></a>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
   </p>
 </div>
@@ -38,12 +38,12 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 ### 🛠️ Filter by Programming Language
 
 <div align="center">
-  <a href="/bounties/by_language/scala.md"><img src="https://img.shields.io/badge/Scala-42%20Bounties-DC322F" alt="Scala"></a>
-  <a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-28%20Bounties-B7410E" alt="Rust"></a>
+  <a href="/bounties/by_language/scala.md"><img src="https://img.shields.io/badge/Scala-70%20Bounties-DC322F" alt="Scala"></a>
+  <a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-23%20Bounties-B7410E" alt="Rust"></a>
   <a href="/bounties/by_language/javascript.md"><img src="https://img.shields.io/badge/JavaScript-15%20Bounties-F7DF1E" alt="JavaScript"></a>
-  <a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-8%20Bounties-3178C6" alt="TypeScript"></a>
+  <a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-6%20Bounties-3178C6" alt="TypeScript"></a>
   <a href="/bounties/by_language/python.md"><img src="https://img.shields.io/badge/Python-5%20Bounties-3776AB" alt="Python"></a>
-  <a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-2%20Bounties-007396" alt="Java"></a>
+  <a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-1%20Bounties-007396" alt="Java"></a>
 
   <div style="margin-top:15px;">
     <a href="/bounties/by_language/"><img src="https://img.shields.io/badge/🌐%20All%20Languages-purple?style=for-the-badge"></a>
@@ -62,9 +62,8 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 |-----------------------------|-------------|-----------------|
 | Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **3,000 ERG**   |
 | [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | 7           | **775 SigUSD**  |
-| Mar 13, 2025                | 103         | **46,597.98 ERG**|
-| **Total**                   | **111**     | **49,597.98 ERG**|
-
+| Mar 13, 2025                | 103         | **46,600.12 ERG**|
+| **Total**                   | **111**     | **49,600.12 ERG**|
 ---
 
 ## 🚩 How It Works
