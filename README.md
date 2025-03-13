@@ -63,8 +63,7 @@ Ergo Ecosystem Bounties reward developers contributing to the Ergo blockchain. W
 | Keystone Wallet Integration | [Last Update](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | **3,000 ERG**   |
 | [Fleet SDK Tutorials](https://github.com/fleet-sdk/docs/issues/8) | 7           | **775 SigUSD**  |
 | Mar 13, 2025                | 103         | **46,032.73 ERG**|
-| **Total**                   | **111**     | **49,032.73 ERG**|---
-
+| **Total**                   | **111**     | **49,032.73 ERG**|
 ## 🚩 How It Works
 
 | Action              | Process                                                             |
