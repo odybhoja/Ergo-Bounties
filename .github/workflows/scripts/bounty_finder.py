@@ -4,6 +4,8 @@ import re
 import json
 import os
 import sys
+import subprocess
+from decimal import Decimal
 
 # Get GitHub token from environment variable
 github_token = os.environ.get("GITHUB_TOKEN")
@@ -136,6 +138,41 @@ def get_issues(owner, repo, state='open'):
 def check_bounty_labels(labels):
     return any("bounty" in label['name'].lower() or "b-" in label['name'].lower() for label in labels)
 
+# Get conversion rates from Spectrum API
+def get_conversion_rates():
+    response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
+    if response.status_code != 200:
+        raise Exception(f"Error fetching conversion rates: {response.status_code}")
+        
+    markets = response.json()
+    rates = {
+        "SigUSD": None,
+        "GORT": None,
+        "gGOLD": None
+    }
+    
+    # Look for our target currencies in the markets data
+    for market in markets:
+        # SigUSD is listed as SigUSD
+        if market.get("baseSymbol") == "SigUSD" and market.get("quoteSymbol") == "ERG":
+            rates["SigUSD"] = float(market.get("lastPrice"))
+        
+        # GORT is listed as GORT
+        elif market.get("baseSymbol") == "GORT" and market.get("quoteSymbol") == "ERG":
+            rates["GORT"] = float(market.get("lastPrice"))
+        
+        # gGOLD is listed as 'GluonW GAUC'
+        elif "GluonW GAUC" in market.get("baseSymbol", "") and market.get("quoteSymbol") == "ERG":
+            rates["gGOLD"] = float(market.get("lastPrice"))
+    
+    # Verify that we found all the rates we need
+    missing_rates = [currency for currency, rate in rates.items() if rate is None]
+    if missing_rates:
+        raise Exception(f"Could not find conversion rates for: {', '.join(missing_rates)}")
+    
+    print(f"Fetched conversion rates: {rates}")
+    return rates
+
 # Define file paths
 bounties_dir = 'bounties'
 md_file = f'{bounties_dir}/all.md'
@@ -146,6 +183,9 @@ os.makedirs(bounties_dir, exist_ok=True)
 # Initialize data structure to store bounty information
 bounty_data = []
 project_totals = {}
+
+# Fetch conversion rates
+conversion_rates = get_conversion_rates()
 
 # Process each repository
 for repo in repos_to_query:
@@ -208,11 +248,15 @@ for repo in repos_to_query:
                 
                 # Try to convert amount to float for totals
                 try:
-                    if amount != "Not specified" and currency == "ERG":
-                        project_totals[owner]["value"] += float(amount)
-                    elif amount != "Not specified" and currency == "SigUSD":
-                        # Approximate conversion to ERG (this would need to be updated with real rates)
-                        project_totals[owner]["value"] += float(amount) * 1.5
+                    if amount != "Not specified":
+                        if currency == "ERG":
+                            project_totals[owner]["value"] += float(amount)
+                        elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                            project_totals[owner]["value"] += float(amount) * conversion_rates["SigUSD"]
+                        elif currency == "GORT" and "GORT" in conversion_rates:
+                            project_totals[owner]["value"] += float(amount) * conversion_rates["GORT"]
+                        elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                            project_totals[owner]["value"] += float(amount) * conversion_rates["gGOLD"]
                 except ValueError:
                     pass
 
@@ -235,10 +279,14 @@ for bounty in bounty_data:
     if amount != "Not specified":
         try:
             # Convert to ERG equivalent
-            if currency == "SigUSD":
-                value = float(amount) * 1.5
-            elif currency == "ERG":
+            if currency == "ERG":
                 value = float(amount)
+            elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                value = float(amount) * conversion_rates["SigUSD"]
+            elif currency == "GORT" and "GORT" in conversion_rates:
+                value = float(amount) * conversion_rates["GORT"]
+            elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                value = float(amount) * conversion_rates["gGOLD"]
             else:
                 # For other currencies, use the amount as is
                 value = float(amount)
@@ -291,16 +339,22 @@ for lang, lang_bounties in languages.items():
             currency = bounty["currency"]
             secondary_lang = bounty["secondary_lang"]
             
-            # Try to convert to ERG equivalent (simplified)
+            # Try to convert to ERG equivalent
             erg_equiv = amount
             if amount != "Not specified":
-                if currency == "SigUSD":
-                    try:
-                        erg_equiv = f"{float(amount) * 1.5:.2f}"
-                    except ValueError:
+                try:
+                    if currency == "ERG":
                         erg_equiv = amount
-                elif currency != "ERG":
-                    erg_equiv = amount  # For other currencies, just use the amount
+                    elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
+                    elif currency == "GORT" and "GORT" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
+                    else:
+                        erg_equiv = amount  # For other currencies, just use the amount
+                except ValueError:
+                    erg_equiv = amount
             
             f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} |\n")
 
@@ -353,16 +407,22 @@ with open(md_file, 'w', encoding='utf-8') as f:
             amount = bounty["amount"]
             currency = bounty["currency"]
             
-            # Try to convert to ERG equivalent (simplified)
+            # Try to convert to ERG equivalent
             erg_equiv = amount
             if amount != "Not specified":
-                if currency == "SigUSD":
-                    try:
-                        erg_equiv = f"{float(amount) * 1.5:.2f}"
-                    except ValueError:
+                try:
+                    if currency == "ERG":
                         erg_equiv = amount
-                elif currency != "ERG":
-                    erg_equiv = amount  # For other currencies, just use the amount
+                    elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
+                    elif currency == "GORT" and "GORT" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                        erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
+                    else:
+                        erg_equiv = amount  # For other currencies, just use the amount
+                except ValueError:
+                    erg_equiv = amount
             
             f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} |\n")
             owner_count += 1
