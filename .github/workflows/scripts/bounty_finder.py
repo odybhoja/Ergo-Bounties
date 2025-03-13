@@ -606,6 +606,62 @@ with open(summary_file, 'w', encoding='utf-8') as f:
     
     f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
 
+# Create a featured bounties table for the README
+featured_bounties_file = f'{bounties_dir}/featured_bounties.md'
+with open(featured_bounties_file, 'w', encoding='utf-8') as f:
+    # Get current date for the week row
+    current_date = datetime.datetime.now().strftime("%b %d, %Y")
+    
+    # Find top 2 highest value bounties to feature
+    top_bounties = []
+    for bounty in bounty_data:
+        amount = bounty["amount"]
+        currency = bounty["currency"]
+        title = bounty["title"]
+        
+        if amount != "Not specified":
+            try:
+                # Convert to ERG equivalent
+                if currency == "ERG":
+                    value = float(amount)
+                elif currency == "SigUSD" and "SigUSD" in conversion_rates:
+                    value = float(amount) * conversion_rates["SigUSD"]
+                elif currency == "GORT" and "GORT" in conversion_rates:
+                    value = float(amount) * conversion_rates["GORT"]
+                elif currency == "g GOLD" and "gGOLD" in conversion_rates:
+                    value = float(amount) * conversion_rates["gGOLD"]
+                else:
+                    # For other currencies, use the amount as is
+                    value = float(amount)
+                    
+                top_bounties.append({
+                    "title": title,
+                    "value": value,
+                    "amount": amount,
+                    "currency": currency,
+                    "last_update": "Last Update"  # Placeholder, could be replaced with actual date if available
+                })
+            except ValueError:
+                pass
+    
+    # Sort by value and get top 2
+    top_bounties.sort(key=lambda x: x["value"], reverse=True)
+    top_bounties = top_bounties[:2]
+    
+    # Write the featured bounties table
+    f.write("| Week | Count of Open Issues | ERG Bounties |\n")
+    f.write("|------|---------------------|-------------|\n")
+    
+    # Add rows for featured bounties
+    for bounty in top_bounties:
+        f.write(f"| {bounty['title']} | {bounty['last_update']} | {bounty['amount']} {bounty['currency']} |\n")
+    
+    # Add row for current week with total counts
+    f.write(f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n")
+    
+    # Add total row
+    f.write(f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n")
+
 print(f"Main bounty file written to: {md_file}")
 print(f"Summary file written to: {summary_file}")
 print(f"Language-specific files written to: {lang_dir}/")

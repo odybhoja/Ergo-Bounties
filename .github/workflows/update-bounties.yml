@@ -27,10 +27,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python .github/workflows/scripts/bounty_finder.py
         
+      - name: Update README with featured bounties
+        run: |
+          # Check if featured_bounties.md exists
+          if [ -f bounties/featured_bounties.md ]; then
+            # Extract content between markers and update README.md
+            FEATURED_CONTENT=$(cat bounties/featured_bounties.md)
+            # Use sed to replace content between markers in README.md
+            sed -i -e '/<!-- BEGIN FEATURED BOUNTIES -->/,/<!-- END FEATURED BOUNTIES -->/c\<!-- BEGIN FEATURED BOUNTIES -->\n'"$FEATURED_CONTENT"'\n<!-- END FEATURED BOUNTIES -->' README.md
+          fi
+      
       - name: Commit changes
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add bounties/
+          git add bounties/ README.md
           git commit -m "Update bounty listings [automated]" || echo "No changes to commit"
           git push
