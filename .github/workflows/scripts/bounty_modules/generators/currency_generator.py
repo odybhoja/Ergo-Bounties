@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -111,8 +111,18 @@ def generate_currency_files(
             f.write("|Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|\n")
             f.write("|---|---|---|---|---|---|\n")
             
-            # Sort bounties by owner and title
-            currency_bounties.sort(key=lambda x: (x["owner"], x["title"]))
+            # Calculate ERG equivalent for each bounty for sorting
+            for bounty in currency_bounties:
+                amount = bounty["amount"]
+                try:
+                    # Calculate ERG value for sorting
+                    erg_value = calculate_erg_value(amount, currency, conversion_rates)
+                    bounty["erg_value"] = erg_value
+                except (ValueError, TypeError):
+                    bounty["erg_value"] = 0.0
+            
+            # Sort bounties by ERG value (highest first)
+            currency_bounties.sort(key=lambda x: x.get("erg_value", 0.0), reverse=True)
             
             # Add rows for each bounty (excluding those with "Not specified" amounts)
             for bounty in currency_bounties:

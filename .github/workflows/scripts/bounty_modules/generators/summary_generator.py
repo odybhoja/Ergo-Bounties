@@ -56,44 +56,6 @@ def generate_main_file(
         ))
         f.write("\n\n")
         
-        # Add links to other pages
-        f.write("## Browse By Category\n\n")
-        
-        # Add language links
-        f.write("### Programming Languages\n\n")
-        language_links = []
-        for lang in sorted(languages.keys()):
-            count = len(languages[lang])
-            language_links.append(f"[{lang} ({count})](by_language/{lang.lower()}.md)")
-        f.write(" • ".join(language_links))
-        f.write("\n\n")
-        
-        # Add currency links
-        f.write("### Currencies\n\n")
-        currency_links = []
-        for currency in sorted(currencies_dict.keys()):
-            count = len(currencies_dict[currency])
-            
-            # Format the currency name for the file link
-            if currency == "Not specified":
-                currency_file_name = "not_specified"
-            elif currency == "g GOLD":
-                currency_file_name = "gold"
-            else:
-                currency_file_name = currency.lower()
-                
-            currency_links.append(f"[{currency} ({count})](by_currency/{currency_file_name}.md)")
-        f.write(" • ".join(currency_links))
-        f.write("\n\n")
-        
-        # Add organization links
-        f.write("### Organizations\n\n")
-        org_links = []
-        for org in sorted(orgs.keys()):
-            count = len(orgs[org])
-            org_links.append(f"[{org} ({count})](by_org/{org.lower()}.md)")
-        f.write(" • ".join(org_links))
-        f.write("\n\n")
         
         # Write all bounties table
         f.write("## All Bounties\n\n")

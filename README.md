@@ -11,7 +11,7 @@
    <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue"></a>
-    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/💎%20Donate-ff69b4"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/❤️%20Donate-ff69b4"></a>
   </p>
 
   <p>
@@ -26,10 +26,8 @@
 
   <p>
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse-blue"></a> | 
-    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🔒%20Reserve-green"></a> | 
-    <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/🚩%20Submit-orange"></a> | 
-    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-yellow"></a>
+    <a href="/docs/claim-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-green"></a> | 
+    <a href="/docs/claim-guide.md#step-by-step-submission-process"><img src="https://img.shields.io/badge/🚩%20Submit-orange"></a> | 
+    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-red"></a>
   </p>
 </div>
-
-

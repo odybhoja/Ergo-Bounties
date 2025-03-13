@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -65,8 +65,19 @@ def generate_organization_files(
             f.write("|Title & Link|Bounty Amount|Paid in|Primary Language|Secondary Language|Claim|\n")
             f.write("|---|---|---|---|---|---|\n")
             
-            # Sort bounties by title
-            org_bounties.sort(key=lambda x: x["title"])
+            # Calculate ERG equivalent for each bounty for sorting
+            for bounty in org_bounties:
+                amount = bounty["amount"]
+                currency = bounty["currency"]
+                try:
+                    # Calculate ERG value for sorting
+                    erg_value = calculate_erg_value(amount, currency, conversion_rates)
+                    bounty["erg_value"] = erg_value
+                except (ValueError, TypeError):
+                    bounty["erg_value"] = 0.0
+            
+            # Sort bounties by ERG value (highest first)
+            org_bounties.sort(key=lambda x: x.get("erg_value", 0.0), reverse=True)
             
             # Add rows for each bounty (excluding those with "Not specified" amounts)
             for bounty in org_bounties:
