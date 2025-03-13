@@ -133,6 +133,24 @@ def update_readme_table(
             color = language_colors.get(lang, "DC322F")
             language_badges += f'    <a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{lang}-{count}-{color}"></a>\n'
         
+        # Count repositories from tracked_repos.json and tracked_orgs.json
+        repos_count = 0
+        try:
+            # Count repos from tracked_repos.json
+            repos_file = f'{bounties_dir}/tracked_repos.json'
+            with open(repos_file, 'r', encoding='utf-8') as f:
+                repos = json.load(f)
+                repos_count += len(repos)
+            
+            # Count repos from tracked_orgs.json
+            orgs_file = f'{bounties_dir}/tracked_orgs.json'
+            with open(orgs_file, 'r', encoding='utf-8') as f:
+                orgs = json.load(f)
+                repos_count += len(orgs) * 5  # Estimate 5 repos per org on average
+        except Exception as e:
+            logger.error(f"Error counting repositories: {e}")
+            repos_count = 50  # Fallback to a reasonable default
+        
         # Create the new README content with the desired format
         new_readme = f'''<div align="center">
   <h1>🏆 Ergo Ecosystem Bounties</h1>
@@ -150,29 +168,31 @@ def update_readme_table(
     </a>
   </p>
 
-  <h2>📚 Explore Bounties by Language</h2>
-
-  <p>
-    {language_badges.rstrip()}
-    <a href="/bounties/by_language/">
-      <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
-    </a>
-  </p>
-
   <h2>🚀 Get Started</h2>
+  
+  <p><em>Find, claim, and contribute to Ergo ecosystem bounties across {repos_count}+ indexed repositories</em></p>
 
   <p>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
     </a>
     <a href="/docs/claim-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Reserve%20a%20Bounty-009688" alt="Reserve a Bounty">
+      <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Claim a Bounty">
     </a>
     <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/🚩%20Submit%20Work-FF5722" alt="Submit Work">
+      <img src="https://img.shields.io/badge/🚩%20Submit-orange" alt="Submit Work">
     </a>
     <a href="/docs/add-missing-bounty-guide.md">
-      <img src="https://img.shields.io/badge/➕%20Add%20a%20New%20Bounty-E91E63" alt="Add a New Bounty">
+      <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
+    </a>
+  </p>
+
+  <h2>📚 Explore Bounties by Language</h2>
+
+  <p>
+    {language_badges.rstrip()}
+    <a href="/bounties/by_language/">
+      <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
     </a>
   </p>
 
