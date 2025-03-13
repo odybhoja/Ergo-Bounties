@@ -7,7 +7,13 @@
     <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/Documentation-Add%20Missing%20Bounty-blue" alt="Documentation"></a>
     <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/Contributions-Welcome-orange" alt="Contributions Welcome"></a>
   </p>
+  <div style="margin: -10px 0;">
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/High%20Value-10+%20Bounties%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Beginner%20Friendly-15+%20Bounties-success" alt="Beginner Friendly"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Updated%20Daily-Automated-informational" alt="Updated Daily"></a>
+  </div>
 </div>
+
 
 ## 🌟 Overview
 
@@ -21,21 +27,19 @@ Ergo Ecosystem Bounties offers financial incentives to developers who contribute
 ## 📋 Find Bounties
 
 <div align="center">
-  <div style="margin: 30px 0;">
+     
+  <div style="margin: 10px 0;">
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/View%20All%20Current%20Bounties-→-success?style=for-the-badge" alt="View All Current Bounties">
     </a>
   </div>
   
-  <div style="margin-bottom: 30px;">
-    <a href="/bounties/all.md#summary">
-      <img src="https://img.shields.io/badge/By%20Project-→-orange?style=for-the-badge" alt="View By Project">
-    </a>
-    &nbsp;&nbsp;
-    <a href="/bounties/all.md#detailed-bounties">
-      <img src="https://img.shields.io/badge/Featured%20Opportunities-→-yellow?style=for-the-badge" alt="Featured Opportunities">
-    </a>
-  </div>
+
+  
+  
+  
+  <div style="margin-bottom: 10px;">
+ 
   
   <div style="margin-bottom: 20px;">
     <h3>Filter by Programming Language</h3>
@@ -49,17 +53,19 @@ Ergo Ecosystem Bounties offers financial incentives to developers who contribute
     </div>
   </div>
   
-  <div style="margin-top: 10px;">
+  <div style="margin-top: 20px;">
     <a href="/bounties/by_language/">
       <img src="https://img.shields.io/badge/All%20Languages-→-purple?style=for-the-badge" alt="All Languages">
     </a>
   </div>
-  
-  <div style="margin: 25px 0;">
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/High%20Value-10+%20Bounties%20Over%201000%20ERG-gold" alt="High Value Bounties"></a>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Beginner%20Friendly-15+%20Bounties-success" alt="Beginner Friendly"></a>
-    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Updated%20Daily-Automated-informational" alt="Updated Daily"></a>
-  </div>
+  <a href="/bounties/all.md#summary">
+      <img src="https://img.shields.io/badge/By%20Project-→-orange?style=for-the-badge" alt="View By Project">
+    </a>
+    &nbsp;&nbsp;
+    <a href="/bounties/all.md#detailed-bounties">
+      <img src="https://img.shields.io/badge/Featured%20Opportunities-→-yellow?style=for-the-badge" alt="Featured Opportunities">
+    </a>
+
 </div>
 
 <div class="note" style="background-color: #f8f9fa; border-left: 4px solid #007bff; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -125,7 +131,7 @@ Know of a bounty that's not listed? You can help add it to our tracking system b
     <a href="/tracked_repos.json"><img src="https://img.shields.io/badge/Tracked%20Repos-25+-yellow" alt="Tracked Repos"></a>
   </p>
 </div>
-
+</div>
 This repository uses GitHub Actions to automatically track and update bounties across the Ergo ecosystem. The system:
 
 - Scans repositories for issues with bounty tags
