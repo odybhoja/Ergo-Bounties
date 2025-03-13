@@ -61,7 +61,7 @@ def generate_main_file(
         f.write("| Project | Count | ERG Equivalent |\n")
         f.write("|---------|-------|---------------|\n")
         
-        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["count"], reverse=True):
+        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
             if totals["count"] > 0:
                 # Add link to organization page
                 org_link = f"[{owner}](by_org/{owner.lower()}.md)"
@@ -99,7 +99,7 @@ def generate_main_file(
             currency_totals[currency]["value"] += calculate_erg_value(amount, currency, conversion_rates)
         
         # Write currency rows
-        for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["count"], reverse=True):
+        for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["value"], reverse=True):
             # Format the currency name for the file link
             if currency == "Not specified":
                 currency_file_name = "not_specified"
@@ -118,7 +118,7 @@ def generate_main_file(
         f.write("| Organization | Count | Total Value (ERG) |\n")
         f.write("|--------------|-------|------------------|\n")
         
-        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["count"], reverse=True):
+        for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
             if totals["count"] > 0:
                 # Add link to organization page
                 org_link = f"[{owner}](by_org/{owner.lower()}.md)"
@@ -229,7 +229,7 @@ def generate_summary_file(
         f.write("|----------|-------|------------------|\n")
         
         # Write currency rows
-        for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["count"], reverse=True)[:5]:  # Top 5 currencies
+        for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["value"], reverse=True)[:5]:  # Top 5 currencies
             # Format the currency name for the file link
             if currency == "Not specified":
                 currency_file_name = "not_specified"
@@ -366,6 +366,6 @@ def generate_featured_bounties_file(
         f.write("\n## Weekly Summary\n\n")
         f.write("| Date | Open Bounties | Total Value |\n")
         f.write("|------|--------------|-------------|\n")
-        f.write(f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n")
+        f.write(f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n\n")
     
     logger.info("Generated featured bounties file")
