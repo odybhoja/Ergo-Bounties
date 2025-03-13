@@ -1,16 +1,20 @@
 # Open Bounties
 
-*Report generated: 2025-03-13 16:35:38 UTC*
+*Report generated: 2025-03-13 16:51:57 UTC*
+
+## Navigation
+
+[![All Bounties](https://img.shields.io/badge/All_Bounties-103-blue)](all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](all.md#bounties-by-programming-language) [![By Currency](https://img.shields.io/badge/By_Currency-7-yellow)](all.md#bounties-by-currency) [![By Organization](https://img.shields.io/badge/By_Organization-5-orange)](all.md#bounties-by-organization) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](currency_prices.md)
 
 ## Summary
 
 | Project | Count | ERG Equivalent |
 |---------|-------|---------------|
-| ergoplatform | 84 | 36060.89 |
-| ChainCashLabs | 9 | 24704.72 |
-| rosen-bridge | 7 | 0.00 |
-| StabilityNexus | 2 | 0.00 |
-| input-output-hk | 1 | 394.78 |
+| [ergoplatform](by_org/ergoplatform.md) | 84 | 36060.89 |
+| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 24704.72 |
+| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 0.00 |
+| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 0.00 |
+| [input-output-hk](by_org/input-output-hk.md) | 1 | 394.78 |
 | **Overall Total** | **103** | **61160.39** |
 
 ## Bounties by Programming Language
@@ -23,6 +27,28 @@
 | [Svelte](by_language/svelte.md) | 2 | 1.9% |
 | [Java](by_language/java.md) | 1 | 1.0% |
 | [Unknown](by_language/unknown.md) | 1 | 1.0% |
+
+## Bounties by Currency
+
+| Currency | Count | Total Value (ERG) |
+|----------|-------|------------------|
+| [SigUSD](by_currency/sigusd.md) | 54 | 25621.12 |
+| [ERG](by_currency/erg.md) | 25 | 4500.00 |
+| [GORT](by_currency/gort.md) | 7 | 31039.27 |
+| [g GOLD](by_currency/g gold.md) | 6 | 0.00 |
+| [RSN](by_currency/rsn.md) | 6 | 0.00 |
+| [Not specified](by_currency/not_specified.md) | 3 | 0.00 |
+| [BENE](by_currency/bene.md) | 2 | 0.00 |
+
+## Bounties by Organization
+
+| Organization | Count | Total Value (ERG) |
+|--------------|-------|------------------|
+| [ergoplatform](by_org/ergoplatform.md) | 84 | 36060.89 |
+| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 24704.72 |
+| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 0.00 |
+| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 0.00 |
+| [input-output-hk](by_org/input-output-hk.md) | 1 | 394.78 |
 
 ## Detailed Bounties
 
@@ -131,19 +157,3 @@
 | ChainCashLabs | [Use sigma-rust for wallet functionality](https://github.com/ChainCashLabs/chaincash-rs/issues/42) | 6334.54 | GORT | 500 GORT | [Claim](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/chaincashlabs-chaincash-rs-42.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Use%20sigma-rust%20for%20wallet%20functionality%22%2C%0A%20%20%22bounty_id%22%3A%20%22ChainCashLabs/chaincash-rs%2342%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//github.com/ChainCashLabs/chaincash-rs/issues/42%22%2C%0A%20%20%22payment_currency%22%3A%20%22GORT%22%2C%0A%20%20%22bounty_value%22%3A%20500.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20ChainCashLabs/chaincash-rs%2342&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20ross-weir.%0A%0ABounty:%20Use%20sigma-rust%20for%20wallet%20functionality) |
 | ChainCashLabs | [Unlock nodes wallet if locked](https://github.com/ChainCashLabs/chaincash-rs/issues/31) | 633.45 | GORT | 50 GORT | [Claim](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/chaincashlabs-chaincash-rs-31.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Unlock%20nodes%20wallet%20if%20locked%22%2C%0A%20%20%22bounty_id%22%3A%20%22ChainCashLabs/chaincash-rs%2331%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//github.com/ChainCashLabs/chaincash-rs/issues/31%22%2C%0A%20%20%22payment_currency%22%3A%20%22GORT%22%2C%0A%20%20%22bounty_value%22%3A%2050.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20ChainCashLabs/chaincash-rs%2331&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20ross-weir.%0A%0ABounty:%20Unlock%20nodes%20wallet%20if%20locked) |
 | ChainCashLabs | [Add openapi schema and swagger ui](https://github.com/ChainCashLabs/chaincash-rs/issues/28) | 2533.82 | GORT | 200 GORT | [Claim](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/chaincashlabs-chaincash-rs-28.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Add%20openapi%20schema%20and%20swagger%20ui%22%2C%0A%20%20%22bounty_id%22%3A%20%22ChainCashLabs/chaincash-rs%2328%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//github.com/ChainCashLabs/chaincash-rs/issues/28%22%2C%0A%20%20%22payment_currency%22%3A%20%22GORT%22%2C%0A%20%20%22bounty_value%22%3A%20200.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20ChainCashLabs/chaincash-rs%2328&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20ross-weir.%0A%0ABounty:%20Add%20openapi%20schema%20and%20swagger%20ui) |
-
-## Tracked Repositories and Organizations
-
-### Individually Tracked Repositories
-|Owner|Repo|
-|---|---|
-|kushti|dexy-stable|
-|StabilityNexus|BenefactionPlatform-Ergo|
-|input-output-hk|scrypto|
-
-### Tracked Organizations
-|Organization|Description|
-|---|---|
-|ergoplatform|All repositories in this organization are automatically tracked|
-|rosen-bridge|All repositories in this organization are automatically tracked|
-|ChainCashLabs|All repositories in this organization are automatically tracked|
