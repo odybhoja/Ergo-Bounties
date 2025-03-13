@@ -86,7 +86,7 @@ def calculate_erg_value(amount, currency, conversion_rates):
         if currency == "ERG":
             return float(amount)
         elif currency == "SigUSD" and "SigUSD" in conversion_rates:
-            return float(amount) * conversion_rates["SigUSD"]
+            return float(amount) / conversion_rates["SigUSD"]
         elif currency == "GORT" and "GORT" in conversion_rates:
             return float(amount) / conversion_rates["GORT"]
         elif currency == "RSN" and "RSN" in conversion_rates:

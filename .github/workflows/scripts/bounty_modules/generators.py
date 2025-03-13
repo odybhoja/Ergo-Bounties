@@ -182,7 +182,13 @@ def generate_currency_files(bounty_data, currencies_dict, conversion_rates, tota
             # Add conversion rate if available
             if currency in conversion_rates:
                 f.write(f"## Current {currency} Rate\n\n")
-                f.write(f"1 {currency} = {conversion_rates[currency]:.6f} ERG\n\n")
+                
+                # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+                display_rate = conversion_rates[currency]
+                if currency != "gGOLD":
+                    display_rate = 1.0 / display_rate if display_rate > 0 else 0.0
+                
+                f.write(f"1 {currency} = {display_rate:.6f} ERG\n\n")
             
             f.write("|Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|\n")
             f.write("|---|---|---|---|---|---|\n")
@@ -266,7 +272,12 @@ def generate_price_table(conversion_rates, total_bounties, languages, currencies
             # Add link to currency page if it exists
             currency_link = f"[{display_currency}](by_currency/{display_currency.lower().replace(' ', '_')}.md)"
             
-            f.write(f"| {currency_link} | {rate:.6f} | {notes} |\n")
+            # Invert the rate to show ERG per token (except for gGOLD which is already in ERG per token)
+            display_rate = rate
+            if currency != "gGOLD":
+                display_rate = 1.0 / rate if rate > 0 else 0.0
+            
+            f.write(f"| {currency_link} | {display_rate:.6f} | {notes} |\n")
         
         f.write("\n*Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*\n")
 

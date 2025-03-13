@@ -75,8 +75,8 @@ def get_conversion_rates():
                     gold_price_per_gram_usd = gold_usd_price / 31.1035
                     
                     # Convert USD to ERG using SigUSD as bridge (SigUSD is pegged to USD)
-                    # If 1 ERG = X SigUSD, and 1 SigUSD = 1 USD, then 1 gram of gold in ERG = gold_price_per_gram_usd / (1/X)
-                    gold_price_per_gram_erg = gold_price_per_gram_usd * rates["SigUSD"]
+                    # If 1 ERG = X SigUSD, and 1 SigUSD = 1 USD, then 1 gram of gold in ERG = gold_price_per_gram_usd / X
+                    gold_price_per_gram_erg = gold_price_per_gram_usd / rates["SigUSD"]
                     
                     rates["gGOLD"] = gold_price_per_gram_erg
                     print(f"Found gold price: ${gold_usd_price} per troy oz, ${gold_price_per_gram_usd:.2f} per gram, {gold_price_per_gram_erg:.2f} ERG per gram")
@@ -115,7 +115,7 @@ def convert_to_erg(amount, currency, conversion_rates):
         if currency == "ERG":
             return amount
         elif currency == "SigUSD" and "SigUSD" in conversion_rates:
-            return f"{float(amount) * conversion_rates['SigUSD']:.2f}"
+            return f"{float(amount) / conversion_rates['SigUSD']:.2f}"
         elif currency == "GORT" and "GORT" in conversion_rates:
             return f"{float(amount) / conversion_rates['GORT']:.2f}"
         elif currency == "RSN" and "RSN" in conversion_rates:
