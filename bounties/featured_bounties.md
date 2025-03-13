@@ -2,5 +2,5 @@
 |------|---------------------|-------------|
 | Remove scan dependency | Last Update | 500 GORT |
 | Reserve contract for custom tokens | Last Update | 500 GORT |
-| Mar 13, 2025 | 103 | 61,160.46 ERG |
-| **Total** | **103** | **61,160.46 ERG** |
+| Mar 13, 2025 | 103 | 61,160.39 ERG |
+| **Total** | **103** | **61,160.39 ERG** |
