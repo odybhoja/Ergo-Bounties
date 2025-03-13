@@ -25,7 +25,7 @@ Ergo Ecosystem Bounties offers financial incentives to developers who contribute
 
 You can now browse bounties by programming language! This makes it easier to find tasks that match your skills and expertise.
 
-**[View Bounties by Language →](/bounties_by_language/)**
+**[View Bounties by Language →](/bounties/by_language/)**
 
 ### Bounty Distribution by Project
 

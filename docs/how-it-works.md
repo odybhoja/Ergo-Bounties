@@ -84,7 +84,7 @@ The script uses the GitHub API to:
 The system generates:
 - A Markdown file (`bounty_issues.md`) with a formatted table of all bounties
 - A CSV file (`scrape/bounty_issues_TIMESTAMP.csv`) with detailed bounty data
-- Language-specific Markdown files in the `bounties_by_language/` directory
+- Language-specific Markdown files in the `bounties/by_language/` directory
 - Summary statistics including total counts and values
 
 ### Programming Language Categorization
@@ -93,7 +93,7 @@ The system automatically categorizes bounties by programming language:
 
 1. **Language Detection**: For each repository, the system queries the GitHub API to determine the primary and secondary programming languages used
 2. **Categorization**: Bounties are grouped by the primary language of their repository
-3. **Language-Specific Files**: Separate Markdown files are generated for each programming language in the `bounties_by_language/` directory
+3. **Language-Specific Files**: Separate Markdown files are generated for each programming language in the `bounties/by_language/` directory
 4. **Language Statistics**: The main bounty file includes a breakdown of bounties by programming language with percentages
 
 This categorization makes it easier for developers to find bounties that match their skills and expertise.

@@ -265,7 +265,7 @@ for bounty in bounty_data:
     languages[primary_lang].append(bounty)
 
 # Create a directory for language-specific files if it doesn't exist
-lang_dir = 'bounties_by_language'
+lang_dir = f'{bounties_dir}/by_language'
 os.makedirs(lang_dir, exist_ok=True)
 
 # Write language-specific Markdown files
@@ -329,7 +329,7 @@ with open(md_file, 'w', encoding='utf-8') as f:
     for lang, lang_bounties in sorted(languages.items(), key=lambda x: len(x[1]), reverse=True):
         count = len(lang_bounties)
         percentage = (count / total_bounties) * 100
-        f.write(f"| [{lang}]({lang_dir}/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
+        f.write(f"| [{lang}](by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
     
     f.write("\n## Detailed Bounties\n\n")
     f.write("|Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|\n")
