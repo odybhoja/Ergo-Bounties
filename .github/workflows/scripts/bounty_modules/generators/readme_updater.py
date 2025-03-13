@@ -140,13 +140,13 @@ def update_readme_table(
 
   <p>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-brightgreen" alt="Open Bounties">
+      <img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-4CAF50" alt="Open Bounties">
     </a>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-success" alt="Total Value">
+      <img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-2196F3" alt="Total Value">
     </a>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-yellow" alt="High Value Bounties">
+      <img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
     </a>
   </p>
 
@@ -163,16 +163,16 @@ def update_readme_table(
 
   <p>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-blue" alt="Browse Bounties">
+      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
     </a>
     <a href="/docs/claim-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Reserve%20a%20Bounty-green" alt="Reserve a Bounty">
+      <img src="https://img.shields.io/badge/🔒%20Reserve%20a%20Bounty-009688" alt="Reserve a Bounty">
     </a>
     <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/🚩%20Submit%20Work-orange" alt="Submit Work">
+      <img src="https://img.shields.io/badge/🚩%20Submit%20Work-FF5722" alt="Submit Work">
     </a>
     <a href="/docs/add-missing-bounty-guide.md">
-      <img src="https://img.shields.io/badge/➕%20Add%20a%20New%20Bounty-red" alt="Add a New Bounty">
+      <img src="https://img.shields.io/badge/➕%20Add%20a%20New%20Bounty-E91E63" alt="Add a New Bounty">
     </a>
   </p>
 
@@ -182,13 +182,13 @@ def update_readme_table(
 
   <p>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/📅%20Updated%20Daily-informational" alt="Updated Daily">
+      <img src="https://img.shields.io/badge/📅%20Updated%20Daily-607D8B" alt="Updated Daily">
     </a>
     <a href="/docs/how-it-works.md">
-      <img src="https://img.shields.io/badge/🔧%20How%20It%20Works-blue" alt="How It Works">
+      <img src="https://img.shields.io/badge/🔧%20How%20It%20Works-795548" alt="How It Works">
     </a>
     <a href="/docs/how-it-works.md">
-      <img src="https://img.shields.io/badge/❤️%20Donate-ff69b4" alt="Donate">
+      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
     </a>
   </p>
 </div>
