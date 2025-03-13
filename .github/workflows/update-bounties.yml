@@ -31,10 +31,23 @@ jobs:
         run: |
           # Check if featured_bounties.md exists
           if [ -f bounties/featured_bounties.md ]; then
-            # Extract content between markers and update README.md
-            FEATURED_CONTENT=$(cat bounties/featured_bounties.md)
-            # Use sed to replace content between markers in README.md
-            sed -i -e '/<!-- BEGIN FEATURED BOUNTIES -->/,/<!-- END FEATURED BOUNTIES -->/c\<!-- BEGIN FEATURED BOUNTIES -->\n'"$FEATURED_CONTENT"'\n<!-- END FEATURED BOUNTIES -->' README.md
+            # Create a temporary file with the updated content
+            awk '
+            BEGIN { in_section = 0; }
+            /<!-- BEGIN FEATURED BOUNTIES -->/ {
+              print $0;
+              system("cat bounties/featured_bounties.md");
+              in_section = 1;
+            }
+            /<!-- END FEATURED BOUNTIES -->/ {
+              in_section = 0;
+              print $0;
+            }
+            !in_section { print $0; }
+            ' README.md > README.md.new
+            
+            # Replace the original file with the new one
+            mv README.md.new README.md
           fi
       
       - name: Commit changes
