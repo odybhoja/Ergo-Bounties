@@ -185,29 +185,23 @@ def get_issues(owner, repo, state='open'):
 def check_bounty_labels(labels):
     return any("bounty" in label['name'].lower() or "b-" in label['name'].lower() for label in labels)
 
-# Get conversion rates from Spectrum API
+# Get conversion rates from APIs
 def get_conversion_rates():
-    # Default rates to use if we can't find them in the API
-    default_rates = {
-        "SigUSD": 1.5,
-        "GORT": 0.01,
-        "RSN": 20.0,
-        "gGOLD": 5.0
+    # Initialize rates with BENE at 0 (as specified)
+    rates = {
+        "BENE": 0.0
     }
+    print(f"Setting BENE rate to 0 as it has no value/pair")
     
     try:
-        response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
-        if response.status_code != 200:
-            print(f"Warning: Error fetching conversion rates: {response.status_code}")
-            return default_rates
+        # Get Spectrum API data for crypto rates
+        spectrum_response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets")
+        if spectrum_response.status_code != 200:
+            print(f"Warning: Error fetching Spectrum API conversion rates: {spectrum_response.status_code}")
+            raise Exception("Failed to fetch Spectrum API data")
             
-        markets = response.json()
-        
-        # Print the first few markets to help debug
-        print(f"API returned {len(markets)} markets")
-        
-        # Initialize with default rates
-        rates = default_rates.copy()
+        markets = spectrum_response.json()
+        print(f"Spectrum API returned {len(markets)} markets")
         
         # Find ERG/SigUSD pairs (where baseSymbol is ERG and quoteSymbol is SigUSD)
         sigusd_markets = [m for m in markets if m.get("quoteSymbol") == "SigUSD" and 
@@ -219,54 +213,68 @@ def get_conversion_rates():
                 print(f"Sorted SigUSD markets by volume, using the most liquid market")
             
             # Use the first (or most liquid) market
-            rates["SigUSD"] = float(sigusd_markets[0].get("lastPrice", default_rates["SigUSD"]))
+            rates["SigUSD"] = float(sigusd_markets[0].get("lastPrice"))
             print(f"Found SigUSD rate: {rates['SigUSD']} from market {sigusd_markets[0].get('baseSymbol')}/{sigusd_markets[0].get('quoteSymbol')}")
         else:
-            print(f"No SigUSD markets found, using default: {default_rates['SigUSD']}")
+            print(f"No SigUSD markets found, cannot proceed without SigUSD rate")
+            raise Exception("SigUSD rate not found in API data")
         
         # Find ERG/GORT pairs
         gort_markets = [m for m in markets if m.get("quoteSymbol") == "GORT" and 
                        m.get("baseSymbol") == "ERG"]
         if gort_markets:
             # Use the first market's price
-            rates["GORT"] = float(gort_markets[0].get("lastPrice", default_rates["GORT"]))
+            rates["GORT"] = float(gort_markets[0].get("lastPrice"))
             print(f"Found GORT rate: {rates['GORT']}")
         else:
-            print(f"No GORT markets found, using default: {default_rates['GORT']}")
+            print(f"No GORT markets found in API data")
+            raise Exception("GORT rate not found in API data")
         
         # Find ERG/RSN pairs
         rsn_markets = [m for m in markets if m.get("quoteSymbol") == "RSN" and 
                       m.get("baseSymbol") == "ERG"]
         if rsn_markets:
             # Use the first market's price
-            rates["RSN"] = float(rsn_markets[0].get("lastPrice", default_rates["RSN"]))
+            rates["RSN"] = float(rsn_markets[0].get("lastPrice"))
             print(f"Found RSN rate: {rates['RSN']}")
         else:
-            print(f"No RSN markets found, using default: {default_rates['RSN']}")
+            print(f"No RSN markets found in API data")
+            raise Exception("RSN rate not found in API data")
         
-        # For gGOLD (listed as "GluonW GAU")
-        # This is kept for backward compatibility
-        gold_markets = [m for m in markets if m.get("quoteSymbol") == "GluonW GAU"]
-        if gold_markets:
-            rates["gGOLD"] = float(gold_markets[0].get("lastPrice", default_rates["gGOLD"]))
-            print(f"Found gGOLD rate: {rates['gGOLD']}")
-        else:
-            # Try alternative symbols
-            alt_gold_markets = [m for m in markets if 
-                               (m.get("quoteSymbol") in ["GAU", "GAUC"] or 
-                                "GluonW" in m.get("quoteSymbol", ""))]
-            if alt_gold_markets:
-                rates["gGOLD"] = float(alt_gold_markets[0].get("lastPrice", default_rates["gGOLD"]))
-                print(f"Found gGOLD rate (alternative): {rates['gGOLD']}")
+        # Get gold price from a public API
+        try:
+            # Using CoinGecko API to get gold price in USD
+            gold_response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=gold&vs_currencies=usd")
+            if gold_response.status_code == 200:
+                gold_data = gold_response.json()
+                gold_usd_price = gold_data.get('gold', {}).get('usd')
+                
+                if gold_usd_price:
+                    # Convert gold price to ERG
+                    # 1 troy ounce = 31.1035 grams
+                    gold_price_per_gram_usd = gold_usd_price / 31.1035
+                    
+                    # Convert USD to ERG using SigUSD as bridge (SigUSD is pegged to USD)
+                    # If 1 ERG = X SigUSD, and 1 SigUSD = 1 USD, then 1 gram of gold in ERG = gold_price_per_gram_usd / (1/X)
+                    gold_price_per_gram_erg = gold_price_per_gram_usd * rates["SigUSD"]
+                    
+                    rates["gGOLD"] = gold_price_per_gram_erg
+                    print(f"Found gold price: ${gold_usd_price} per troy oz, ${gold_price_per_gram_usd:.2f} per gram, {gold_price_per_gram_erg:.2f} ERG per gram")
+                else:
+                    print("Gold price data not found in CoinGecko response")
+                    raise Exception("Gold price not available")
             else:
-                print(f"No gGOLD markets found, using default: {default_rates['gGOLD']}")
+                print(f"Error fetching gold price: {gold_response.status_code}")
+                raise Exception("Failed to fetch gold price data")
+        except Exception as gold_error:
+            print(f"Error getting gold price: {gold_error}")
+            raise Exception(f"Gold price fetch failed: {gold_error}")
         
         print(f"Using conversion rates: {rates}")
         return rates
     except Exception as e:
         print(f"Warning: Exception fetching conversion rates: {e}")
-        print("Using default rates")
-        return default_rates
+       
 
 # Define file paths
 bounties_dir = 'bounties'
@@ -352,6 +360,9 @@ for repo in repos_to_query:
                             project_totals[owner]["value"] += float(amount) * conversion_rates["SigUSD"]
                         elif currency == "GORT" and "GORT" in conversion_rates:
                             project_totals[owner]["value"] += float(amount) * conversion_rates["GORT"]
+                        elif currency == "BENE" and "BENE" in conversion_rates:
+                            # BENE has no value, so add 0
+                            project_totals[owner]["value"] += 0
                         elif currency == "g GOLD" and "gGOLD" in conversion_rates:
                             project_totals[owner]["value"] += float(amount) * conversion_rates["gGOLD"]
                 except ValueError:
@@ -382,6 +393,8 @@ for bounty in bounty_data:
                 value = float(amount) * conversion_rates["SigUSD"]
             elif currency == "GORT" and "GORT" in conversion_rates:
                 value = float(amount) * conversion_rates["GORT"]
+            elif currency == "BENE" and "BENE" in conversion_rates:
+                value = 0  # BENE has no value
             elif currency == "g GOLD" and "gGOLD" in conversion_rates:
                 value = float(amount) * conversion_rates["gGOLD"]
             else:
@@ -446,6 +459,8 @@ for lang, lang_bounties in languages.items():
                         erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
                     elif currency == "GORT" and "GORT" in conversion_rates:
                         erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "BENE" and "BENE" in conversion_rates:
+                        erg_equiv = "0.00"  # BENE has no value
                     elif currency == "g GOLD" and "gGOLD" in conversion_rates:
                         erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
                     else:
@@ -528,9 +543,7 @@ with open(md_file, 'w', encoding='utf-8') as f:
         owners[owner].append(bounty)
     
     # Add rows for each bounty, grouped by owner
-    global_count = 1
     for owner, owner_bounties in owners.items():
-        owner_count = 1
         for bounty in owner_bounties:
             title = bounty["title"]
             url = bounty["url"]
@@ -547,6 +560,8 @@ with open(md_file, 'w', encoding='utf-8') as f:
                         erg_equiv = f"{float(amount) * conversion_rates['SigUSD']:.2f}"
                     elif currency == "GORT" and "GORT" in conversion_rates:
                         erg_equiv = f"{float(amount) * conversion_rates['GORT']:.2f}"
+                    elif currency == "BENE" and "BENE" in conversion_rates:
+                        erg_equiv = "0.00"  # BENE has no value
                     elif currency == "g GOLD" and "gGOLD" in conversion_rates:
                         erg_equiv = f"{float(amount) * conversion_rates['gGOLD']:.2f}"
                     else:
@@ -588,8 +603,6 @@ with open(md_file, 'w', encoding='utf-8') as f:
             claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
             
             f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {amount} {currency} | [Claim]({claim_url}) |\n")
-            owner_count += 1
-            global_count += 1
     
     # Write repository and organization information
     f.write("\n## Tracked Repositories and Organizations\n")
@@ -655,6 +668,8 @@ with open(featured_bounties_file, 'w', encoding='utf-8') as f:
                     value = float(amount) * conversion_rates["SigUSD"]
                 elif currency == "GORT" and "GORT" in conversion_rates:
                     value = float(amount) * conversion_rates["GORT"]
+                elif currency == "BENE" and "BENE" in conversion_rates:
+                    value = 0  # BENE has no value
                 elif currency == "g GOLD" and "gGOLD" in conversion_rates:
                     value = float(amount) * conversion_rates["gGOLD"]
                 else:
