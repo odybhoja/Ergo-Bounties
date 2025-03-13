@@ -239,52 +239,95 @@ with open(csv_file, 'w', newline='', encoding='utf-8') as f:
 total_bounties = sum(project["count"] for project in project_totals.values())
 total_value = sum(project["value"] for project in project_totals.values())
 
+# Calculate additional statistics
+if total_bounties > 0:
+    avg_bounty_value = total_value / total_bounties
+else:
+    avg_bounty_value = 0
+
+# Find highest value bounty
+highest_bounty = {"value": 0, "title": "", "url": ""}
+for bounty in bounty_data:
+    amount = bounty["amount"]
+    currency = bounty["currency"]
+    
+    if amount != "Not specified":
+        try:
+            # Convert to ERG equivalent
+            if currency == "SigUSD":
+                value = float(amount) * 1.5
+            elif currency == "ERG":
+                value = float(amount)
+            else:
+                # For other currencies, use the amount as is
+                value = float(amount)
+                
+            if value > highest_bounty["value"]:
+                highest_bounty["value"] = value
+                highest_bounty["title"] = bounty["title"]
+                highest_bounty["url"] = bounty["url"]
+        except ValueError:
+            pass
+
+# Count currencies
+currencies = set()
+for bounty in bounty_data:
+    if bounty["currency"] != "Not specified":
+        currencies.add(bounty["currency"])
+
 # Write Markdown file
 with open(md_file, 'w', encoding='utf-8') as f:
     # Write header
-    f.write("# Open Bounties\n\n")
-    f.write(f"*Report generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC*\n\n")
+    f.write("|Owner|Title & Link|Count|Bounty ERG Equiv|Paid in|\n")
+    f.write("|---|---|---|---|---|\n")
     
-    # Write summary table
-    f.write("## Summary\n\n")
-    f.write("| Project | Count | ERG Equivalent |\n")
-    f.write("|---------|-------|---------------|\n")
-    
-    # Add rows for each project
-    for owner, totals in project_totals.items():
-        if totals["count"] > 0:
-            f.write(f"| {owner} | {totals['count']} | {totals['value']:.2f} |\n")
-    
-    # Add overall total
-    f.write(f"| **Overall Total** | **{total_bounties}** | **{total_value:.2f}** |\n\n")
-    
-    # Write detailed table
-    f.write("## Detailed Bounties\n\n")
-    f.write("| Owner | Title & Link | Count | Bounty ERG Equiv | Paid in |\n")
-    f.write("|-------|--------------|-------|-----------------|----------|\n")
-    
-    # Add rows for each bounty
-    count = 1
+    # Group bounties by owner
+    owners = {}
     for bounty in bounty_data:
         owner = bounty["owner"]
-        title = bounty["title"]
-        url = bounty["url"]
-        amount = bounty["amount"]
-        currency = bounty["currency"]
-        
-        # Try to convert to ERG equivalent (simplified)
-        erg_equiv = amount
-        if amount != "Not specified":
-            if currency == "SigUSD":
-                try:
-                    erg_equiv = f"{float(amount) * 1.5:.2f}"
-                except ValueError:
-                    erg_equiv = amount
-            elif currency != "ERG":
-                erg_equiv = amount  # For other currencies, just use the amount
-        
-        f.write(f"| {owner} | [{title}]({url}) | {count} | {erg_equiv} | {currency} |\n")
-        count += 1
+        if owner not in owners:
+            owners[owner] = []
+        owners[owner].append(bounty)
+    
+    # Add rows for each bounty, grouped by owner
+    global_count = 1
+    for owner, owner_bounties in owners.items():
+        owner_count = 1
+        for bounty in owner_bounties:
+            title = bounty["title"]
+            url = bounty["url"]
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            
+            # Try to convert to ERG equivalent (simplified)
+            erg_equiv = amount
+            if amount != "Not specified":
+                if currency == "SigUSD":
+                    try:
+                        erg_equiv = f"{float(amount) * 1.5:.2f}"
+                    except ValueError:
+                        erg_equiv = amount
+                elif currency != "ERG":
+                    erg_equiv = amount  # For other currencies, just use the amount
+            
+            f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} |\n")
+            owner_count += 1
+            global_count += 1
+    
+    # Add project subtotals
+    f.write("|---|---|---|---|---|\n")
+    f.write("|---|**Project**|---|**Count**|**ERG Equivalent**|\n")
+    
+    for owner, totals in project_totals.items():
+        if totals["count"] > 0:
+            f.write(f"|---| **{owner} Subtotal:** |   | {totals['count']} | {totals['value']:,.2f} |\n")
+    
+    # Add overall total
+    f.write("|---|---|---|---|---|\n")
+    f.write(f"|---| **Overall Totals:** |   | {total_bounties} | {total_value:,.2f} |\n")
+    
+    # Add report generation timestamp
+    f.write(f"\nReport generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')} UTC\n")
     
     # Write repository information
     f.write("\n## Listing of Repos Queried \n")
@@ -293,6 +336,24 @@ with open(md_file, 'w', encoding='utf-8') as f:
     
     for repo in repos_to_query:
         f.write(f"|{repo['owner']}|{repo['repo']}|\n")
+
+# Write a summary file for README reference
+summary_file = 'bounty_summary.md'
+with open(summary_file, 'w', encoding='utf-8') as f:
+    f.write("## 📋 Open Bounties\n\n")
+    f.write("**[View Current Open Bounties →](/bounty_issues.md)**\n\n")
+    f.write("| Project | Count | Value |\n")
+    f.write("|----------|-------|-------|\n")
+    
+    # Add rows for major projects (those with more than 1 bounty)
+    for owner, totals in sorted(project_totals.items(), key=lambda x: x[1]["value"], reverse=True):
+        if totals["count"] > 0:
+            f.write(f"| {owner} | {totals['count']} | {totals['value']:,.2f} ERG |\n")
+    
+    # Add overall total
+    f.write(f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n\n")
+    
+    f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
 
 print(f"CSV file written to: {csv_file}")
 print(f"Markdown file written to: {md_file}")

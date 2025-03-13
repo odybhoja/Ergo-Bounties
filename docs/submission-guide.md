@@ -1,6 +1,6 @@
 # Ergo Bounty Submission Guide
 
-This guide provides detailed instructions for submitting completed work to the Ergo ecosystem. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
+This guide provides detailed instructions for submitting completed work to the Ergo ecosystem and adding missing bounties to the tracking system. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
 
 ## Prerequisites
 
@@ -180,9 +180,40 @@ If you encounter issues with your submission:
 2. Make any requested changes to your submission
 3. If your PR is closed without merging, you may need to create a new PR with corrections
 
+## Adding a Missing Bounty
+
+If you know of a bounty that's not listed in the tracking system, you can help add it:
+
+### 1. Verify the Bounty Requirements
+
+Before adding a new bounty, ensure it meets these criteria:
+- It has a clear issue in a GitHub repository
+- It has a specified bounty value
+- It's tagged with "Bounty" or similar in the original repository
+
+### 2. Add the Repository to Tracking
+
+1. **Fork this repository**
+2. **Edit the `tracked_repos.json` file** to add the new repository:
+   ```json
+   {"owner": "repo-owner", "repo": "repo-name"}
+   ```
+3. **Submit a PR** with title: `[ADD REPO] owner/repo-name`
+
+Once merged, the automated system will scan the repository during the next update cycle and include any bounties it finds.
+
+### 3. For Manual Additions
+
+If the bounty doesn't follow the standard format or isn't in a GitHub repository:
+- Create an issue in this repository
+- Use title format: `[MANUAL BOUNTY] Brief description`
+- Include: link to work, bounty value, and payment currency
+
+> 💡 **Note:** The bounty listings are automatically updated daily via GitHub Actions. When you add a new repository to `tracked_repos.json`, the system will automatically include its bounties in the next update.
+
 ## Questions or Support
 
-If you have questions about the bounty submission process, please:
+If you have questions about the bounty submission process or adding missing bounties, please:
 
 1. Open an issue in the Ergo-Bounties repository
 2. Reach out on the Ergo Discord server
