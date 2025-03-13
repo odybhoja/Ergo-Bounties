@@ -361,7 +361,35 @@ for lang, lang_bounties in languages.items():
             # Create a claim link that opens a PR template
             issue_number = bounty["issue_number"]
             creator = bounty["creator"]
-            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={{\n  \"contributor\": \"YOUR_GITHUB_USERNAME\",\n  \"wallet_address\": \"YOUR_WALLET_ADDRESS\",\n  \"contact_method\": \"YOUR_CONTACT_INFO\",\n  \"work_link\": \"\",\n  \"work_title\": \"{title.replace('\"', '\\\\\"')}\",\n  \"bounty_id\": \"{owner}/{repo_name}#{issue_number}\",\n  \"original_issue_link\": \"{url}\",\n  \"payment_currency\": \"{currency}\",\n  \"bounty_value\": {amount if amount != 'Not specified' else '0'},\n  \"status\": \"in-progress\",\n  \"submission_date\": \"\",\n  \"expected_completion\": \"YYYY-MM-DD\",\n  \"description\": \"I am working on this bounty\",\n  \"review_notes\": \"\",\n  \"payment_tx_id\": \"\",\n  \"payment_date\": \"\"\n}}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{title}"
+            repo_name = bounty["repo"]
+            
+            # Create JSON template using json.dumps to properly escape special characters
+            template_data = {
+                "contributor": "YOUR_GITHUB_USERNAME",
+                "wallet_address": "YOUR_WALLET_ADDRESS",
+                "contact_method": "YOUR_CONTACT_INFO",
+                "work_link": "",
+                "work_title": title,
+                "bounty_id": f"{owner}/{repo_name}#{issue_number}",
+                "original_issue_link": url,
+                "payment_currency": currency,
+                "bounty_value": 0 if amount == "Not specified" else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
+                "status": "in-progress",
+                "submission_date": "",
+                "expected_completion": "YYYY-MM-DD",
+                "description": "I am working on this bounty",
+                "review_notes": "",
+                "payment_tx_id": "",
+                "payment_date": ""
+            }
+            
+            # Convert to JSON and URL encode
+            import urllib.parse
+            json_content = json.dumps(template_data, indent=2)
+            encoded_json = urllib.parse.quote(json_content)
+            
+            # Create the claim URL
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
             
             f.write(f"| {owner} | [{title}]({url}) | {erg_equiv} | {currency} | {secondary_lang} | [Claim]({claim_url}) |\n")
 
@@ -434,7 +462,35 @@ with open(md_file, 'w', encoding='utf-8') as f:
             # Create a claim link that opens a PR template
             issue_number = bounty["issue_number"]
             creator = bounty["creator"]
-            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={{\n  \"contributor\": \"YOUR_GITHUB_USERNAME\",\n  \"wallet_address\": \"YOUR_WALLET_ADDRESS\",\n  \"contact_method\": \"YOUR_CONTACT_INFO\",\n  \"work_link\": \"\",\n  \"work_title\": \"{title.replace('\"', '\\\\\"')}\",\n  \"bounty_id\": \"{owner}/{repo_name}#{issue_number}\",\n  \"original_issue_link\": \"{url}\",\n  \"payment_currency\": \"{currency}\",\n  \"bounty_value\": {amount if amount != 'Not specified' else '0'},\n  \"status\": \"in-progress\",\n  \"submission_date\": \"\",\n  \"expected_completion\": \"YYYY-MM-DD\",\n  \"description\": \"I am working on this bounty\",\n  \"review_notes\": \"\",\n  \"payment_tx_id\": \"\",\n  \"payment_date\": \"\"\n}}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{title}"
+            repo_name = bounty["repo"]
+            
+            # Create JSON template using json.dumps to properly escape special characters
+            template_data = {
+                "contributor": "YOUR_GITHUB_USERNAME",
+                "wallet_address": "YOUR_WALLET_ADDRESS",
+                "contact_method": "YOUR_CONTACT_INFO",
+                "work_link": "",
+                "work_title": title,
+                "bounty_id": f"{owner}/{repo_name}#{issue_number}",
+                "original_issue_link": url,
+                "payment_currency": currency,
+                "bounty_value": 0 if amount == "Not specified" else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
+                "status": "in-progress",
+                "submission_date": "",
+                "expected_completion": "YYYY-MM-DD",
+                "description": "I am working on this bounty",
+                "review_notes": "",
+                "payment_tx_id": "",
+                "payment_date": ""
+            }
+            
+            # Convert to JSON and URL encode
+            import urllib.parse
+            json_content = json.dumps(template_data, indent=2)
+            encoded_json = urllib.parse.quote(json_content)
+            
+            # Create the claim URL
+            claim_url = f"https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json&value={encoded_json}&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"
             
             f.write(f"| {owner} | [{title}]({url}) | {owner_count} | {erg_equiv} | {currency} | [Claim]({claim_url}) |\n")
             owner_count += 1
