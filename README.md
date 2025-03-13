@@ -2,7 +2,7 @@
   <h1>🏆 Ergo Ecosystem Bounties</h1>
   <p><strong>The central hub for tracking, claiming, and managing bounties across the Ergo blockchain ecosystem</strong></p>
   <p>
-    <a href="/bounty_issues.md"><img src="https://img.shields.io/badge/Open%20Bounties-100+-brightgreen" alt="Open Bounties"></a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-100+-brightgreen" alt="Open Bounties"></a>
     <a href="/docs/submission-guide.md"><img src="https://img.shields.io/badge/Documentation-Submission%20Guide-blue" alt="Documentation"></a>
     <a href="CONTRIBUTING.md"><img src="https://img.shields.io/badge/Contributions-Welcome-orange" alt="Contributions Welcome"></a>
   </p>
@@ -19,7 +19,13 @@ Ergo Ecosystem Bounties offers financial incentives to developers who contribute
 
 ## 📋 Open Bounties
 
-**[View All Current Bounties →](/bounty_issues.md)**
+**[View All Current Bounties →](/bounties/all.md)**
+
+### Browse Bounties by Programming Language
+
+You can now browse bounties by programming language! This makes it easier to find tasks that match your skills and expertise.
+
+**[View Bounties by Language →](/bounties_by_language/)**
 
 ### Bounty Distribution by Project
 

@@ -33,7 +33,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add bounty_issues.md
-          git add scrape/bounty_issues_*.csv
+          git add bounties/
+          git add bounties_by_language/
           git commit -m "Update bounty listings [automated]" || echo "No changes to commit"
           git push
