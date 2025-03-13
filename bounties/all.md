@@ -1,6 +1,6 @@
 # Open Bounties
 
-*Report generated: 2025-03-13 21:19:09 UTC*
+*Report generated: 2025-03-13 21:24:36 UTC*
 
 ## Navigation
 
@@ -11,10 +11,10 @@
 | Project | Count | ERG Equivalent |
 |---------|-------|---------------|
 | [ergoplatform](by_org/ergoplatform.md) | 84 | 45248.92 |
-| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 478.14 |
-| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 113.13 |
-| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 126.66 |
 | [input-output-hk](by_org/input-output-hk.md) | 1 | 633.28 |
+| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 478.14 |
+| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 126.66 |
+| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 113.13 |
 | **Overall Total** | **103** | **46600.12** |
 
 ## Bounties by Programming Language
@@ -34,21 +34,21 @@
 |----------|-------|------------------|
 | [SigUSD](by_currency/sigusd.md) | 54 | 41099.57 |
 | [ERG](by_currency/erg.md) | 25 | 4500.00 |
-| [GORT](by_currency/gort.md) | 7 | 193.38 |
 | [g GOLD](by_currency/gold.md) | 6 | 567.38 |
+| [GORT](by_currency/gort.md) | 7 | 193.38 |
+| [BENE](by_currency/bene.md) | 2 | 126.66 |
 | [RSN](by_currency/rsn.md) | 6 | 113.13 |
 | [Not specified](by_currency/not_specified.md) | 3 | 0.00 |
-| [BENE](by_currency/bene.md) | 2 | 126.66 |
 
 ## Bounties by Organization
 
 | Organization | Count | Total Value (ERG) |
 |--------------|-------|------------------|
 | [ergoplatform](by_org/ergoplatform.md) | 84 | 45248.92 |
-| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 478.14 |
-| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 113.13 |
-| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 126.66 |
 | [input-output-hk](by_org/input-output-hk.md) | 1 | 633.28 |
+| [ChainCashLabs](by_org/chaincashlabs.md) | 9 | 478.14 |
+| [StabilityNexus](by_org/stabilitynexus.md) | 2 | 126.66 |
+| [rosen-bridge](by_org/rosen-bridge.md) | 7 | 113.13 |
 
 ## Detailed Bounties
 
