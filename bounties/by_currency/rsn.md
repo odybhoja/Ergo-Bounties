@@ -1,6 +1,6 @@
 # RSN Bounties
 
-*Report generated: 2025-03-13 16:59:29 UTC*
+*Report generated: 2025-03-13 17:04:38 UTC*
 
 Total RSN bounties: **6**
 
@@ -10,7 +10,7 @@ Total RSN bounties: **6**
 
 ## Current RSN Rate
 
-1 RSN = 18.563417 ERG
+1 RSN = 0.053869 ERG
 
 |Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|
 |---|---|---|---|---|---|
