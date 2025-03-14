@@ -67,15 +67,19 @@ def generate_organization_files(
             ))
             f.write("\n\n")
             
-            # Add language and currency sections
-            f.write("### Programming Languages\n\n")
+            # Create a unified filter section
+            f.write("## Filter Bounties\n\n")
+            
+            # Programming Languages
+            f.write("**By Programming Language:** ")
             lang_links = []
             for lang_name, lang_bounties_list in languages.items():
                 lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](../by_language/{lang_name.lower()}.md)")
             f.write(" • ".join(lang_links))
             f.write("\n\n")
             
-            f.write("### Currencies\n\n")
+            # Currencies
+            f.write("**By Currency:** ")
             currency_links = []
             for currency_name, currency_bounties_list in currencies_dict.items():
                 # Format the currency name for the file link
@@ -89,15 +93,16 @@ def generate_organization_files(
             f.write(" • ".join(currency_links))
             f.write("\n\n")
             
-            f.write("### Organizations\n\n")
+            # Organizations
+            f.write("**By Organization:** ")
             org_links = []
             for org_name, org_bounties_list in orgs.items():
                 org_links.append(f"[{org_name} ({len(org_bounties_list)})](../by_org/{org_name.lower()}.md)")
             f.write(" • ".join(org_links))
             f.write("\n\n")
             
-            f.write("|Title & Link|Bounty Amount|Paid in|Primary Language|Secondary Language|Claim|\n")
-            f.write("|---|---|---|---|---|---|\n")
+            f.write("|Repository|Title & Link|ERG Value|Paid In|Primary Language|Secondary Language|Reserve|\n")
+            f.write("|---|---|---|---|---|---|---|\n")
             
             # Calculate ERG equivalent for each bounty for sorting
             for bounty in org_bounties:
@@ -146,6 +151,9 @@ def generate_organization_files(
                 elif currency == "Not specified":
                     currency_file_name = "not_specified"
                 
-                f.write(f"| [{title}]({url}) | {erg_equiv} | [{currency}](../by_currency/{currency_file_name}.md) | {primary_lang_link} | {secondary_lang} | [Claim]({claim_url}) |\n")
+                # Create a nicer reserve button
+                reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
+                
+                f.write(f"| [{repo_name}](https://github.com/{bounty['owner']}/{repo_name}) | [{title}]({url}) | {erg_equiv} ERG | [{currency}](../by_currency/{currency_file_name}.md) | {primary_lang_link} | {secondary_lang} | {reserve_button} |\n")
     
     logger.info(f"Generated {len(orgs)} organization-specific files")

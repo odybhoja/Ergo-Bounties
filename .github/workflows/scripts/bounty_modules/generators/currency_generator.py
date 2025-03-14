@@ -98,15 +98,19 @@ def generate_currency_files(
             ))
             f.write("\n\n")
             
-            # Add language and currency sections
-            f.write("### Programming Languages\n\n")
+            # Create a unified filter section
+            f.write("## Filter Bounties\n\n")
+            
+            # Programming Languages
+            f.write("**By Programming Language:** ")
             lang_links = []
             for lang_name, lang_bounties_list in languages.items():
                 lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](../by_language/{lang_name.lower()}.md)")
             f.write(" • ".join(lang_links))
             f.write("\n\n")
             
-            f.write("### Currencies\n\n")
+            # Currencies
+            f.write("**By Currency:** ")
             currency_links = []
             for currency_name, currency_bounties_list in currencies_dict.items():
                 # Format the currency name for the file link
@@ -120,7 +124,8 @@ def generate_currency_files(
             f.write(" • ".join(currency_links))
             f.write("\n\n")
             
-            f.write("### Organizations\n\n")
+            # Organizations
+            f.write("**By Organization:** ")
             org_links = []
             for org_name, org_bounties_list in orgs.items():
                 org_links.append(f"[{org_name} ({len(org_bounties_list)})](../by_org/{org_name.lower()}.md)")
@@ -141,8 +146,8 @@ def generate_currency_files(
                 
                 f.write(f"1 {currency} = {display_rate:.6f} ERG\n\n")
             
-            f.write("|Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|\n")
-            f.write("|---|---|---|---|---|---|\n")
+            f.write("|Organisation|Repository|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Reserve|\n")
+            f.write("|---|---|---|---|---|---|---|\n")
             
             # Calculate ERG equivalent for each bounty for sorting
             for bounty in currency_bounties:
@@ -183,7 +188,10 @@ def generate_currency_files(
                 org_link = f"[{owner}](../by_org/{owner.lower()}.md)"
                 primary_lang_link = f"[{primary_lang}](../by_language/{primary_lang.lower()}.md)"
                 
-                f.write(f"| {org_link} | [{title}]({url}) | {amount} | {erg_equiv} | {primary_lang_link} | [Claim]({claim_url}) |\n")
+                # Create a nicer reserve button
+                reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
+                
+                f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {amount} {currency} | {erg_equiv} ERG | {primary_lang_link} | {reserve_button} |\n")
     
     logger.info(f"Generated {len(currencies_dict)} currency-specific files")
 
@@ -225,15 +233,19 @@ def generate_price_table(
         ))
         f.write("\n\n")
         
-        # Add language and currency sections
-        f.write("### Programming Languages\n\n")
+        # Create a unified filter section
+        f.write("## Filter Bounties\n\n")
+        
+        # Programming Languages
+        f.write("**By Programming Language:** ")
         lang_links = []
         for lang_name, lang_bounties_list in languages.items():
             lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](by_language/{lang_name.lower()}.md)")
         f.write(" • ".join(lang_links))
         f.write("\n\n")
         
-        f.write("### Currencies\n\n")
+        # Currencies
+        f.write("**By Currency:** ")
         currency_links = []
         for currency_name, currency_bounties_list in currencies_dict.items():
             # Format the currency name for the file link
@@ -247,7 +259,8 @@ def generate_price_table(
         f.write(" • ".join(currency_links))
         f.write("\n\n")
         
-        f.write("### Organizations\n\n")
+        # Organizations
+        f.write("**By Organization:** ")
         org_links = []
         for org_name, org_bounties_list in orgs.items():
             org_links.append(f"[{org_name} ({len(org_bounties_list)})](by_org/{org_name.lower()}.md)")

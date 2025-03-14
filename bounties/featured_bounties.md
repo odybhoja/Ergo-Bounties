@@ -1,6 +1,6 @@
 # Featured Bounties
 
-*Report generated: 2025-03-14 12:11:07 UTC*
+*Report generated: 2025-03-14 12:58:06 UTC*
 
 ## Navigation
 
@@ -10,12 +10,12 @@
 
 | Bounty | Organization | Value | Currency |
 |--------|--------------|-------|----------|
-| [NiPoPoW powered bootstrapping ](https://github.com/ergoplatform/ergo/issues/1365) | [ergoplatform](by_org/ergoplatform.md) | 6285.28 ERG | [SigUSD](by_currency/sigusd.md) |
-| [Implement ContractTemplate compiler](https://github.com/ergoplatform/sigmastate-interpreter/issues/852) | [ergoplatform](by_org/ergoplatform.md) | 1257.06 ERG | [SigUSD](by_currency/sigusd.md) |
+| [NiPoPoW powered bootstrapping ](https://github.com/ergoplatform/ergo/issues/1365) | [ergoplatform](by_org/ergoplatform.md) | 6102.11 ERG | [SigUSD](by_currency/sigusd.md) |
+| [Implement ContractTemplate compiler](https://github.com/ergoplatform/sigmastate-interpreter/issues/852) | [ergoplatform](by_org/ergoplatform.md) | 1220.42 ERG | [SigUSD](by_currency/sigusd.md) |
 
 ## Weekly Summary
 
 | Date | Open Bounties | Total Value |
 |------|--------------|-------------|
-| Mar 14, 2025 | 106 | 46,356.21 ERG |
+| Mar 14, 2025 | 106 | 45,163.02 ERG |
 

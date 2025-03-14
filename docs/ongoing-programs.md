@@ -4,6 +4,12 @@ In addition to specific bounties, the Ergo ecosystem offers ongoing reward progr
 
 ## Current Ongoing Programs
 
+|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Reserve|
+|---|---|---|---|---|---|---|---|
+| [EF_DAO_LLC](../bounties/by_org/ef_dao_llc.md) | [educational-rewards](https://github.com/EF_DAO_LLC/educational-rewards) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#educational-reward-program) |
+| [EF_DAO_LLC](../bounties/by_org/ef_dao_llc.md) | [development-rewards](https://github.com/EF_DAO_LLC/development-rewards) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#development-reward-program) |
+
+
 |Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|
 |---|---|---|---|---|---|---|---|
 | [ergoplatform](../bounties/by_org/ergoplatform.md) | [ergoplatform](https://github.com/ergoplatform) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [Details](#educational-reward-program) |

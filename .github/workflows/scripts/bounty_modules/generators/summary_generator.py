@@ -102,7 +102,7 @@ def generate_main_file(
         
         # Write all bounties table
         f.write("## All Bounties\n\n")
-        f.write("|Organisation|Repository|Title & Link|Primary Language|ERG Value|Paid In|Claim|\n")
+        f.write("|Organisation|Repository|Title & Link|Primary Language|ERG Value|Paid In|Reserve|\n")
         f.write("|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
@@ -155,11 +155,11 @@ def generate_main_file(
             currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
             primary_lang_link = f"[{primary_lang}](by_language/{primary_lang.lower()}.md)"
             
-            # Create a nicer claim button
-            claim_button = f"[<kbd>Claim</kbd>]({claim_url})"
+            # Create a nicer reserve button
+            reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
             
             # Format the row with the new columns
-            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv} | {currency_link} | {claim_button} |\n")
+            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv} | {currency_link} | {reserve_button} |\n")
     
     logger.info("Generated main bounty file")
 
@@ -319,7 +319,7 @@ def update_ongoing_programs_table(
             
             # Create the new table content
             table_content = "## Current Ongoing Programs\n\n"
-            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Reserve|\n"
             table_content += "|---|---|---|---|---|---|---|---|\n"
             
             for program in ongoing_programs:
@@ -332,8 +332,11 @@ def update_ongoing_programs_table(
                 # Add links to organization pages
                 org_link = f"[{owner}](../bounties/by_org/{owner.lower()}.md)"
                 
+                # Create a nicer details button
+                details_button = f"[<kbd>Details</kbd>](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')})"
+                
                 # For each program, add a row to the table
-                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | [Details](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')}) |\n"
+                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | {details_button} |\n"
             
             # Combine the parts
             new_content = before_table + table_content + "\n" + after_table
@@ -345,7 +348,7 @@ def update_ongoing_programs_table(
             
             # Create the new table content
             table_content = "## Current Ongoing Programs\n\n"
-            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Reserve|\n"
             table_content += "|---|---|---|---|---|---|---|---|\n"
             
             for program in ongoing_programs:
@@ -358,8 +361,11 @@ def update_ongoing_programs_table(
                 # Add links to organization pages
                 org_link = f"[{owner}](../bounties/by_org/{owner.lower()}.md)"
                 
+                # Create a nicer details button
+                details_button = f"[<kbd>Details</kbd>](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')})"
+                
                 # For each program, add a row to the table
-                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | [Details](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')}) |\n"
+                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | {details_button} |\n"
             
             # Combine the parts
             new_content = content[:table_start] + table_content + content[table_end:]
