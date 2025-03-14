@@ -97,7 +97,7 @@ def generate_main_file(
         
         # Write all bounties table
         f.write("## All Bounties\n\n")
-        f.write("|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n")
+        f.write("|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n")
         f.write("|---|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
@@ -314,7 +314,7 @@ def update_ongoing_programs_table(
             
             # Create the new table content
             table_content = "## Current Ongoing Programs\n\n"
-            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n"
             table_content += "|---|---|---|---|---|---|---|---|\n"
             
             for program in ongoing_programs:
@@ -340,7 +340,7 @@ def update_ongoing_programs_table(
             
             # Create the new table content
             table_content = "## Current Ongoing Programs\n\n"
-            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n"
             table_content += "|---|---|---|---|---|---|---|---|\n"
             
             for program in ongoing_programs:
