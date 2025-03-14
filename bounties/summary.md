@@ -15,7 +15,7 @@
 | [ChainCashLabs](/bounties/by_org/chaincashlabs.md) | 9 | 486.93 ERG |
 | [StabilityNexus](/bounties/by_org/stabilitynexus.md) | 2 | 126.66 ERG |
 | [rosen-bridge](/bounties/by_org/rosen-bridge.md) | 7 | 113.13 ERG |
-| [EF DAO LLC](/bounties/by_org/ef dao llc.md) | 2 | 0.00 ERG |
+| [EF_DAO_LLC](/bounties/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
 | **Total** | **106** | **46,665.50 ERG** |
 
 ## Currencies
