@@ -163,9 +163,9 @@ def format_navigation_badges(
     """
     badges = []
     badges.append(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)]({relative_path}all.md)")
-    badges.append(f"[![By Language](https://img.shields.io/badge/By_Language-{languages_count}-green)]({relative_path}all.md#bounties-by-programming-language)")
-    badges.append(f"[![By Currency](https://img.shields.io/badge/By_Currency-{currencies_count}-yellow)]({relative_path}all.md#bounties-by-currency)")
-    badges.append(f"[![By Organization](https://img.shields.io/badge/By_Organization-{orgs_count}-orange)]({relative_path}all.md#bounties-by-organization)")
+    badges.append(f"[![By Language](https://img.shields.io/badge/By_Language-{languages_count}-green)]({relative_path}by_language/)")
+    badges.append(f"[![By Currency](https://img.shields.io/badge/By_Currency-{currencies_count}-yellow)]({relative_path}by_currency/)")
+    badges.append(f"[![By Organization](https://img.shields.io/badge/By_Organization-{orgs_count}-orange)]({relative_path}by_org/)")
     
     if conversion_rates_count > 0:
         badges.append(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{conversion_rates_count}-purple)]({relative_path}currency_prices.md)")

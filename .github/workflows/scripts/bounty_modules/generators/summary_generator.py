@@ -56,15 +56,19 @@ def generate_main_file(
         ))
         f.write("\n\n")
         
-        # Add language and currency sections
-        f.write("### Programming Languages\n\n")
+        # Create a unified filter section
+        f.write("## Filter Bounties\n\n")
+        
+        # Programming Languages
+        f.write("**By Programming Language:** ")
         lang_links = []
         for lang, lang_bounties in languages.items():
             lang_links.append(f"[{lang} ({len(lang_bounties)})](by_language/{lang.lower()}.md)")
         f.write(" • ".join(lang_links))
         f.write("\n\n")
         
-        f.write("### Currencies\n\n")
+        # Currencies
+        f.write("**By Currency:** ")
         currency_links = []
         for currency, currency_bounties in currencies_dict.items():
             # Format the currency name for the file link
@@ -78,7 +82,8 @@ def generate_main_file(
         f.write(" • ".join(currency_links))
         f.write("\n\n")
         
-        f.write("### Organizations\n\n")
+        # Organizations
+        f.write("**By Organization:** ")
         org_links = []
         for org, org_bounties in orgs.items():
             org_links.append(f"[{org} ({len(org_bounties)})](by_org/{org.lower()}.md)")
@@ -97,8 +102,8 @@ def generate_main_file(
         
         # Write all bounties table
         f.write("## All Bounties\n\n")
-        f.write("|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n")
-        f.write("|---|---|---|---|---|---|---|---|\n")
+        f.write("|Organisation|Repository|Title & Link|Primary Language|ERG Value|Paid In|Claim|\n")
+        f.write("|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
         for bounty in bounty_data:
@@ -154,7 +159,7 @@ def generate_main_file(
             claim_button = f"[<kbd>Claim</kbd>]({claim_url})"
             
             # Format the row with the new columns
-            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {amount} {currency} | {erg_equiv} | {currency_link} | {claim_button} |\n")
+            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv} | {currency_link} | {claim_button} |\n")
     
     logger.info("Generated main bounty file")
 
@@ -245,7 +250,7 @@ def generate_summary_file(
             
             f.write(f"| {currency_link} | {totals['count']} | {totals['value']:.2f} |\n")
         
-        f.write(f"\n[View all currencies →](/{bounties_dir}/all.md#bounties-by-currency)\n\n")
+        f.write(f"\n[View all currencies →](/{bounties_dir}/by_currency/)\n\n")
         
         # Add language breakdown
         f.write("## Languages\n\n")
@@ -258,7 +263,7 @@ def generate_summary_file(
             percentage = (count / total_bounties) * 100 if total_bounties > 0 else 0
             f.write(f"| [{lang}](/{bounties_dir}/by_language/{lang.lower()}.md) | {count} | {percentage:.1f}% |\n")
         
-        f.write(f"\n[View all languages →](/{bounties_dir}/all.md#bounties-by-programming-language)\n\n")
+        f.write(f"\n[View all languages →](/{bounties_dir}/by_language/)\n\n")
         
         f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
         
