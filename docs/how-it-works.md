@@ -1,6 +1,6 @@
-# 🤖 Automated Bounty Tracking System
+# 🤖 Ergo Bounties: How It Works
 
-This document explains the technical details of how the Ergo Ecosystem Bounties repository automatically tracks and updates bounties across the Ergo blockchain ecosystem.
+This document explains the technical details of how the Ergo Ecosystem Bounties repository automatically tracks, updates, and displays bounties across the Ergo blockchain ecosystem.
 
 ## Automated Bounty Tracking System
 
@@ -20,7 +20,7 @@ The automation process follows these steps:
 2. **Issue Identification**: It identifies issues with bounty tags or mentions in their title or description
 3. **Bounty Extraction**: The system extracts bounty amounts and currencies using pattern matching
 4. **Value Calculation**: Where possible, it converts different currencies to ERG equivalent values
-5. **Report Generation**: It generates updated `bounty_issues.md` and CSV reports
+5. **Report Generation**: It generates updated bounty reports in various formats and categories
 6. **Automatic Commit**: Changes are committed back to the repository
 
 ## Adding Repositories to Tracking
@@ -111,18 +111,91 @@ The system generates:
 - A Markdown file (`bounty_issues.md`) with a formatted table of all bounties
 - A CSV file (`scrape/bounty_issues_TIMESTAMP.csv`) with detailed bounty data
 - Language-specific Markdown files in the `bounties/by_language/` directory
+- Currency-specific Markdown files in the `bounties/by_currency/` directory
+- Organization-specific Markdown files in the `bounties/by_org/` directory
 - Summary statistics including total counts and values
 
-### Programming Language Categorization
+## For Developers
 
-The system automatically categorizes bounties by programming language:
+This section provides information for developers who want to contribute to the Ergo Bounties codebase.
 
-1. **Language Detection**: For each repository, the system queries the GitHub API to determine the primary and secondary programming languages used
-2. **Categorization**: Bounties are grouped by the primary language of their repository
-3. **Language-Specific Files**: Separate Markdown files are generated for each programming language in the `bounties/by_language/` directory
-4. **Language Statistics**: The main bounty file includes a breakdown of bounties by programming language with percentages
+### Code Organization
 
-This categorization makes it easier for developers to find bounties that match their skills and expertise.
+The repository code is structured as follows:
+
+```
+.github/workflows/         # GitHub Actions workflow files 
+└── scripts/               # Scripts used by GitHub Actions
+    ├── bounties/          # Generated bounty reports & data
+    ├── bounty_modules/    # Core code modules
+    │   └── generators/    # Report and README generators
+    │       ├── config.json       # Configuration for README generator
+    │       └── readme_updater.py # README generation script
+    └── constants.json     # Configuration constants
+```
+
+### Key Components for Developers
+
+#### 1. README Generator (`readme_updater.py`)
+
+This module is responsible for updating the main README.md. Its key features include:
+
+- Loading configurations from `config.json` and `constants.json`
+- Generating language badges based on current bounty counts
+- Calculating statistics (high-value bounties, beginner-friendly counts)
+- Formatting dynamic sections based on current data
+- Robust error handling with fallbacks
+
+#### 2. Configuration System
+
+Two main configuration files control the system behavior:
+
+##### `constants.json`
+Contains project-wide constants like:
+```json
+{
+  "language_colors": { "Scala": "DC322F", "Rust": "DEA584" },
+  "fixed_bounties": {
+    "fleet_sdk": { "count": 7, "currency": "SigUSD", "amount": 775 },
+    "keystone": { "count": 1, "currency": "ERG", "amount": 3000 }
+  }
+}
+```
+
+##### `config.json`
+Controls the README generator specifically:
+```json
+{
+  "readme": {
+    "section_order": ["header", "stats_badges", "get_started"],
+    "display_beginner_friendly": true,
+    "high_value_threshold_erg": 1000
+  },
+  "badges": {
+    "colors": { "open_bounties": "4CAF50", "total_value": "2196F3" }
+  }
+}
+```
+
+### Development Best Practices
+
+When modifying the codebase, follow these guidelines:
+
+1. **Error Handling**: Always include robust error handling with fallbacks for missing data
+2. **Configuration-Driven**: Make features configurable rather than hardcoded
+3. **Type Annotations**: Use proper Python type hints for better maintainability
+4. **Modular Design**: Keep functions focused and modular for easier testing
+5. **Backward Compatibility**: Ensure changes don't break existing functionality
+
+### Testing Changes
+
+To test changes to the scripts:
+
+1. Run the scripts locally with appropriate test data
+2. Check that generated files match expected formats
+3. Verify error handling by deliberately introducing bad input
+4. Test with various configurations to ensure flexibility
+5. Run the test.py script to validate full system functionality
 
 ## Limitations and Edge Cases
 
@@ -138,17 +211,6 @@ Planned enhancements to the system include:
 - Better categorization of bounties by type or difficulty
 - Enhanced statistics and visualizations
 - Integration with other Ergo ecosystem tools
-
-## For Developers
-
-If you want to contribute to improving the bounty tracking system:
-
-1. Review the Python script to understand the current implementation
-2. Test changes locally before submitting PRs
-3. Ensure backward compatibility with existing data formats
-4. Consider edge cases in bounty descriptions and formats
-
-For questions or suggestions about the bounty tracking system, please open an issue in the repository.
 
 ## Donations
 

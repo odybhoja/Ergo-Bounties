@@ -252,7 +252,7 @@ class TestBountyFinder(unittest.TestCase):
                 "url": "https://github.com/test-owner/test-repo/issues/1",
                 "amount": "100",
                 "currency": "ERG",
-                "primary_lang": "Test",
+                "primary_lang": "JavaScript",
                 "secondary_lang": "None",
                 "labels": ["test", "bounty"],
                 "issue_number": 1,
@@ -582,20 +582,20 @@ class TestBountyFinder(unittest.TestCase):
             self.assertIn(test_bounty_title, content, 
                          f"Test bounty '{test_bounty_title}' not found in all.md")
         
-        # Check if the test bounty is included in by_language/test.md
-        test_lang_path = os.path.join(self.bounties_dir, 'by_language', 'test.md')
+        # Check if the test bounty is included in by_language/javascript.md
+        test_lang_path = os.path.join(self.bounties_dir, 'by_language', 'javascript.md')
         if os.path.exists(test_lang_path):
             with open(test_lang_path, 'r') as f:
                 content = f.read()
                 
             if test_bounty_title in content:
-                print_success(f"Test bounty '{test_bounty_title}' found in by_language/test.md")
+                print_success(f"Test bounty '{test_bounty_title}' found in by_language/javascript.md")
             else:
-                print_error(f"Test bounty '{test_bounty_title}' not found in by_language/test.md")
+                print_error(f"Test bounty '{test_bounty_title}' not found in by_language/javascript.md")
                 self.assertIn(test_bounty_title, content, 
-                             f"Test bounty '{test_bounty_title}' not found in by_language/test.md")
+                             f"Test bounty '{test_bounty_title}' not found in by_language/javascript.md")
         else:
-            print_warning(f"File by_language/test.md does not exist")
+            print_warning(f"File by_language/javascript.md does not exist")
         
         # Check if the test bounty is included in by_org/test-owner.md
         test_org_path = os.path.join(self.bounties_dir, 'by_org', 'test-owner.md')
