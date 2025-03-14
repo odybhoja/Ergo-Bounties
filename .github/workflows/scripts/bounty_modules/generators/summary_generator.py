@@ -97,7 +97,7 @@ def generate_main_file(
         
         # Write all bounties table
         f.write("## All Bounties\n\n")
-        f.write("|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|\n")
+        f.write("|Organisation|Repository|Title & Link|Primary Language|ERG Value|Paid In|Claim|\n")
         f.write("|---|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
@@ -154,7 +154,7 @@ def generate_main_file(
             claim_button = f"[<kbd>Claim</kbd>]({claim_url})"
             
             # Format the row with the new columns
-            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {amount} {currency} | {erg_equiv} | {currency_link} | {claim_button} |\n")
+            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv} | {currency_link} | {claim_button} |\n")
     
     logger.info("Generated main bounty file")
 
