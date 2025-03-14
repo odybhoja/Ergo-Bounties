@@ -180,10 +180,10 @@ def update_readme_table(
       <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
     </a>
     <a href="/docs/claim-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Reserve a Bounty">
+      <img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty">
     </a>
     <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/💰%20Submit-orange" alt="Request Payment">
+      <img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment">
     </a>
     <a href="/docs/add-missing-bounty-guide.md">
       <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">

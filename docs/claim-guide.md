@@ -1,4 +1,4 @@
-# Claiming Ergo Bounties: Submission Guide
+# Claiming Ergo Bounties
 
 This guide provides detailed instructions for claiming bounties by submitting your completed work to the Ergo ecosystem. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
 
