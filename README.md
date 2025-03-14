@@ -4,10 +4,10 @@
 
   <p>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/Open%20Bounties-104%2B-4CAF50" alt="Open Bounties">
+      <img src="https://img.shields.io/badge/Open%20Bounties-105%2B-4CAF50" alt="Open Bounties">
     </a>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-49,645.38%20ERG-2196F3" alt="Total Value">
+      <img src="https://img.shields.io/badge/💰%20Total%20Value-49,765.50%20ERG-2196F3" alt="Total Value">
     </a>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
@@ -39,7 +39,7 @@
         <a href="/bounties/by_language/svelte.md"><img src="https://img.shields.io/badge/Svelte-2-DC322F"></a>
     <a href="/bounties/by_language/scala.md"><img src="https://img.shields.io/badge/Scala-71-DC322F"></a>
     <a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-1-007396"></a>
-    <a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-23-DEA584"></a>
+    <a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-24-DEA584"></a>
     <a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-6-3178C6"></a>
     <a href="/bounties/by_language/">
       <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
