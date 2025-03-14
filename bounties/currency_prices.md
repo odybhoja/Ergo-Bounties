@@ -1,10 +1,10 @@
 # Currency Prices
 
-*Report generated: 2025-03-14 10:05:05 UTC*
+*Report generated: 2025-03-14 12:11:07 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All_Bounties-106-blue)](all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](all.md#bounties-by-programming-language) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](all.md#bounties-by-currency) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](all.md#bounties-by-organization) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All_Bounties-106-blue)](all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](currency_prices.md)
 
 ### Programming Languages
 
@@ -22,10 +22,10 @@
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE](by_currency/bene.md) | 1.266551 | No market value |
+| [BENE](by_currency/bene.md) | 1.257057 | No market value |
 | [GORT](by_currency/gort.md) | 0.078932 |  |
 | [RSN](by_currency/rsn.md) | 0.053869 |  |
-| [SigUSD](by_currency/sigusd.md) | 1.266551 | Stablecoin pegged to USD |
-| [g GOLD](by_currency/gold.md) | 82.730169 | Price per gram of gold |
+| [SigUSD](by_currency/sigusd.md) | 1.257057 | Stablecoin pegged to USD |
+| [g GOLD](by_currency/gold.md) | 83.214539 | Price per gram of gold |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*

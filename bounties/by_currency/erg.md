@@ -1,12 +1,12 @@
 # ERG Bounties
 
-*Report generated: 2025-03-14 10:05:05 UTC*
+*Report generated: 2025-03-14 12:11:07 UTC*
 
 Total ERG bounties: **28**
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All_Bounties-106-blue)](../all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](../all.md#bounties-by-programming-language) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](../all.md#bounties-by-currency) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](../all.md#bounties-by-organization) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](../currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All_Bounties-106-blue)](../all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](../currency_prices.md)
 
 ### Programming Languages
 
