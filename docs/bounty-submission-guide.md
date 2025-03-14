@@ -1,6 +1,4 @@
-# Claiming Ergo Bounties
-
-This guide provides detailed instructions for claiming bounties by submitting your completed work to the Ergo ecosystem. The process is designed to be straightforward while ensuring proper tracking and payment for your contributions.
+# Bounty Submission Guide
 
 ## Prerequisites
 
@@ -11,8 +9,6 @@ Before submitting a claim, ensure you have:
 3. A wallet address where you can receive payment
 
 ## Reserving a Bounty
-
-To prevent duplicate work, you can reserve a bounty before you start working on it. This lets others know that you're actively working on the bounty.
 
 ### Why Reserve Bounties?
 
@@ -58,13 +54,6 @@ Reserving a bounty helps:
 4. **Work on your implementation**:
    - The open PR serves as your reservation
    - You can update the PR description or JSON file with progress updates if you wish
-
-### Reservation Duration
-
-- The community expects reservations to be completed within a reasonable timeframe
-- For complex tasks, include an estimated completion date in your JSON file
-- If you need more time, update your PR with progress and a new expected date
-- If you can't complete the work, close your PR to free up the bounty for others
 
 ## Step-by-Step Submission Process
 
@@ -199,9 +188,7 @@ If you encounter issues with your submission:
 2. Make any requested changes to your submission
 3. If your PR is closed without merging, you may need to create a new PR with corrections
 
-## Need Help?
-
-If you have any questions about the bounty claiming or submission process, you can:
+## Resources for Help
 
 - Ask in the original bounty issue
 - Open an issue in the Ergo-Bounties repository

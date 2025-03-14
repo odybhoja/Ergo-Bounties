@@ -2,7 +2,7 @@
   <h1>📝 Bounty Submissions</h1>
   <p><strong>Repository of all bounty claims and reservations for the Ergo ecosystem</strong></p>
   <p>
-    <a href="../docs/submission-guide.md"><img src="https://img.shields.io/badge/Documentation-Submission%20Guide-blue" alt="Documentation"></a>
+    <a href="../docs/bounty-submission-guide.md"><img src="https://img.shields.io/badge/Documentation-Submission%20Guide-blue" alt="Documentation"></a>
     <a href="../CONTRIBUTING.md"><img src="https://img.shields.io/badge/Contributions-Welcome-orange" alt="Contributions Welcome"></a>
   </p>
 </div>
@@ -18,7 +18,7 @@ This directory contains all bounty submissions for the Ergo ecosystem. Each subm
 
 Both processes use the same JSON template and PR workflow. Reservations are first-come, first-served.
 
-**[📝 View the Detailed Submission Guide →](../docs/submission-guide.md)**
+**[📝 View the Detailed Submission Guide →](../docs/bounty-submission-guide.md)**
 
 ## JSON File Format
 
@@ -58,4 +58,4 @@ See the [submission template](../templates/submission-template.json) for a compl
 3. Payment will be processed based on the JSON details
 4. The status will be updated to `paid` once payment is complete
 
-For more detailed instructions, see the [submission guide](../docs/submission-guide.md).
+For more detailed instructions, see the [submission guide](../docs/bounty-submission-guide.md).
