@@ -1,6 +1,6 @@
 # Scala Bounties
 
-*Report generated: 2025-03-14 09:19:38 UTC*
+*Report generated: 2025-03-14 09:23:43 UTC*
 
 Total Scala bounties: **71**
 
@@ -18,7 +18,7 @@ Total Scala bounties: **71**
 
 ### Organizations
 
-[StabilityNexus (2)](../by_org/stabilitynexus.md) • [input-output-hk (1)](../by_org/input-output-hk.md) • [ergoplatform (85)](../by_org/ergoplatform.md) • [rosen-bridge (7)](../by_org/rosen-bridge.md) • [ChainCashLabs (9)](../by_org/chaincashlabs.md) • [EF DAO LLC (2)](../by_org/ef dao llc.md)
+[StabilityNexus (2)](../by_org/stabilitynexus.md) • [input-output-hk (1)](../by_org/input-output-hk.md) • [ergoplatform (85)](../by_org/ergoplatform.md) • [rosen-bridge (7)](../by_org/rosen-bridge.md) • [ChainCashLabs (9)](../by_org/chaincashlabs.md) • [EF_DAO_LLC (2)](../by_org/ef_dao_llc.md)
 
 |Owner|Title & Link|Bounty Amount|Paid in|Secondary Language|Claim|
 |---|---|---|---|---|---|

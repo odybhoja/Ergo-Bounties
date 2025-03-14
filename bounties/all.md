@@ -1,6 +1,6 @@
 # All Open Bounties
 
-*Report generated: 2025-03-14 09:19:38 UTC*
+*Report generated: 2025-03-14 09:23:43 UTC*
 
 ## Navigation
 
@@ -16,7 +16,7 @@
 
 ### Organizations
 
-[StabilityNexus (2)](by_org/stabilitynexus.md) • [input-output-hk (1)](by_org/input-output-hk.md) • [ergoplatform (85)](by_org/ergoplatform.md) • [rosen-bridge (7)](by_org/rosen-bridge.md) • [ChainCashLabs (9)](by_org/chaincashlabs.md) • [EF DAO LLC (2)](by_org/ef dao llc.md)
+[StabilityNexus (2)](by_org/stabilitynexus.md) • [input-output-hk (1)](by_org/input-output-hk.md) • [ergoplatform (85)](by_org/ergoplatform.md) • [rosen-bridge (7)](by_org/rosen-bridge.md) • [ChainCashLabs (9)](by_org/chaincashlabs.md) • [EF_DAO_LLC (2)](by_org/ef_dao_llc.md)
 
 ## Ongoing Reward Programs
 
@@ -26,7 +26,7 @@ The Ergo ecosystem offers ongoing reward programs to encourage continuous contri
 
 ## All Bounties
 
-|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|
+|Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Claim|
 |---|---|---|---|---|---|---|---|
 | [ergoplatform](by_org/ergoplatform.md) | [ergo](https://github.com/ergoplatform/ergo) | [NiPoPoW powered bootstrapping ](https://github.com/ergoplatform/ergo/issues/1365) | [Scala](by_language/scala.md) | 5000 SigUSD | 6332.75 | [SigUSD](by_currency/sigusd.md) | [<kbd>Claim</kbd>](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/ergoplatform-ergo-1365.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22NiPoPoW%20powered%20bootstrapping%20%22%2C%0A%20%20%22bounty_id%22%3A%20%22ergoplatform/ergo%231365%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//github.com/ergoplatform/ergo/issues/1365%22%2C%0A%20%20%22payment_currency%22%3A%20%22SigUSD%22%2C%0A%20%20%22bounty_value%22%3A%205000.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20ergoplatform/ergo%231365&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20kushti.%0A%0ABounty:%20NiPoPoW%20powered%20bootstrapping%20) |
 | [ergoplatform](by_org/ergoplatform.md) | [sigmastate-interpreter](https://github.com/ergoplatform/sigmastate-interpreter) | [Implement ContractTemplate compiler](https://github.com/ergoplatform/sigmastate-interpreter/issues/852) | [Scala](by_language/scala.md) | 1000 SigUSD | 1266.55 | [SigUSD](by_currency/sigusd.md) | [<kbd>Claim</kbd>](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/ergoplatform-sigmastate-interpreter-852.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Implement%20ContractTemplate%20compiler%22%2C%0A%20%20%22bounty_id%22%3A%20%22ergoplatform/sigmastate-interpreter%23852%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//github.com/ergoplatform/sigmastate-interpreter/issues/852%22%2C%0A%20%20%22payment_currency%22%3A%20%22SigUSD%22%2C%0A%20%20%22bounty_value%22%3A%201000.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20ergoplatform/sigmastate-interpreter%23852&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20aslesarenko.%0A%0ABounty:%20Implement%20ContractTemplate%20compiler) |
