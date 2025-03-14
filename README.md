@@ -7,7 +7,7 @@
       <img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties">
     </a>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-49,665.50%20ERG-2196F3" alt="Total Value">
+      <img src="https://img.shields.io/badge/💰%20Total%20Value-49,661.84%20ERG-2196F3" alt="Total Value">
     </a>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
