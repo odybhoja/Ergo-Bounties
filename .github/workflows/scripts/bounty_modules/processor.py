@@ -183,6 +183,29 @@ class BountyProcessor:
         """
         return self.project_totals
     
+    def add_extra_bounties(self, extra_bounties: List[Dict[str, Any]]) -> None:
+        """
+        Add manually specified bounties from extra_bounties.json.
+        
+        Args:
+            extra_bounties: List of bounty objects with all required fields
+        """
+        for bounty in extra_bounties:
+            # Add the bounty to the bounty data
+            self.bounty_data.append(bounty)
+            
+            # Update project totals
+            owner = bounty["owner"]
+            if owner not in self.project_totals:
+                self.project_totals[owner] = {"count": 0, "value": 0.0}
+            
+            self.project_totals[owner]["count"] += 1
+            
+            # Try to convert amount to float for totals
+            amount = bounty.get("amount", "Not specified")
+            currency = bounty.get("currency", "Not specified")
+            self.project_totals[owner]["value"] += calculate_erg_value(amount, currency, self.conversion_rates)
+    
     def get_total_stats(self) -> Tuple[int, float]:
         """
         Get overall total statistics.

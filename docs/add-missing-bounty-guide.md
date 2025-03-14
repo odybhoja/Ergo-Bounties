@@ -48,7 +48,37 @@ Once merged, the automated system will scan the repositories during the next upd
 
 ## For Manual Additions
 
-If the bounty doesn't follow the standard format or isn't in a GitHub repository:
+There are two ways to manually add bounties that aren't in GitHub repositories:
+
+### 1. Using the extra_bounties.json File
+
+For direct addition of bounties without GitHub issues:
+
+1. **Fork this repository**
+2. **Edit the `bounties/extra_bounties.json` file** to add the new bounty:
+   ```json
+   {
+     "timestamp": "YYYY-MM-DD HH:MM:SS",
+     "owner": "organization-name",
+     "repo": "project-name",
+     "title": "Bounty Title",
+     "url": "https://link-to-bounty-details",
+     "amount": "100",
+     "currency": "ERG",
+     "primary_lang": "Language",
+     "secondary_lang": "None",
+     "labels": ["bounty", "manual-entry"],
+     "issue_number": "ext-123",
+     "creator": "your-username"
+   }
+   ```
+3. **Submit a PR** with title: `[ADD MANUAL BOUNTY] Bounty Title`
+
+The `extra_bounties.json` file allows you to directly add bounties that will be included in all listings alongside GitHub-sourced bounties.
+
+### 2. Request Manual Addition
+
+If you prefer not to edit the JSON file yourself:
 - Create an issue in this repository
 - Use title format: `[MANUAL BOUNTY] Brief description`
 - Include: link to work, bounty value, and payment currency

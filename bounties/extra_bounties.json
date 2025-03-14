@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2025-03-14 08:45:00",
+    "owner": "manual-entry",
+    "repo": "external-project",
+    "title": "Example Manual Bounty",
+    "url": "https://example.com/bounty/123",
+    "amount": "100",
+    "currency": "ERG",
+    "primary_lang": "Rust",
+    "secondary_lang": "None",
+    "labels": ["bounty", "manual-entry"],
+    "issue_number": "ext-123",
+    "creator": "manual"
+  }
+]

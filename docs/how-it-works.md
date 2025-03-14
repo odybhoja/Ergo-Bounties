@@ -36,6 +36,32 @@ To add a new repository to the tracking system:
 
 Once merged, the automation will include the new repository's bounties in the next update.
 
+## Adding Manual Bounties
+
+For bounties that aren't in GitHub repositories or don't follow standard formats:
+
+1. Fork this repository
+2. Edit the `extra_bounties.json` file to add the new bounty:
+   ```json
+   {
+     "timestamp": "YYYY-MM-DD HH:MM:SS",
+     "owner": "organization-name",
+     "repo": "project-name",
+     "title": "Bounty Title",
+     "url": "https://link-to-bounty-details",
+     "amount": "100",
+     "currency": "ERG",
+     "primary_lang": "Language",
+     "secondary_lang": "None",
+     "labels": ["bounty", "manual-entry"],
+     "issue_number": "ext-123",
+     "creator": "your-username"
+   }
+   ```
+3. Submit a PR with title: `[ADD MANUAL BOUNTY] Bounty Title`
+
+The system will automatically include these manual bounties alongside GitHub-sourced bounties in all listings.
+
 ## Bounty Detection Logic
 
 The system identifies bounties using several methods:

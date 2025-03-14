@@ -70,6 +70,13 @@ def main():
     logger.info(f"Processing {len(repos_to_query)} repositories")
     processor.process_repositories(repos_to_query)
     
+    # Load and add extra bounties from extra_bounties.json
+    logger.info("Loading extra bounties")
+    extra_bounties = config.load_extra_bounties()
+    if extra_bounties:
+        logger.info(f"Adding {len(extra_bounties)} extra bounties")
+        processor.add_extra_bounties(extra_bounties)
+    
     # Get processed data
     bounty_data = processor.get_bounty_data()
     project_totals = processor.get_project_totals()

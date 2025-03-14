@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+from datetime import datetime
 from typing import Dict, List, Any, Optional
 
 # Configure logging
@@ -65,6 +66,26 @@ class BountyConfig:
                 return orgs
         except Exception as e:
             logger.warning(f"Error reading {self.bounties_dir}/tracked_orgs.json: {e}")
+            return []
+    
+    def load_extra_bounties(self) -> List[Dict[str, Any]]:
+        """
+        Load manually added bounties from extra_bounties.json file.
+        
+        Returns:
+            List of bounty objects with all required fields
+        """
+        try:
+            with open(f'{self.bounties_dir}/extra_bounties.json', 'r') as f:
+                extra_bounties = json.load(f)
+                # Update timestamp for each bounty to ensure it's current
+                for bounty in extra_bounties:
+                    if 'timestamp' not in bounty or not bounty['timestamp']:
+                        bounty['timestamp'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                logger.info(f"Loaded {len(extra_bounties)} extra bounties")
+                return extra_bounties
+        except Exception as e:
+            logger.warning(f"Error reading {self.bounties_dir}/extra_bounties.json: {e}")
             return []
     
     def is_valid(self) -> bool:
