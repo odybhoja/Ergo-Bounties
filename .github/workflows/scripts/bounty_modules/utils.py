@@ -60,7 +60,7 @@ def create_claim_url(
         "bounty_id": f"{owner}/{repo_name}#{issue_number}",
         "original_issue_link": url,
         "payment_currency": currency,
-        "bounty_value": 0 if amount == "Not specified" else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
+        "bounty_value": 0 if amount in ["Not specified", "Ongoing"] else float(amount) if amount.replace('.', '', 1).isdigit() else 0,
         "status": "in-progress",
         "submission_date": "",
         "expected_completion": "YYYY-MM-DD",
@@ -114,8 +114,9 @@ def calculate_erg_value(
         - calculate_erg_value("100", "ERG", rates) -> 100.0
         - calculate_erg_value("50", "SigUSD", rates) -> ERG equivalent of 50 SigUSD
         - calculate_erg_value("2", "g GOLD", rates) -> ERG equivalent of 2g of gold
+        - calculate_erg_value("Ongoing", "ERG", rates) -> 0.0 (special case for ongoing programs)
     """
-    if amount == "Not specified":
+    if amount == "Not specified" or amount == "Ongoing":
         return 0.0
         
     try:

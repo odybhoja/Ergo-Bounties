@@ -22,6 +22,9 @@
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
     </a>
+    <a href="/docs/ongoing-programs.md">
+      <img src="https://img.shields.io/badge/🔄%20Ongoing%20Programs-9C27B0" alt="Ongoing Programs">
+    </a>
     <a href="/docs/claim-guide.md#reserving-a-bounty">
       <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Claim a Bounty">
     </a>
@@ -62,5 +65,3 @@
     </a>
   </p>
 </div>
-
-

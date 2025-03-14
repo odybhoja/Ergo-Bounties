@@ -127,9 +127,9 @@ def update_readme_table(
             
             logger.info(f"Found {beginner_friendly_count} beginner-friendly bounties")
         
-        # Generate language badges HTML
+        # Generate language badges HTML - sorted by count (highest first)
         language_badges = ""
-        for lang, count in language_counts.items():
+        for lang, count in sorted(language_counts.items(), key=lambda x: x[1], reverse=True):
             color = language_colors.get(lang, "DC322F")
             language_badges += f'    <a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{lang}-{count}-{color}"></a>\n'
         

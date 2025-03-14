@@ -86,6 +86,31 @@ def generate_main_file(
         f.write("\n\n")
         
         
+        # Check if there are any ongoing programs
+        ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
+        
+        if ongoing_programs:
+            # Write ongoing programs section
+            f.write("## Ongoing Reward Programs\n\n")
+            f.write("These are continuous programs that reward contributions without a fixed bounty amount.\n")
+            f.write("See [Ongoing Programs](/docs/ongoing-programs.md) for more details.\n\n")
+            f.write("|Owner|Program|Description|Primary Focus|More Info|\n")
+            f.write("|---|---|---|---|---|\n")
+            
+            for program in ongoing_programs:
+                owner = program["owner"]
+                title = program["title"]
+                url = program["url"]
+                primary_lang = program["primary_lang"]
+                description = program.get("description", "")
+                
+                # Add links to organization pages
+                org_link = f"[{owner}](by_org/{owner.lower()}.md)"
+                
+                f.write(f"| {org_link} | [{title}]({url}) | {description} | {primary_lang} | [Details](/docs/ongoing-programs.md) |\n")
+            
+            f.write("\n")
+        
         # Write all bounties table
         f.write("## All Bounties\n\n")
         f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Primary Language|Claim|\n")
@@ -114,8 +139,8 @@ def generate_main_file(
             currency = bounty["currency"]
             primary_lang = bounty["primary_lang"]
             
-            # Skip bounties with "Not specified" amounts
-            if amount == "Not specified":
+            # Skip bounties with "Not specified" amounts or "Ongoing" programs
+            if amount == "Not specified" or amount == "Ongoing":
                 continue
             
             # Try to convert to ERG equivalent
@@ -204,8 +229,8 @@ def generate_summary_file(
         # Calculate totals by currency (excluding bounties with "Not specified" amounts)
         currency_totals = {}
         for currency, currency_bounties in currencies_dict.items():
-            # Count only bounties with specified amounts
-            specified_bounties = [b for b in currency_bounties if b["amount"] != "Not specified"]
+            # Count only bounties with specified amounts (excluding "Ongoing" programs)
+            specified_bounties = [b for b in currency_bounties if b["amount"] != "Not specified" and b["amount"] != "Ongoing"]
             currency_totals[currency] = {"count": len(specified_bounties), "value": 0.0}
             
             for bounty in specified_bounties:
@@ -307,7 +332,7 @@ def generate_featured_bounties_file(
             url = bounty["url"]
             owner = bounty["owner"]
             
-            if amount != "Not specified":
+            if amount != "Not specified" and amount != "Ongoing":
                 try:
                     # Convert to ERG equivalent
                     value = calculate_erg_value(amount, currency, conversion_rates)
