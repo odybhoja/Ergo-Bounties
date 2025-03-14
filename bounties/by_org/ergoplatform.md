@@ -1,6 +1,6 @@
 # ergoplatform Bounties
 
-*Report generated: 2025-03-14 12:58:06 UTC*
+*Report generated: 2025-03-14 13:03:18 UTC*
 
 Total ergoplatform bounties: **85**
 
