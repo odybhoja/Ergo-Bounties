@@ -1,10 +1,10 @@
 # Featured Bounties
 
-*Report generated: 2025-03-14 08:49:14 UTC*
+*Report generated: 2025-03-14 09:01:07 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All_Bounties-105-blue)](all.md) [![By Language](https://img.shields.io/badge/By_Language-5-green)](all.md#bounties-by-programming-language) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](all.md#bounties-by-currency) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](all.md#bounties-by-organization) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All_Bounties-107-blue)](all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](all.md#bounties-by-programming-language) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](all.md#bounties-by-currency) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](all.md#bounties-by-organization) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](currency_prices.md)
 
 ## Top Bounties by Value
 
@@ -17,5 +17,5 @@
 
 | Date | Open Bounties | Total Value |
 |------|--------------|-------------|
-| Mar 14, 2025 | 105 | 46,765.50 ERG |
+| Mar 14, 2025 | 107 | 46,765.50 ERG |
 
