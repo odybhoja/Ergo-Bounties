@@ -1,6 +1,6 @@
 # Currency Prices
 
-*Report generated: 2025-03-14 13:03:18 UTC*
+*Report generated: 2025-03-14 13:08:26 UTC*
 
 ## Navigation
 
@@ -22,6 +22,6 @@
 | [GORT](by_currency/gort.md) | 0.078338 |  |
 | [RSN](by_currency/rsn.md) | 0.053869 |  |
 | [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD |
-| [g GOLD](by_currency/gold.md) | 83.320233 | Price per gram of gold |
+| [g GOLD](by_currency/gold.md) | 83.425995 | Price per gram of gold |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
