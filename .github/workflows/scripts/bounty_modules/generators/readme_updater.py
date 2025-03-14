@@ -364,10 +364,10 @@ def update_readme_table(
     <a href="/docs/how-it-works.md">
       <img src="https://img.shields.io/badge/🔧%20How%20It%20Works-795548" alt="How It Works">
     </a>
-    <a href="https://github.com/ergoplatform/ergo/issues">
+    <a href="/docs/donate.md">
       <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
     </a>
-    <a href="https://github.com/ergoplatform/ergo/issues">
+    <a href="https://github.com/ergoplatform/Ergo-Bounties">
       <img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub">
     </a>
   </p>
