@@ -20,13 +20,9 @@
 
 ## Ongoing Reward Programs
 
-These are continuous programs that reward contributions without a fixed bounty amount.
-See [Ongoing Programs](/docs/ongoing-programs.md) for more details.
+The Ergo ecosystem offers ongoing reward programs to encourage continuous contributions in key areas.
 
-|Owner|Program|Description|Primary Focus|More Info|
-|---|---|---|---|---|
-| [ergoplatform](by_org/ergoplatform.md) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | Program for creating educational content that benefits the Ergo community. Currently rewarding contributions to Developer Tutorials and Guides. | Various | [Details](/docs/ongoing-programs.md) |
-| [ergoplatform](by_org/ergoplatform.md) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | Program acknowledging and appreciating significant contributions to the Ergo repositories. Rewards for contributions that enhance the development and improvement of the Ergo ecosystem. | Various | [Details](/docs/ongoing-programs.md) |
+**[View Ongoing Programs →](/docs/ongoing-programs.md)**
 
 ## All Bounties
 

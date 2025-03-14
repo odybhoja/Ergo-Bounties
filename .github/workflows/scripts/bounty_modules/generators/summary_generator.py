@@ -90,31 +90,15 @@ def generate_main_file(
         ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
         
         if ongoing_programs:
-            # Write ongoing programs section
+            # Write ongoing programs section with link to dedicated page
             f.write("## Ongoing Reward Programs\n\n")
-            f.write("These are continuous programs that reward contributions without a fixed bounty amount.\n")
-            f.write("See [Ongoing Programs](/docs/ongoing-programs.md) for more details.\n\n")
-            f.write("|Owner|Program|Description|Primary Focus|More Info|\n")
-            f.write("|---|---|---|---|---|\n")
-            
-            for program in ongoing_programs:
-                owner = program["owner"]
-                title = program["title"]
-                url = program["url"]
-                primary_lang = program["primary_lang"]
-                description = program.get("description", "")
-                
-                # Add links to organization pages
-                org_link = f"[{owner}](by_org/{owner.lower()}.md)"
-                
-                f.write(f"| {org_link} | [{title}]({url}) | {description} | {primary_lang} | [Details](/docs/ongoing-programs.md) |\n")
-            
-            f.write("\n")
+            f.write("The Ergo ecosystem offers ongoing reward programs to encourage continuous contributions in key areas.\n\n")
+            f.write("**[View Ongoing Programs →](/docs/ongoing-programs.md)**\n\n")
         
         # Write all bounties table
         f.write("## All Bounties\n\n")
-        f.write("|Owner|Title & Link|Bounty ERG Equiv|Paid in|Original Value|Primary Language|Claim|\n")
-        f.write("|---|---|---|---|---|---|---|\n")
+        f.write("|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n")
+        f.write("|---|---|---|---|---|---|---|---|\n")
         
         # Calculate ERG equivalent for each bounty for sorting
         for bounty in bounty_data:
@@ -166,7 +150,11 @@ def generate_main_file(
             currency_link = f"[{currency}](by_currency/{currency_file_name}.md)"
             primary_lang_link = f"[{primary_lang}](by_language/{primary_lang.lower()}.md)"
             
-            f.write(f"| {org_link} | [{title}]({url}) | {erg_equiv} | {currency_link} | {amount} {currency} | {primary_lang_link} | [Claim]({claim_url}) |\n")
+            # Create a nicer claim button
+            claim_button = f"[<kbd>Claim</kbd>]({claim_url})"
+            
+            # Format the row with the new columns
+            f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {amount} {currency} | {erg_equiv} | {currency_link} | {claim_button} |\n")
     
     logger.info("Generated main bounty file")
 
@@ -277,6 +265,109 @@ def generate_summary_file(
         f.write(f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n")
     
     logger.info("Generated summary file")
+
+def update_ongoing_programs_table(
+    bounty_data: List[Dict[str, Any]], 
+    bounties_dir: str
+) -> None:
+    """
+    Update the table in the ongoing programs markdown file.
+    
+    Args:
+        bounty_data: List of bounty data
+        bounties_dir: Bounties directory
+    """
+    logger.info("Updating ongoing programs table")
+    
+    # Filter for ongoing programs
+    ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
+    
+    if not ongoing_programs:
+        logger.info("No ongoing programs found, skipping table update")
+        return
+    
+    # Path to the ongoing programs file
+    ongoing_file = 'docs/ongoing-programs.md'
+    
+    try:
+        # Read the existing file
+        with open(ongoing_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Find the table section
+        table_start = content.find("## Current Ongoing Programs")
+        if table_start == -1:
+            # If the section doesn't exist, add it
+            table_start = content.find("# 🔄 Ongoing Reward Programs")
+            if table_start == -1:
+                logger.error("Could not find a place to insert the table in ongoing-programs.md")
+                return
+            
+            # Find the end of the introduction paragraph
+            intro_end = content.find("\n\n", table_start)
+            if intro_end == -1:
+                intro_end = len(content)
+            
+            # Insert the table section after the introduction
+            before_table = content[:intro_end + 2]  # Include the newlines
+            after_table = content[intro_end + 2:]
+            
+            # Create the new table content
+            table_content = "## Current Ongoing Programs\n\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n"
+            table_content += "|---|---|---|---|---|---|---|---|\n"
+            
+            for program in ongoing_programs:
+                owner = program["owner"]
+                title = program["title"]
+                url = program["url"]
+                primary_lang = program["primary_lang"]
+                repo = program["repo"]
+                
+                # Add links to organization pages
+                org_link = f"[{owner}](../bounties/by_org/{owner.lower()}.md)"
+                
+                # For each program, add a row to the table
+                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | [Details](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')}) |\n"
+            
+            # Combine the parts
+            new_content = before_table + table_content + "\n" + after_table
+        else:
+            # If the section exists, find where the table ends
+            table_end = content.find("\n\n", table_start)
+            if table_end == -1:
+                table_end = len(content)
+            
+            # Create the new table content
+            table_content = "## Current Ongoing Programs\n\n"
+            table_content += "|Organisation|Repository|Title & Link|Primary Language|Value|x ERG|Paid In|Claim|\n"
+            table_content += "|---|---|---|---|---|---|---|---|\n"
+            
+            for program in ongoing_programs:
+                owner = program["owner"]
+                title = program["title"]
+                url = program["url"]
+                primary_lang = program["primary_lang"]
+                repo = program["repo"]
+                
+                # Add links to organization pages
+                org_link = f"[{owner}](../bounties/by_org/{owner.lower()}.md)"
+                
+                # For each program, add a row to the table
+                table_content += f"| {org_link} | [{repo}](https://github.com/{owner}/{repo}) | [{title}]({url}) | {primary_lang} | Varies | Based on contribution | ERG | [Details](#{title.lower().replace(' ', '-').replace('/', '').replace('[', '').replace(']', '')}) |\n"
+            
+            # Combine the parts
+            new_content = content[:table_start] + table_content + content[table_end:]
+        
+        # Write the updated content back to the file
+        with open(ongoing_file, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        
+        logger.info("Updated ongoing programs table")
+    except FileNotFoundError:
+        logger.error(f"File {ongoing_file} not found")
+    except Exception as e:
+        logger.error(f"Error updating ongoing programs table: {e}")
 
 def generate_featured_bounties_file(
     bounty_data: List[Dict[str, Any]], 

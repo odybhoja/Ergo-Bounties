@@ -33,7 +33,8 @@ from bounty_modules.generators import (
     generate_main_file,
     generate_summary_file,
     generate_featured_bounties_file,
-    update_readme_table
+    update_readme_table,
+    update_ongoing_programs_table
 )
 
 def main():
@@ -143,6 +144,12 @@ def main():
         conversion_rates, 
         total_bounties, 
         total_value, 
+        bounties_dir
+    )
+    
+    # Update ongoing programs table
+    update_ongoing_programs_table(
+        bounty_data,
         bounties_dir
     )
 
