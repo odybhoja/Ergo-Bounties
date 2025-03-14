@@ -4,10 +4,10 @@
 
   <p>
     <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties">
+      <img src="https://img.shields.io/badge/Open%20Bounties-107%2B-4CAF50" alt="Open Bounties">
     </a>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-48,163.76%20ERG-2196F3" alt="Total Value">
+    <a href="/bounties/summary.md">
+      <img src="https://img.shields.io/badge/💰%20Total%20Value-48,263.76%20ERG-2196F3" alt="Total Value">
     </a>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
@@ -26,7 +26,7 @@
       <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Reserve a Bounty">
     </a>
     <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/💰%20Submit-orange" alt="Requet Payment">
+      <img src="https://img.shields.io/badge/💰%20Submit-orange" alt="Request Payment">
     </a>
     <a href="/docs/add-missing-bounty-guide.md">
       <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
@@ -42,6 +42,7 @@
     <a href="/bounties/by_language/svelte.md"><img src="https://img.shields.io/badge/Svelte-2-DC322F"></a>
     <a href="/bounties/by_language/various.md"><img src="https://img.shields.io/badge/Various-2-DC322F"></a>
     <a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-1-007396"></a>
+    <a href="/bounties/by_language/test.md"><img src="https://img.shields.io/badge/Test-1-DC322F"></a>
     <a href="/bounties/by_language/">
       <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
     </a>

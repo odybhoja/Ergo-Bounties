@@ -483,6 +483,29 @@ class TestBountyFinder(unittest.TestCase):
             'currency_prices.md'
         ]
         
+        # Also check if README.md in the project root was updated
+        readme_path = os.path.join(PROJECT_ROOT, 'README.md')
+        if os.path.exists(readme_path) and os.path.getsize(readme_path) > 0:
+            # Check if the file was modified recently (within the last 2 minutes)
+            mtime = os.path.getmtime(readme_path)
+            if time.time() - mtime < 120:  # 2 minutes
+                print_success(f"README.md in project root was updated recently")
+                
+                # Check if the README.md contains the test timestamp
+                with open(readme_path, 'r') as f:
+                    content = f.read()
+                    
+                # Look for today's date in the README.md
+                today_date = datetime.now().strftime("%b %d, %Y")
+                if today_date in content:
+                    print_success(f"README.md contains today's date: {today_date}")
+                else:
+                    print_warning(f"README.md does not contain today's date: {today_date}")
+            else:
+                print_warning(f"README.md in project root was not modified recently")
+        else:
+            print_warning(f"README.md in project root does not exist or is empty")
+        
         expected_dirs = [
             'by_language',
             'by_currency',

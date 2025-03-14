@@ -39,7 +39,10 @@ def update_readme_table(
     """
     logger.info("Updating README.md table and badges")
     
-    readme_file = 'README.md'
+    # Use absolute path to README.md in the project root directory
+    # Hard-code the path to ensure it's correct
+    readme_file = '/Users/m/Documents/GitHub/Ergo-Bounties/README.md'
+    logger.info(f"Using README.md path: {readme_file}")
     
     try:
         # Read the current README.md file
@@ -160,7 +163,7 @@ def update_readme_table(
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-4CAF50" alt="Open Bounties">
     </a>
-    <a href="/bounties/all.md">
+    <a href="/bounties/summary.md">
       <img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-2196F3" alt="Total Value">
     </a>
     <a href="/bounties/all.md">
@@ -180,7 +183,7 @@ def update_readme_table(
       <img src="https://img.shields.io/badge/🔒%20Claim-green" alt="Reserve a Bounty">
     </a>
     <a href="/docs/claim-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/💰%20Submit-orange" alt="Requet Payment">
+      <img src="https://img.shields.io/badge/💰%20Submit-orange" alt="Request Payment">
     </a>
     <a href="/docs/add-missing-bounty-guide.md">
       <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
