@@ -5,14 +5,8 @@
   <p>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties">
-    </a>
-    <a href="/bounties/summary.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-48,166.89%20ERG-2196F3" alt="Total Value">
-    </a>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
-    </a>
-    <a href="/bounties/featured_bounties.md">
+    </a><a href="/bounties/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-48,166.89%20ERG-2196F3" alt="Total Value">
+    </a><a href="/bounties/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties"></a><a href="/bounties/featured_bounties.md">
       <img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-9C27B0" alt="Featured Bounties">
     </a>
   </p>
@@ -22,18 +16,10 @@
   <p><em>Find, claim, and contribute to Ergo ecosystem bounties across 18+ indexed repositories</em></p>
 
   <p>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
-    </a>
-    <a href="/docs/bounty-submission-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty">
-    </a>
-    <a href="/docs/bounty-submission-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment">
-    </a>
-    <a href="/docs/add-missing-bounty-guide.md">
-      <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
-    </a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties"></a>
+    <a href="/docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty"></a>
+    <a href="/docs/bounty-submission-guide.md#step-by-step-submission-process"><img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment"></a>
+    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty"></a>
   </p>
 
   <h2>📚 Explore Bounties by Category</h2>
@@ -41,7 +27,12 @@
   <div>
     <h3>🔤 By Programming Language</h3>
     <p>
-      <a href="/bounties/by_language/scala.md"><img src="https://img.shields.io/badge/Scala-71-DC322F"></a><a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-23-DEA584"></a><a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-6-3178C6"></a><a href="/bounties/by_language/svelte.md"><img src="https://img.shields.io/badge/Svelte-2-DC322F"></a><a href="/bounties/by_language/various.md"><img src="https://img.shields.io/badge/Various-2-DC322F"></a><a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-1-007396"></a>
+          <a href="/bounties/by_language/scala.md"><img src="https://img.shields.io/badge/Scala-71-DC322F"></a>
+    <a href="/bounties/by_language/rust.md"><img src="https://img.shields.io/badge/Rust-23-DEA584"></a>
+    <a href="/bounties/by_language/typescript.md"><img src="https://img.shields.io/badge/TypeScript-6-3178C6"></a>
+    <a href="/bounties/by_language/svelte.md"><img src="https://img.shields.io/badge/Svelte-2-DC322F"></a>
+    <a href="/bounties/by_language/various.md"><img src="https://img.shields.io/badge/Various-2-DC322F"></a>
+    <a href="/bounties/by_language/java.md"><img src="https://img.shields.io/badge/Java-1-007396"></a>
       <a href="/bounties/by_language/">
         <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
       </a>

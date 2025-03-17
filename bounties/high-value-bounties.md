@@ -1,10 +1,10 @@
 # High Value Bounties (1000+ ERG)
 
-*Report generated: 2025-03-17 11:38:49 UTC*
+*Report generated: 2025-03-17 11:42:15 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](all.md)[![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/)[![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/)[![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/)[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
 
 This page lists all bounties with an ERG value of 1000+ ERG, sorted by value (highest first).
 

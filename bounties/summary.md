@@ -4,7 +4,7 @@
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](/bounties/all.md)[![By Language](https://img.shields.io/badge/By%20Language-6-green)](/bounties/by_language/)[![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](/bounties/by_currency/)[![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](/bounties/by_org/)[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](/bounties/currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](/bounties/all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](/bounties/by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](/bounties/by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](/bounties/by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](/bounties/currency_prices.md)
 
 ## Projects
 
