@@ -124,14 +124,30 @@ This section provides information for developers who want to contribute to the E
 The repository code is structured as follows:
 
 ```
-.github/workflows/         # GitHub Actions workflow files 
-└── scripts/               # Scripts used by GitHub Actions
-    ├── bounties/          # Generated bounty reports & data
-    ├── bounty_modules/    # Core code modules
-    │   └── generators/    # Report and README generators
-    │       ├── config.json       # Configuration for README generator
-    │       └── readme_updater.py # README generation script
-    └── constants.json     # Configuration constants
+.
+├── config/               # Configuration files
+│   ├── constants.json    # Application constants
+│   ├── extra_bounties.json    # Manually added bounties
+│   ├── tracked_orgs.json      # Organizations to track
+│   └── tracked_repos.json     # Repositories to track
+├── src/                  # Source code
+│   ├── api/              # API clients (GitHub, Currency)
+│   ├── core/             # Core application logic
+│   ├── generators/       # Markdown file generators
+│   ├── utils/            # Utility functions
+│   └── bounty_finder.py  # Main application entry point
+├── data/                 # Generated data files
+│   ├── by_currency/      # Bounties grouped by currency
+│   ├── by_language/      # Bounties grouped by programming language
+│   ├── by_org/           # Bounties grouped by organization
+│   └── *.md              # Summary and index files
+├── tests/                # Test scripts
+│   ├── github_actions_check.py  # CI/CD validation
+│   ├── run_bounty_check.py      # Data validation
+│   └── test_runner.py           # Test framework
+├── docs/                 # Documentation
+├── submissions/          # Bounty submissions from users
+└── test.sh               # Test runner script
 ```
 
 ### Key Components for Developers
