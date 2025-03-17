@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value, add_footer_buttons
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -192,6 +192,9 @@ def generate_currency_files(
                 reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
                 
                 f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {amount} {currency} | {erg_equiv} ERG | {primary_lang_link} | {reserve_button} |\n")
+            
+            # Add footer with action buttons
+            f.write(add_footer_buttons("../"))
     
     logger.info(f"Generated {len(currencies_dict)} currency-specific files")
 
@@ -305,5 +308,8 @@ def generate_price_table(
             f.write(f"| {currency_link} | {display_rate:.6f} | {notes} |\n")
         
         f.write("\n*Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*\n")
+        
+        # Add footer with action buttons
+        f.write(add_footer_buttons())
     
     logger.info("Generated currency price table")

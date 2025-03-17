@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value, add_footer_buttons
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -163,5 +163,8 @@ def generate_language_files(
                 
                 f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {erg_equiv} ERG | [{currency}](../by_currency/{currency_file_name}.md) | {secondary_lang} | {reserve_button} |\n")
                 has_written_row = True
+            
+            # Add footer with action buttons
+            f.write(add_footer_buttons("../"))
     
     logger.info(f"Generated {len(languages)} language-specific files")

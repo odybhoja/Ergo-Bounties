@@ -7,6 +7,7 @@ from .organization_generator import generate_organization_files
 from .currency_generator import generate_currency_files, generate_price_table
 from .summary_generator import generate_main_file, generate_summary_file, generate_featured_bounties_file, update_ongoing_programs_table
 from .readme_updater import update_readme_table
+from .high_value_generator import generate_high_value_bounties_file
 
 __all__ = [
     'generate_language_files',
@@ -17,5 +18,6 @@ __all__ = [
     'generate_summary_file',
     'generate_featured_bounties_file',
     'update_readme_table',
-    'update_ongoing_programs_table'
+    'update_ongoing_programs_table',
+    'generate_high_value_bounties_file'
 ]

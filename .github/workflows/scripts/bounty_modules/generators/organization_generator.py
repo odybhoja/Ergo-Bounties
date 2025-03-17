@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value, add_footer_buttons
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -155,5 +155,8 @@ def generate_organization_files(
                 reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
                 
                 f.write(f"| [{repo_name}](https://github.com/{bounty['owner']}/{repo_name}) | [{title}]({url}) | {erg_equiv} ERG | [{currency}](../by_currency/{currency_file_name}.md) | {primary_lang_link} | {secondary_lang} | {reserve_button} |\n")
+            
+            # Add footer with action buttons
+            f.write(add_footer_buttons("../"))
     
     logger.info(f"Generated {len(orgs)} organization-specific files")

@@ -34,7 +34,8 @@ from bounty_modules.generators import (
     generate_summary_file,
     generate_featured_bounties_file,
     update_readme_table,
-    update_ongoing_programs_table
+    update_ongoing_programs_table,
+    generate_high_value_bounties_file
 )
 
 def main():
@@ -175,6 +176,19 @@ def main():
         currencies_dict, 
         orgs, 
         bounties_dir
+    )
+    
+    # Generate high-value bounties file
+    generate_high_value_bounties_file(
+        bounty_data,
+        conversion_rates,
+        total_bounties,
+        total_value,
+        languages,
+        currencies_dict,
+        orgs,
+        bounties_dir,
+        high_value_threshold=1000
     )
     
     # Update the README.md table and badges with the latest bounty counts and values

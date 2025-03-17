@@ -162,12 +162,38 @@ def format_navigation_badges(
         Formatted navigation badges as markdown
     """
     badges = []
-    badges.append(f"[![All Bounties](https://img.shields.io/badge/All_Bounties-{total_bounties}-blue)]({relative_path}all.md)")
-    badges.append(f"[![By Language](https://img.shields.io/badge/By_Language-{languages_count}-green)]({relative_path}by_language/)")
-    badges.append(f"[![By Currency](https://img.shields.io/badge/By_Currency-{currencies_count}-yellow)]({relative_path}by_currency/)")
-    badges.append(f"[![By Organization](https://img.shields.io/badge/By_Organization-{orgs_count}-orange)]({relative_path}by_org/)")
+    badges.append(f"[![All Bounties](https://img.shields.io/badge/All%20Bounties-{total_bounties}-blue)]({relative_path}all.md)")
+    badges.append(f"[![By Language](https://img.shields.io/badge/By%20Language-{languages_count}-green)]({relative_path}by_language/)")
+    badges.append(f"[![By Currency](https://img.shields.io/badge/By%20Currency-{currencies_count}-yellow)]({relative_path}by_currency/)")
+    badges.append(f"[![By Organization](https://img.shields.io/badge/By%20Organization-{orgs_count}-orange)]({relative_path}by_org/)")
     
     if conversion_rates_count > 0:
-        badges.append(f"[![Currency Prices](https://img.shields.io/badge/Currency_Prices-{conversion_rates_count}-purple)]({relative_path}currency_prices.md)")
+        badges.append(f"[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-{conversion_rates_count}-purple)]({relative_path}currency_prices.md)")
     
     return " ".join(badges)
+
+def add_footer_buttons(relative_path: str = "") -> str:
+    """
+    Add standard footer buttons to markdown files.
+    
+    Args:
+        relative_path: Relative path for links (e.g., "../" for subdirectories)
+        
+    Returns:
+        HTML code for footer buttons
+    """
+    return f"""
+
+---
+
+<div align="center">
+  <p>
+    <a href="{relative_path}../docs/donate.md">
+      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
+    </a>
+    <a href="{relative_path}../docs/bounty-submission-guide.md#reserving-a-bounty">
+      <img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty">
+    </a>
+  </p>
+</div>
+"""

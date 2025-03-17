@@ -16,7 +16,7 @@
     <a href="/bounties/summary.md">
       <img src="https://img.shields.io/badge/💰%20Total%20Value-48,167.27%20ERG-2196F3" alt="Total Value">
     </a>
-    <a href="/bounties/all.md">
+    <a href="/bounties/high-value-bounties.md">
       <img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties">
     </a>
     <a href="/bounties/featured_bounties.md">
@@ -108,9 +108,6 @@
     </a>
     <a href="/docs/donate.md">
       <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
-    </a>
-    <a href="https://github.com/ergoplatform/Ergo-Bounties">
-      <img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub">
     </a>
   </p>
 </div>

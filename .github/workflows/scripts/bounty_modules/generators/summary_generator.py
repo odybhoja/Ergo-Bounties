@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value, add_footer_buttons
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -160,6 +160,9 @@ def generate_main_file(
             
             # Format the row with the new columns
             f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv} | {currency_link} | {reserve_button} |\n")
+        
+        # Add footer with action buttons
+        f.write(add_footer_buttons())
     
     logger.info("Generated main bounty file")
 
@@ -268,6 +271,9 @@ def generate_summary_file(
         f.write("Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n")
         
         f.write(f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n")
+        
+        # Add footer with action buttons
+        f.write(add_footer_buttons())
     
     logger.info("Generated summary file")
 
@@ -483,5 +489,8 @@ def generate_featured_bounties_file(
         f.write("| Date | Open Bounties | Total Value |\n")
         f.write("|------|--------------|-------------|\n")
         f.write(f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n\n")
+    
+        # Add footer with action buttons
+        f.write(add_footer_buttons())
     
     logger.info("Generated featured bounties file")
