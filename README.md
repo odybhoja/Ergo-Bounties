@@ -31,7 +31,7 @@
     <a href="/data/by_language/svelte.md"><img src="https://img.shields.io/badge/Svelte-2-DC322F"></a>
     <a href="/data/by_language/various.md"><img src="https://img.shields.io/badge/Various-2-DC322F"></a>
     <a href="/data/by_language/java.md"><img src="https://img.shields.io/badge/Java-1-007396"></a>
-      <a href="/data/by_language/">
+      <a href="/data/summary.md#languages">
         <img src="https://img.shields.io/badge/🌐%20All%20Languages-purple" alt="All Languages">
       </a>
     </p>
@@ -42,14 +42,14 @@
     <p>
       <a href="/data/by_currency/erg.md"><img src="https://img.shields.io/badge/ERG-Ergo-orange" alt="ERG"></a>
       <a href="/data/by_currency/sigusd.md"><img src="https://img.shields.io/badge/SigUSD-Stablecoin-blue" alt="SigUSD"></a>
-      <a href="/data/by_currency/"><img src="https://img.shields.io/badge/🌐%20All%20Currencies-purple" alt="All Currencies"></a>
+      <a href="/data/summary.md#currencies"><img src="https://img.shields.io/badge/🌐%20All%20Currencies-purple" alt="All Currencies"></a>
     </p>
   </div>
 
   <div>
     <h3>🏢 By Organization</h3>
     <p>
-      <a href="/data/by_org/">
+      <a href="/data/summary.md#projects">
         <img src="https://img.shields.io/badge/🌐%20All%20Organizations-purple" alt="All Organizations">
       </a>
     </p>
@@ -70,7 +70,7 @@
     <a href="/data/currency_prices.md"><img src="https://img.shields.io/badge/💹%20Current%20Rates-00BCD4" alt="Currency Rates"></a>
     <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-795548" alt="How It Works"></a>
     <a href="/docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
-    <a href="https://github.com/ergoplatform/Ergo-Bounties"><img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub"></a>
+   <!--  <a href="https://github.com/ergoplatform/Ergo-Bounties"><img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub"></a>-->
   </p>
 </div>
 
