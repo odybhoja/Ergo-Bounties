@@ -65,7 +65,8 @@ def check_freshness(directory_path, max_age_minutes=1):
                 is_populated = len(content) > 1000 and "Empty" not in content
                 
                 # Verify file has bounty content if it's all.md
-                if file == 'all.md' and "| ERG |" not in content:
+                # Look for table format and common currency mentions
+                if file == 'all.md' and not ("|Organisation|Repository|" in content or "|---|" in content or "ERG" in content):
                     is_populated = False
                 
                 if not is_populated:

@@ -16,15 +16,16 @@ chmod +x run.py
 # Set up PYTHONPATH to include the current directory
 export PYTHONPATH="$PYTHONPATH:$(pwd)"
 
-# Check if we want verbose output
-if [[ "$1" == "--verbose" ]]; then
-  echo "Running test runner with verbose output..."
-  python -m tests.test_runner --verbose
-else
-  # Run the full validation tool by default
-  echo "Running full validation tool..."
-  python -m tests.run_bounty_check
-fi
+# Generate files first using the main bounty finder (like run.py does)
+echo "Generating files with bounty finder..."
+# Force refresh to ensure we get complete data
+export FORCE_REFRESH=true
+# Run the main script directly
+python -m src.bounty_finder
+
+# Now run validation checks
+echo -e "\nRunning validation tool..."
+python -m tests.run_bounty_check
 
 # Run file freshness check
 echo -e "\nRunning file freshness check..."
