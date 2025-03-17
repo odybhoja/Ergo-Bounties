@@ -1,3 +1,10 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
 ## 📋 Open Bounties
 
 **[View Current Open Bounties →](/bounties/all.md)**
@@ -45,3 +52,9 @@
 Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the "Paid in" column of the bounty listings.
 
 [View current currency prices →](/bounties/currency_prices.md)
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->

@@ -1,3 +1,10 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
 # Not specified Bounties
 
 *Report generated: 2025-03-13 22:54:11 UTC*
@@ -22,3 +29,9 @@ Total Not specified bounties: **3**
 
 |Owner|Title & Link|Bounty Amount|ERG Equivalent|Primary Language|Claim|
 |---|---|---|---|---|---|
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->

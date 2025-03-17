@@ -1,3 +1,10 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
 # manual-entry Bounties
 
 *Report generated: 2025-03-14 09:01:07 UTC*
@@ -23,3 +30,9 @@ Total manual-entry bounties: **1**
 |Title & Link|Bounty Amount|Paid in|Primary Language|Secondary Language|Claim|
 |---|---|---|---|---|---|
 | [Example Manual Bounty](https://example.com/bounty/123) | 100 | [ERG](../by_currency/erg.md) | [Rust](../by_language/rust.md) | None | [Claim](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/manual-entry-external-project-ext-123.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Example%20Manual%20Bounty%22%2C%0A%20%20%22bounty_id%22%3A%20%22manual-entry/external-project%23ext-123%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//example.com/bounty/123%22%2C%0A%20%20%22payment_currency%22%3A%20%22ERG%22%2C%0A%20%20%22bounty_value%22%3A%20100.0%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20manual-entry/external-project%23ext-123&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20manual.%0A%0ABounty:%20Example%20Manual%20Bounty) |
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->

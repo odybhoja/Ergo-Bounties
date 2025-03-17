@@ -1,3 +1,16 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
 # Currency Prices
 
 *Report generated: 2025-03-14 21:12:14 UTC*
@@ -121,3 +134,14 @@ BENE is pegged to $1 USD, so its ERG equivalent is set to the same value as SigU
 # After getting SigUSD rate
 bene_rate = sigusd_rate
 ```
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->

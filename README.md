@@ -1,3 +1,10 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
 <div align="center">
   <h1>🏆 Ergo Ecosystem Bounties</h1>
   <p><em>The Central Hub for Discovering, Claiming, and Managing Ergo Bounties</em></p>
@@ -110,3 +117,9 @@
 
 <!-- Latest Update: 2025-03-14 -->
 
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->

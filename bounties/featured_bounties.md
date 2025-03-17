@@ -1,3 +1,10 @@
+<!-- 
+/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
+/** Any changes made to this file will be overwritten by the automated system **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
+
+
 # Featured Bounties
 
 *Report generated: 2025-03-14 21:12:14 UTC*
@@ -19,3 +26,9 @@
 |------|--------------|-------------|
 | Mar 14, 2025 | 106 | 45,193.02 ERG |
 
+
+
+<!-- 
+/** GENERATION END **/
+/** Content above is automatically generated and will be overwritten **/
+-->
