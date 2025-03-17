@@ -7,6 +7,10 @@ on:
     branches: [ update ]
   workflow_dispatch:  # Allow manual trigger
 
+# This is crucial - explicitly allow the workflow to write to the repository
+permissions:
+  contents: write
+
 jobs:
   update-bounties:
     runs-on: ubuntu-latest
@@ -33,8 +37,8 @@ jobs:
 
       - name: Commit and push if changes
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
           git add data/
           git diff --quiet && git diff --staged --quiet || git commit -m "Update bounties: $(date +'%Y-%m-%d %H:%M')"
           git push
