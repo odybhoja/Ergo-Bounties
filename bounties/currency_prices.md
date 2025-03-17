@@ -1,6 +1,6 @@
 # Currency Prices
 
-*Report generated: 2025-03-17 11:53:46 UTC*
+*Report generated: 2025-03-17 12:37:25 UTC*
 
 ## Navigation
 
@@ -25,6 +25,71 @@
 | [g GOLD](by_currency/gold.md) | 83.872759 | Price per gram of gold |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
+
+## How Prices are Retrieved
+
+The currency prices are retrieved using different APIs:
+
+### Spectrum API
+
+SigUSD, GORT, and RSN prices are retrieved from the [Spectrum.fi](https://spectrum.fi/) API:
+
+```
+GET https://api.spectrum.fi/v1/price-tracking/markets
+```
+
+The API returns market data for various trading pairs. We filter this data to find specific currency pairs:
+
+- For SigUSD: We look for markets where `quoteSymbol=SigUSD` and `baseSymbol=ERG`
+- For GORT: We look for markets where `quoteSymbol=GORT` and `baseSymbol=ERG`
+- For RSN: We look for markets where `quoteSymbol=RSN` and `baseSymbol=ERG`
+
+Example response (simplified):
+```json
+[
+  {
+    "baseSymbol": "ERG",
+    "quoteSymbol": "SigUSD",
+    "lastPrice": "1.220422",
+    "baseVolume": { "value": "12345.67" }
+  },
+  // Other market pairs...
+]
+```
+
+### BENE
+
+BENE price is set to be equivalent to SigUSD (which is pegged to USD), making 1 BENE equal to $1 worth of ERG.
+
+### Gold Price from Oracle Pool
+
+The price of gold (g GOLD) is retrieved from the XAU/ERG oracle pool using the Ergo Explorer API:
+
+```
+GET https://api.ergoplatform.com/api/v1/boxes/unspent/byTokenId/3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a
+```
+
+This queries for unspent boxes containing the oracle pool NFT. The price is extracted from the R4 register of the latest box using the formula:
+
+```
+goldPricePerGramErg = (10^18) / (R4_value * 100)
+```
+
+Example response (simplified):
+```json
+{
+  "items": [
+    {
+      "additionalRegisters": {
+        "R4": {
+          "renderedValue": "119226792"
+        }
+      }
+    }
+  ]
+}
+```
+
 
 
 ---

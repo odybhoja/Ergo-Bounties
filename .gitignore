@@ -6,3 +6,4 @@
 .github/workflows/scripts/bounty_modules/__pycache__/*.*
 .github/workflows/scripts/bounty_modules/__pycache__/*/*
 .github/workflows/scripts/bounty_modules/__pycache__/*/*.*
+scripts/.env

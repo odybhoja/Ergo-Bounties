@@ -276,7 +276,7 @@ def update_readme_table(
     <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-{badge_colors.get('open_bounties', '4CAF50')}" alt="Open Bounties"></a>
     <a href="/bounties/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-{badge_colors.get('total_value', '2196F3')}" alt="Total Value"></a>
     <a href="/bounties/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%20{high_value_threshold}%20ERG-{badge_colors.get('high_value', 'FFC107')}" alt="High Value Bounties"></a>
-    <a href="/bounties/featured_bounties.md"><img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-{badge_colors.get('featured', '9C27B0')}" alt="Featured Bounties"></a>
+    <a href="/docs/ongoing-programs.md"><img src="https://img.shields.io/badge/🔥%20Ongoing%20Programs-{badge_colors.get('featured', '9C27B0')}" alt="Ongoing Programs"></a>
   </p>
 
   <h2>🚀 Get Started</h2>

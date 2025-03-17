@@ -172,6 +172,37 @@ def format_navigation_badges(
     
     return " ".join(badges)
 
+def convert_to_erg(
+    amount: str, 
+    currency: str, 
+    conversion_rates: Dict[str, float]
+) -> str:
+    """
+    Calculate and format ERG value from amount and currency for display.
+    
+    Args:
+        amount: Amount as a string
+        currency: Currency code
+        conversion_rates: Dictionary of conversion rates
+        
+    Returns:
+        Formatted ERG value as a string, or a placeholder if conversion not possible
+    
+    Examples:
+        - convert_to_erg("100", "ERG", rates) -> "100.00 ERG"
+        - convert_to_erg("50", "SigUSD", rates) -> "61.02 ERG"
+        - convert_to_erg("Not specified", "ERG", rates) -> "Not specified"
+    """
+    if amount == "Not specified" or amount == "Ongoing":
+        return amount
+        
+    try:
+        erg_value = calculate_erg_value(amount, currency, conversion_rates)
+        return f"{erg_value:.2f} ERG"
+    except (ValueError, TypeError) as e:
+        logger.error(f"Error converting {amount} {currency} to ERG: {e}")
+        return "Not specified"
+
 def add_footer_buttons(relative_path: str = "") -> str:
     """
     Add standard footer buttons to markdown files.

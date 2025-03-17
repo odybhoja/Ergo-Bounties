@@ -20,12 +20,32 @@ logging.basicConfig(
 )
 logger = logging.getLogger('bounty_finder')
 
-# Import modules
-from bounty_modules.config import BountyConfig
-from bounty_modules.conversion_rates import get_conversion_rates
-from bounty_modules.processor import BountyProcessor
-from bounty_modules.utils import ensure_directory
-from bounty_modules.generators import (
+# Import modules - try to handle both direct execution and imports with 'scripts.' prefix
+try:
+    # First try direct imports (for when script is run directly)
+    from bounty_modules.config import BountyConfig
+    from bounty_modules.conversion_rates import get_conversion_rates
+    from bounty_modules.processor import BountyProcessor
+    from bounty_modules.utils import ensure_directory
+    from bounty_modules.generators import (
+        generate_language_files,
+        generate_organization_files,
+        generate_currency_files,
+        generate_price_table,
+        generate_main_file,
+        generate_summary_file,
+        generate_featured_bounties_file,
+        update_readme_table,
+        update_ongoing_programs_table,
+        generate_high_value_bounties_file
+    )
+except ImportError:
+    # Fall back to prefixed imports (for when script is imported as a module)
+    from scripts.bounty_modules.config import BountyConfig
+    from scripts.bounty_modules.conversion_rates import get_conversion_rates
+    from scripts.bounty_modules.processor import BountyProcessor
+    from scripts.bounty_modules.utils import ensure_directory
+    from scripts.bounty_modules.generators import (
     generate_language_files,
     generate_organization_files,
     generate_currency_files,

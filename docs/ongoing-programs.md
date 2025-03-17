@@ -3,15 +3,22 @@
 In addition to specific bounties, the Ergo ecosystem offers ongoing reward programs to encourage continuous contributions in key areas. These programs provide opportunities for contributors to receive rewards for their work even if there isn't a specific bounty listed.
 
 ## Current Ongoing Programs
+<!-- 
+/** WARNING: GENERATED CONTENT BEGINS - DO NOT MODIFY SECTION DIRECTLY **/
+/** Any changes made to the generated section will be overwritten **/
+/** Instead, update the generation scripts in .github/workflows/scripts/ **/
+-->
 
 |Organisation|Repository|Title & Link|Primary Language|Value|ERG Value|Paid In|Reserve|
 |---|---|---|---|---|---|---|---|
-| [EF_DAO_LLC](../bounties/by_org/ef_dao_llc.md) | [educational-rewards](https://github.com/EF_DAO_LLC/educational-rewards) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#educational-reward-program) |
-| [EF_DAO_LLC](../bounties/by_org/ef_dao_llc.md) | [development-rewards](https://github.com/EF_DAO_LLC/development-rewards) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#development-reward-program) |
+| [EF_DAO_LLC](../by_org/ef_dao_llc.md) | [educational-rewards](https://github.com/EF_DAO_LLC/educational-rewards) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#educational-reward-program) |
+| [EF_DAO_LLC](../by_org/ef_dao_llc.md) | [development-rewards](https://github.com/EF_DAO_LLC/development-rewards) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | Various | Varies | Based on contribution | ERG | [<kbd>Details</kbd>](#development-reward-program) |
 
 
-
-## 📚 Educational Reward Program
+<!-- 
+/** GENERATED CONTENT ENDS **/
+/** Content between these markers is automatically generated and will be overwritten **/
+-->## 📚 Educational Reward Program
 
 The Educational Reward Program is designed to stimulate the creation of educational content that benefits the Ergo community. We believe in the power of knowledge-sharing and empowerment as key drivers of growth.
 

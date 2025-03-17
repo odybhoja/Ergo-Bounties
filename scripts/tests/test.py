@@ -82,8 +82,8 @@ logger.propagate = False  # Prevent duplicate logs
 
 # Get the absolute path to the project root directory
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..', '..', '..'))
-SCRIPTS_DIR = os.path.join(PROJECT_ROOT, '.github', 'workflows', 'scripts')
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
+SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'scripts')
 ENV_FILE = os.path.join(SCRIPTS_DIR, '.env')
 BOUNTY_FINDER = os.path.join(SCRIPTS_DIR, 'bounty_finder.py')
 
@@ -343,9 +343,16 @@ class TestBountyFinder(unittest.TestCase):
                 content = f.read()
             
             # Replace bounties_dir = 'bounties' with absolute path to the temporary bounties folder
+            # Also fix the import paths to not use 'scripts.' prefix since we're using PYTHONPATH
             modified_content = content.replace(
                 "bounties_dir = 'bounties'", 
                 f"bounties_dir = '{self.bounties_dir}'"
+            )
+            
+            # Fix the import paths - remove the 'scripts.' prefix
+            modified_content = modified_content.replace(
+                "from scripts.bounty_modules", 
+                "from bounty_modules"
             )
             
             # Write the modified content to a temporary file
