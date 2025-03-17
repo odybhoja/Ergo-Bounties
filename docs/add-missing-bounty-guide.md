@@ -25,7 +25,7 @@ There are two ways to add repositories to our tracking system:
 For adding specific repositories:
 
 1. **Fork this repository**
-2. **Edit the `tracked_repos.json` file** to add the new repository:
+2. **Edit the `src/config/tracked_repos.json` file** to add the new repository:
    ```json
    {"owner": "repo-owner", "repo": "repo-name"}
    ```
@@ -36,7 +36,7 @@ For adding specific repositories:
 For tracking all repositories within a GitHub organization:
 
 1. **Fork this repository**
-2. **Edit the `tracked_orgs.json` file** to add the organization:
+2. **Edit the `src/config/tracked_orgs.json` file** to add the organization:
    ```json
    {"org": "organization-name"}
    ```
@@ -55,7 +55,7 @@ There are two ways to manually add bounties that aren't in GitHub repositories:
 For direct addition of bounties without GitHub issues:
 
 1. **Fork this repository**
-2. **Edit the `bounties/extra_bounties.json` file** to add the new bounty:
+2. **Edit the `src/config/extra_bounties.json` file** to add the new bounty:
    ```json
    {
      "timestamp": "YYYY-MM-DD HH:MM:SS",
@@ -83,7 +83,7 @@ If you prefer not to edit the JSON file yourself:
 - Use title format: `[MANUAL BOUNTY] Brief description`
 - Include: link to work, bounty value, and payment currency
 
-> 💡 **Note:** The bounty listings are automatically updated daily via GitHub Actions. When you add a new repository to `tracked_repos.json` or a new organization to `tracked_orgs.json`, the system will automatically include their bounties in the next update.
+> 💡 **Note:** The bounty listings are automatically updated daily via GitHub Actions. When you add a new repository to `src/config/tracked_repos.json` or a new organization to `src/config/tracked_orgs.json`, the system will automatically include their bounties in the next update.
 
 ## How the Automated System Works
 

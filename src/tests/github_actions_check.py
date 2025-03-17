@@ -54,9 +54,9 @@ def test_bounty_finder_execution():
 def test_run_bounty_check_execution():
     """Test if run_bounty_check.py can be imported and executed without errors."""
     try:
-        import tests.run_bounty_check
+        import src.tests.run_bounty_check
         # Check if the main function exists
-        if hasattr(tests.run_bounty_check, 'main'):
+        if hasattr(src.tests.run_bounty_check, 'main'):
             print("✅ run_bounty_check.py has a main function and can be imported")
             return True
         else:

@@ -125,15 +125,19 @@ The repository code is structured as follows:
 
 ```
 .
-├── config/               # Configuration files
-│   ├── constants.json    # Application constants
-│   ├── extra_bounties.json    # Manually added bounties
-│   ├── tracked_orgs.json      # Organizations to track
-│   └── tracked_repos.json     # Repositories to track
 ├── src/                  # Source code
 │   ├── api/              # API clients (GitHub, Currency)
+│   ├── config/           # Configuration files
+│   │   ├── constants.json    # Application constants
+│   │   ├── extra_bounties.json    # Manually added bounties
+│   │   ├── tracked_orgs.json      # Organizations to track
+│   │   └── tracked_repos.json     # Repositories to track
 │   ├── core/             # Core application logic
 │   ├── generators/       # Markdown file generators
+│   ├── tests/            # Test scripts
+│   │   ├── github_actions_check.py  # CI/CD validation
+│   │   ├── run_bounty_check.py      # Data validation
+│   │   └── test_runner.py           # Test framework
 │   ├── utils/            # Utility functions
 │   └── bounty_finder.py  # Main application entry point
 ├── data/                 # Generated data files
@@ -141,10 +145,6 @@ The repository code is structured as follows:
 │   ├── by_language/      # Bounties grouped by programming language
 │   ├── by_org/           # Bounties grouped by organization
 │   └── *.md              # Summary and index files
-├── tests/                # Test scripts
-│   ├── github_actions_check.py  # CI/CD validation
-│   ├── run_bounty_check.py      # Data validation
-│   └── test_runner.py           # Test framework
 ├── docs/                 # Documentation
 ├── submissions/          # Bounty submissions from users
 └── test.sh               # Test runner script

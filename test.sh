@@ -8,9 +8,9 @@ echo
 
 # Make sure scripts are executable
 chmod +x src/bounty_finder.py
-chmod +x tests/test_runner.py
-chmod +x tests/run_bounty_check.py
-chmod +x tests/freshness.py
+chmod +x src/tests/test_runner.py
+chmod +x src/tests/run_bounty_check.py
+chmod +x src/tests/freshness.py
 chmod +x run.py
 
 # Set up PYTHONPATH to include the current directory
@@ -25,16 +25,16 @@ python -m src.bounty_finder
 
 # Now run validation checks
 echo -e "\nRunning validation tool..."
-python -m tests.run_bounty_check
+python -m src.tests.run_bounty_check
 
 # Run file freshness check
 echo -e "\nRunning file freshness check..."
-python -m tests.freshness data 1
+python -m src.tests.freshness data 1
 freshness_result=$?
 
 # Run GitHub Actions compatibility check
 echo -e "\nRunning GitHub Actions compatibility check..."
-python -m tests.github_actions_check
+python -m src.tests.github_actions_check
 gh_actions_result=$?
 
 # Check final exit code

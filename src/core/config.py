@@ -100,7 +100,7 @@ class BountyConfig:
         Returns:
             Dictionary of constants
         """
-        constants_path = Path('config/constants.json')
+        constants_path = Path('src/config/constants.json')
         try:
             with open(constants_path, 'r', encoding='utf-8') as f:
                 constants = json.load(f)
@@ -118,7 +118,7 @@ class BountyConfig:
             List of repository objects with 'owner' and 'repo' keys
         """
         # First try in config directory
-        repos_path = Path('config/tracked_repos.json')
+        repos_path = Path('src/config/tracked_repos.json')
         if not repos_path.exists():
             # For backward compatibility
             repos_path = self.bounties_dir / 'tracked_repos.json'
@@ -139,7 +139,7 @@ class BountyConfig:
             List of organization objects with 'org' key
         """
         # First try in config directory
-        orgs_path = Path('config/tracked_orgs.json')
+        orgs_path = Path('src/config/tracked_orgs.json')
         if not orgs_path.exists():
             # For backward compatibility
             orgs_path = self.bounties_dir / 'tracked_orgs.json'
@@ -160,7 +160,7 @@ class BountyConfig:
             List of bounty objects with all required fields
         """
         # First try in config directory
-        extra_bounties_path = Path('config/extra_bounties.json')
+        extra_bounties_path = Path('src/config/extra_bounties.json')
         if not extra_bounties_path.exists():
             # For backward compatibility
             extra_bounties_path = self.bounties_dir / 'extra_bounties.json'
