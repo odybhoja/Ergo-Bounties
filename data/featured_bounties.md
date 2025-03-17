@@ -1,5 +1,5 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 15:48:31 -->
+<!-- Generated on: 2025-03-17 15:49:47 -->
 
 # Featured Bounties
 
@@ -18,7 +18,7 @@
 
 | Date | Open Bounties | Total Value |
 |------|--------------|-------------|
-| Mar 17, 2025 | 104 | 45,165.45 ERG |
+| Mar 17, 2025 | 104 | 45,164.94 ERG |
 
 
 
