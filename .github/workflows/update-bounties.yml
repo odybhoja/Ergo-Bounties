@@ -27,8 +27,11 @@ jobs:
       - name: Run bounty finder
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FORCE_REFRESH: "true"
         run: |
-          python run.py --refresh
+          # Run bounty finder directly, bypassing run.py's .env check
+          # This works because BountyConfig checks for GITHUB_TOKEN env var first
+          python -m src.bounty_finder
 
       - name: Commit and push if changes
         run: |
