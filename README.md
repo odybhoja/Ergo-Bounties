@@ -3,12 +3,10 @@
   <p><em>The Central Hub for Discovering, Claiming, and Managing Ergo Bounties</em></p>
 
   <p>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties">
-    </a><a href="/bounties/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-48,166.89%20ERG-2196F3" alt="Total Value">
-    </a><a href="/bounties/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties"></a><a href="/bounties/featured_bounties.md">
-      <img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-9C27B0" alt="Featured Bounties">
-    </a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties"></a>
+    <a href="/bounties/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-48,166.89%20ERG-2196F3" alt="Total Value"></a>
+    <a href="/bounties/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties"></a>
+    <a href="/bounties/featured_bounties.md"><img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-9C27B0" alt="Featured Bounties"></a>
   </p>
 
   <h2>🚀 Get Started</h2>
@@ -42,15 +40,9 @@
   <div>
     <h3>💵 By Currency</h3>
     <p>
-      <a href="/bounties/by_currency/erg.md">
-        <img src="https://img.shields.io/badge/ERG-Ergo-orange" alt="ERG">
-      </a>
-      <a href="/bounties/by_currency/sigusd.md">
-        <img src="https://img.shields.io/badge/SigUSD-Stablecoin-blue" alt="SigUSD">
-      </a>
-      <a href="/bounties/by_currency/">
-        <img src="https://img.shields.io/badge/🌐%20All%20Currencies-purple" alt="All Currencies">
-      </a>
+      <a href="/bounties/by_currency/erg.md"><img src="https://img.shields.io/badge/ERG-Ergo-orange" alt="ERG"></a>
+      <a href="/bounties/by_currency/sigusd.md"><img src="https://img.shields.io/badge/SigUSD-Stablecoin-blue" alt="SigUSD"></a>
+      <a href="/bounties/by_currency/"><img src="https://img.shields.io/badge/🌐%20All%20Currencies-purple" alt="All Currencies"></a>
     </p>
   </div>
 
@@ -66,12 +58,8 @@
   <h2>👨‍💻 For Developers</h2>
 
   <p>
-    <a href="/bounties/all.md?filter=beginner">
-      <img src="https://img.shields.io/badge/🔰%20Beginner%20Friendly-8-28A745" alt="Beginner Friendly">
-    </a>
-    <a href="/docs/ongoing-programs.md">
-      <img src="https://img.shields.io/badge/📋%20Ongoing%20Programs-FF5722" alt="Ongoing Programs">
-    </a>
+    <a href="/bounties/all.md?filter=beginner"><img src="https://img.shields.io/badge/🔰%20Beginner%20Friendly-8-28A745" alt="Beginner Friendly"></a>
+    <a href="/docs/ongoing-programs.md"><img src="https://img.shields.io/badge/📋%20Ongoing%20Programs-FF5722" alt="Ongoing Programs"></a>
   </p>
 
   <h2>⚙️ Automation & Maintenance</h2>
@@ -79,18 +67,10 @@
   <p><em>This repository is updated daily at Midnight UTC via GitHub Actions</em></p>
 
   <p>
-    <a href="/bounties/currency_prices.md">
-      <img src="https://img.shields.io/badge/💹%20Current%20Rates-00BCD4" alt="Currency Rates">
-    </a>
-    <a href="/docs/how-it-works.md">
-      <img src="https://img.shields.io/badge/🔧%20How%20It%20Works-795548" alt="How It Works">
-    </a>
-    <a href="/docs/donate.md">
-      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
-    </a>
-    <a href="https://github.com/ergoplatform/Ergo-Bounties">
-      <img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub">
-    </a>
+    <a href="/bounties/currency_prices.md"><img src="https://img.shields.io/badge/💹%20Current%20Rates-00BCD4" alt="Currency Rates"></a>
+    <a href="/docs/how-it-works.md"><img src="https://img.shields.io/badge/🔧%20How%20It%20Works-795548" alt="How It Works"></a>
+    <a href="/docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
+    <a href="https://github.com/ergoplatform/Ergo-Bounties"><img src="https://img.shields.io/badge/⭐%20Star%20on%20GitHub-333333" alt="Star on GitHub"></a>
   </p>
 </div>
 

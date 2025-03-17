@@ -51,11 +51,7 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 
 <div align="center">
   <p>
-    <a href="../docs/donate.md">
-      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
-    </a>
-    <a href="../docs/bounty-submission-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty">
-    </a>
+    <a href="../docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
+    <a href="../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty"></a>
   </p>
 </div>

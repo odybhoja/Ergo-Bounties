@@ -1,6 +1,6 @@
 # EF_DAO_LLC Bounties
 
-*Report generated: 2025-03-17 11:42:15 UTC*
+*Report generated: 2025-03-17 11:53:46 UTC*
 
 Total EF_DAO_LLC bounties: **2**
 
@@ -26,11 +26,7 @@ Total EF_DAO_LLC bounties: **2**
 
 <div align="center">
   <p>
-    <a href="../../docs/donate.md">
-      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
-    </a>
-    <a href="../../docs/bounty-submission-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty">
-    </a>
+    <a href="../../docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
+    <a href="../../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty"></a>
   </p>
 </div>
