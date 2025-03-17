@@ -1,16 +1,11 @@
-<!-- 
-/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
-/** Any changes made to this file will be overwritten by the automated system **/
-/** Instead, update the generation scripts in .github/workflows/scripts/ **/
--->
+<!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
+<!-- Generated on: 2025-03-17 13:21:32 -->
 
 # Featured Bounties
 
-*Report generated: 2025-03-17 12:37:25 UTC*
-
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-104-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
 
 ## Top Bounties by Value
 
@@ -23,7 +18,7 @@
 
 | Date | Open Bounties | Total Value |
 |------|--------------|-------------|
-| Mar 17, 2025 | 106 | 45,166.89 ERG |
+| Mar 17, 2025 | 104 | 45,167.89 ERG |
 
 
 
@@ -37,7 +32,4 @@
 </div>
 
 
-<!-- 
-/** GENERATION END **/
-/** Content above is automatically generated and will be overwritten **/
--->
+<!-- END OF GENERATED CONTENT -->

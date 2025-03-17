@@ -1,26 +1,35 @@
 #!/bin/bash
-# Simple wrapper script to run the bounty validation tool
+# Ergo Bounties Test Script
+# This script runs the validation tools to check bounty data.
 
-# Set terminal colors
-GREEN='\033[0;32m'
-CYAN='\033[0;36m'
-NC='\033[0m' # No Color
+echo "Ergo Bounties Testing Tool"
+echo "=========================="
+echo
 
-echo -e "${CYAN}═════════════════════════════════════════════════════════════════════════════${NC}"
-echo -e "${CYAN}                      ERGO BOUNTIES VALIDATION TOOL                          ${NC}"
-echo -e "${CYAN}═════════════════════════════════════════════════════════════════════════════${NC}"
-echo ""
-echo -e "${GREEN}Running bounty validation check...${NC}"
-echo ""
-
-# Make the Python script executable if it isn't already
+# Make sure scripts are executable
+chmod +x scripts/bounty_finder.py
+chmod +x scripts/tests/test_runner.py
 chmod +x scripts/tests/run_bounty_check.py
 
-# Run the Python script
-python3 scripts/tests/run_bounty_check.py
+# Check if we want verbose output
+if [[ "$1" == "--verbose" ]]; then
+  echo "Running test runner with verbose output..."
+  python scripts/tests/test_runner.py --verbose
+else
+  # Run the full validation tool by default
+  echo "Running full validation tool..."
+  python scripts/tests/run_bounty_check.py
+fi
 
-# Store the exit code
-exit_code=$?
+# Run GitHub Actions compatibility check
+echo -e "\nRunning GitHub Actions compatibility check..."
+python scripts/tests/github_actions_check.py
+gh_actions_result=$?
 
-# Exit with the same code
-exit $exit_code
+# Check final exit code
+if [ $? -eq 0 ] && [ $gh_actions_result -eq 0 ]; then
+  echo -e "\n✅ All tests completed successfully"
+else
+  echo -e "\n❌ Tests failed"
+  exit 1
+fi

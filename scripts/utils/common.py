@@ -1,14 +1,29 @@
+#!/usr/bin/env python3
+"""
+Common Utilities Module
+
+This module provides utility functions used throughout the application:
+- Directory operations (creating directories)
+- Date and time formatting
+- String formatting and conversion
+- URL generation
+
+These utility functions are designed to be reusable components that help with
+common tasks across the application.
+"""
+
 import os
 import json
 import logging
 import urllib.parse
 from datetime import datetime
-from typing import Dict, Any, Union, Optional
+from pathlib import Path
+from typing import Dict, Any, Union, Optional, List
 
 # Configure logging
-logger = logging.getLogger('utils')
+logger = logging.getLogger(__name__)
 
-def ensure_directory(directory: str) -> None:
+def ensure_directory(directory: Union[str, Path]) -> None:
     """
     Ensure a directory exists, creating it if necessary.
     
@@ -16,7 +31,8 @@ def ensure_directory(directory: str) -> None:
         directory: Directory path to create
     """
     try:
-        os.makedirs(directory, exist_ok=True)
+        path = Path(directory)
+        path.mkdir(parents=True, exist_ok=True)
         logger.debug(f"Ensured directory exists: {directory}")
     except Exception as e:
         logger.error(f"Error creating directory {directory}: {e}")
@@ -94,51 +110,6 @@ def get_current_timestamp() -> str:
     """
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-def calculate_erg_value(
-    amount: str, 
-    currency: str, 
-    conversion_rates: Dict[str, float]
-) -> float:
-    """
-    Calculate ERG value from amount and currency.
-    
-    Args:
-        amount: Amount as a string
-        currency: Currency code
-        conversion_rates: Dictionary of conversion rates
-        
-    Returns:
-        ERG value as a float, or 0 if conversion not possible
-    
-    Examples:
-        - calculate_erg_value("100", "ERG", rates) -> 100.0
-        - calculate_erg_value("50", "SigUSD", rates) -> ERG equivalent of 50 SigUSD
-        - calculate_erg_value("2", "g GOLD", rates) -> ERG equivalent of 2g of gold
-        - calculate_erg_value("Ongoing", "ERG", rates) -> 0.0 (special case for ongoing programs)
-    """
-    if amount == "Not specified" or amount == "Ongoing":
-        return 0.0
-        
-    try:
-        if currency == "ERG":
-            return float(amount)
-        elif currency == "SigUSD" and "SigUSD" in conversion_rates:
-            return float(amount) / conversion_rates["SigUSD"]
-        elif currency == "GORT" and "GORT" in conversion_rates:
-            return float(amount) / conversion_rates["GORT"]
-        elif currency == "RSN" and "RSN" in conversion_rates:
-            return float(amount) / conversion_rates["RSN"]
-        elif currency == "BENE" and "BENE" in conversion_rates:
-            return float(amount) / conversion_rates["BENE"]  # BENE is worth $1 in ERG
-        elif currency == "g GOLD" and "gGOLD" in conversion_rates:
-            return float(amount) * conversion_rates["gGOLD"]
-        else:
-            logger.warning(f"Unknown currency or missing conversion rate: {currency}")
-            return 0.0
-    except ValueError as e:
-        logger.error(f"Error converting {amount} {currency} to ERG: {e}")
-        return 0.0
-
 def format_navigation_badges(
     total_bounties: int, 
     languages_count: int, 
@@ -172,37 +143,6 @@ def format_navigation_badges(
     
     return " ".join(badges)
 
-def convert_to_erg(
-    amount: str, 
-    currency: str, 
-    conversion_rates: Dict[str, float]
-) -> str:
-    """
-    Calculate and format ERG value from amount and currency for display.
-    
-    Args:
-        amount: Amount as a string
-        currency: Currency code
-        conversion_rates: Dictionary of conversion rates
-        
-    Returns:
-        Formatted ERG value as a string, or a placeholder if conversion not possible
-    
-    Examples:
-        - convert_to_erg("100", "ERG", rates) -> "100.00 ERG"
-        - convert_to_erg("50", "SigUSD", rates) -> "61.02 ERG"
-        - convert_to_erg("Not specified", "ERG", rates) -> "Not specified"
-    """
-    if amount == "Not specified" or amount == "Ongoing":
-        return amount
-        
-    try:
-        erg_value = calculate_erg_value(amount, currency, conversion_rates)
-        return f"{erg_value:.2f} ERG"
-    except (ValueError, TypeError) as e:
-        logger.error(f"Error converting {amount} {currency} to ERG: {e}")
-        return "Not specified"
-
 def add_footer_buttons(relative_path: str = "") -> str:
     """
     Add standard footer buttons to markdown files.
@@ -224,3 +164,84 @@ def add_footer_buttons(relative_path: str = "") -> str:
   </p>
 </div>
 """
+
+def format_currency_filename(currency: str) -> str:
+    """
+    Format a currency name for use in filenames.
+    
+    Args:
+        currency: Currency name or code
+        
+    Returns:
+        Filename-friendly version of the currency name
+    """
+    if currency == "Not specified":
+        return "not_specified"
+    elif currency == "g GOLD":
+        return "gold"
+    else:
+        return currency.lower()
+
+def format_currency_link(currency: str, directory: str = "by_currency") -> str:
+    """
+    Format a currency name as a link to its dedicated page.
+    
+    Args:
+        currency: Currency name or code
+        directory: Directory containing currency files
+        
+    Returns:
+        Markdown link to the currency page
+    """
+    filename = format_currency_filename(currency)
+    return f"[{currency}]({directory}/{filename}.md)"
+
+def format_organization_link(org: str, directory: str = "by_org") -> str:
+    """
+    Format an organization name as a link to its dedicated page.
+    
+    Args:
+        org: Organization name
+        directory: Directory containing organization files
+        
+    Returns:
+        Markdown link to the organization page
+    """
+    return f"[{org}]({directory}/{org.lower()}.md)"
+
+def format_language_link(language: str, directory: str = "by_language") -> str:
+    """
+    Format a language name as a link to its dedicated page.
+    
+    Args:
+        language: Programming language name
+        directory: Directory containing language files
+        
+    Returns:
+        Markdown link to the language page
+    """
+    return f"[{language}]({directory}/{language.lower()}.md)"
+
+def wrap_with_guardrails(content: str, header: str = "") -> str:
+    """
+    Wrap content with guardrails for protection against automatic updates.
+    
+    Args:
+        content: Markdown content
+        header: Optional header to include before the content
+        
+    Returns:
+        Content wrapped with guardrails
+    """
+    timestamp = get_current_timestamp()
+    
+    guardrails = f"""<!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
+<!-- Generated on: {timestamp} -->
+
+{header}
+
+{content}
+
+<!-- END OF GENERATED CONTENT -->
+"""
+    return guardrails

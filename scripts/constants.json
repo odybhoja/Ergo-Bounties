@@ -1,35 +1,27 @@
 {
-  "language_colors": {
-    "Scala": "DC322F",
-    "Rust": "DEA584",
-    "JavaScript": "F7DF1E",
-    "TypeScript": "3178C6",
-    "Python": "3776AB",
-    "Java": "007396"
+  "currency_file_names": {
+    "ERG": "erg",
+    "SigUSD": "sigusd",
+    "GORT": "gort",
+    "RSN": "rsn",
+    "BENE": "bene",
+    "g GOLD": "gold"
   },
-  "fixed_bounties": {
-    "fleet_sdk": {
-      "count": 7,
-      "currency": "SigUSD",
-      "amount": 775
-    },
-    "keystone": {
-      "count": 1,
-      "currency": "ERG",
-      "amount": 3000
-    }
+  "currency_display_names": {
+    "SigUSD": "SigUSD ($1)",
+    "GORT": "GORT (Governance Token)",
+    "RSN": "RSN (Governance Token)",
+    "BENE": "BENE ($1)",
+    "g GOLD": "Gold (per gram)",
+    "gGOLD": "Gold (per gram)"
   },
   "currency_notes": {
     "SigUSD": "Stablecoin pegged to USD",
-    "BENE": "No market value",
-    "gGOLD": "Price per gram of gold"
-  },
-  "currency_display_names": {
-    "gGOLD": "g GOLD"
-  },
-  "currency_file_names": {
-    "Not specified": "not_specified",
-    "g GOLD": "gold"
+    "GORT": "Governance token for ErgoDEX",
+    "RSN": "Governance token for Rosen Bridge",
+    "BENE": "Each BENE is worth $1 in ERG",
+    "g GOLD": "Price per gram of gold in ERG",
+    "gGOLD": "Price per gram of gold in ERG"
   },
   "no_rate_inversion": ["gGOLD"]
 }

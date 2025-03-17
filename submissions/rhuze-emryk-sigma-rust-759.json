@@ -1,6 +1,6 @@
 {
   "contributor": "rhuze-emryk",
-  "wallet_address": "9he6BZYMN8FMKxYKsqPvQJ6fbNar4bWuhJsR9JJt4x9Z6fiqSo1.invisibastard",
+  "wallet_address": "9he6BZYMN8FMKxYKsqPvQJ6fbNar4bWuhJsR9JJt4x9Z6fiqSo1",
   "contact_method": "GitHub: rhuze-emryk",
   "work_link": "https://github.com/ergoplatform/sigma-rust/pull/810",
   "work_title": "Fix for Issue #759 with Linux Instructions",

@@ -1,13 +1,27 @@
+#!/usr/bin/env python3
+"""
+Bounty Processor Module
+
+This module is the core of the bounty finder system. It:
+- Processes GitHub repositories and organizations to find bounties
+- Extracts and normalizes bounty information
+- Organizes bounties by various criteria (language, organization, currency)
+- Calculates statistics and aggregates data
+
+The processor acts as a bridge between the data sources (GitHub API) and 
+the generators that create the output markdown files.
+"""
+
 import logging
 from datetime import datetime
-from typing import Dict, List, Any, Tuple, Optional
+from typing import Dict, List, Any, Tuple, Optional, Set
 
-from .api_client import get_org_repos, get_repo_languages, get_issues
-from .extractors import check_bounty_labels, extract_bounty_from_labels, extract_bounty_from_text
-from .utils import calculate_erg_value
+from ..api.github_client import GitHubClient
+from ..api.currency_client import CurrencyClient
+from .extractors import BountyExtractor
 
 # Configure logging
-logger = logging.getLogger('processor')
+logger = logging.getLogger(__name__)
 
 class BountyProcessor:
     """
@@ -15,33 +29,17 @@ class BountyProcessor:
     Handles fetching and processing bounty information from GitHub.
     """
     
-    # Class variable to store the singleton instance
-    _instance = None
-    
-    @classmethod
-    def get_instance(cls) -> 'BountyProcessor':
-        """
-        Get the singleton instance of the BountyProcessor.
-        
-        Returns:
-            The BountyProcessor instance
-        """
-        if cls._instance is None:
-            raise RuntimeError("BountyProcessor instance not initialized. Call the constructor first.")
-        return cls._instance
-    
-    def __init__(self, github_token: str, conversion_rates: Dict[str, float]):
-        # Set the singleton instance
-        BountyProcessor._instance = self
+    def __init__(self, github_token: str, rates: Dict[str, float]):
         """
         Initialize the bounty processor.
         
         Args:
             github_token: GitHub API token
-            conversion_rates: Dictionary of conversion rates
+            rates: Dictionary of currency conversion rates
         """
-        self.github_token = github_token
-        self.conversion_rates = conversion_rates
+        self.github_client = GitHubClient(github_token)
+        self.currency_client = CurrencyClient()
+        self.currency_client.rates = rates  # Use provided rates
         self.bounty_data = []
         self.project_totals = {}
         
@@ -59,7 +57,7 @@ class BountyProcessor:
             logger.info(f"Processing {owner}/{repo_name}...")
             
             # Get repository languages
-            languages = get_repo_languages(owner, repo_name, self.github_token)
+            languages = self.github_client.get_repository_languages(owner, repo_name)
             primary_lang = languages[0] if languages else "Unknown"
             secondary_lang = languages[1] if len(languages) > 1 else "None"
             
@@ -68,7 +66,7 @@ class BountyProcessor:
                 self.project_totals[owner] = {"count": 0, "value": 0.0}
             
             # Get issues
-            issues = get_issues(owner, repo_name, self.github_token)
+            issues = self.github_client.get_repository_issues(owner, repo_name)
             
             # Process each issue
             for issue in issues:
@@ -86,12 +84,13 @@ class BountyProcessor:
             Updated list of repositories
         """
         updated_repos = repos_to_query.copy()
+        processed_repos = {f"{repo['owner']}/{repo['repo']}" for repo in repos_to_query}
         
         for org_entry in orgs_to_query:
             org = org_entry['org']
             logger.info(f"Fetching repositories for organization: {org}")
             
-            org_repos = get_org_repos(org, self.github_token)
+            org_repos = self.github_client.get_organization_repos(org)
             for repo in org_repos:
                 # Skip archived repositories
                 if repo.get('archived', False):
@@ -104,10 +103,12 @@ class BountyProcessor:
                     continue
                     
                 # Add to repos_to_query if not already there
-                repo_entry = {"owner": org, "repo": repo['name']}
-                if repo_entry not in updated_repos:
-                    logger.info(f"Adding repository from organization: {org}/{repo['name']}")
+                repo_id = f"{org}/{repo['name']}"
+                if repo_id not in processed_repos:
+                    logger.info(f"Adding repository from organization: {repo_id}")
+                    repo_entry = {"owner": org, "repo": repo['name']}
                     updated_repos.append(repo_entry)
+                    processed_repos.add(repo_id)
         
         return updated_repos
     
@@ -123,23 +124,15 @@ class BountyProcessor:
             secondary_lang: Secondary language of the repository
         """
         if issue['state'] == 'open':
-            if ("bounty" in issue["title"].lower() or 
-                "b-" in issue["title"].lower() or 
-                check_bounty_labels(issue["labels"])):
+            title = issue['title']
+            labels = issue['labels']
+            
+            # Check if this is a bounty issue
+            if BountyExtractor.is_bounty_issue(title, labels):
+                title = title.replace(",", " ")
                 
-                title = issue['title'].replace(",", " ")
-                
-                # First check labels for bounty amount
-                amount, currency = extract_bounty_from_labels(issue["labels"])
-                
-                # If no bounty found in labels, check title and body
-                if not amount:
-                    amount, currency = extract_bounty_from_text(title, issue.get('body', ''))
-                
-                # If still no bounty found, mark as "Not specified"
-                if not amount:
-                    amount = "Not specified"
-                    currency = "Not specified"
+                # Extract bounty information
+                amount, currency = BountyExtractor.extract_bounty_info(issue)
                 
                 # Store the bounty information
                 bounty_info = {
@@ -152,7 +145,7 @@ class BountyProcessor:
                     "currency": currency,
                     "primary_lang": primary_lang,
                     "secondary_lang": secondary_lang,
-                    "labels": [label['name'] for label in issue['labels']],
+                    "labels": [label['name'] for label in labels],
                     "issue_number": issue['number'],
                     "creator": issue['user']['login']  # GitHub username of the issue creator
                 }
@@ -162,8 +155,9 @@ class BountyProcessor:
                 # Update project totals
                 self.project_totals[owner]["count"] += 1
                 
-                # Try to convert amount to float for totals
-                self.project_totals[owner]["value"] += calculate_erg_value(amount, currency, self.conversion_rates)
+                # Calculate ERG value for totals
+                erg_value = self.currency_client.calculate_erg_value(amount, currency)
+                self.project_totals[owner]["value"] += erg_value
     
     def get_bounty_data(self) -> List[Dict[str, Any]]:
         """
@@ -201,10 +195,11 @@ class BountyProcessor:
             
             self.project_totals[owner]["count"] += 1
             
-            # Try to convert amount to float for totals
+            # Calculate ERG value for totals
             amount = bounty.get("amount", "Not specified")
             currency = bounty.get("currency", "Not specified")
-            self.project_totals[owner]["value"] += calculate_erg_value(amount, currency, self.conversion_rates)
+            erg_value = self.currency_client.calculate_erg_value(amount, currency)
+            self.project_totals[owner]["value"] += erg_value
     
     def get_total_stats(self) -> Tuple[int, float]:
         """
@@ -275,3 +270,121 @@ class BountyProcessor:
                 currencies_dict[currency] = []
             currencies_dict[currency].append(bounty)
         return currencies_dict
+    
+    def calculate_currency_totals(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Calculate totals by currency.
+        
+        Returns:
+            Dictionary of currency -> {count, value} totals
+        """
+        currency_totals = {}
+        currencies_dict = self.group_by_currency()
+        
+        for currency, currency_bounties in currencies_dict.items():
+            # Count only bounties with specified amounts (excluding "Ongoing" programs)
+            specified_bounties = [
+                b for b in currency_bounties 
+                if b["amount"] != "Not specified" and b["amount"] != "Ongoing"
+            ]
+            
+            currency_totals[currency] = {
+                "count": len(specified_bounties), 
+                "value": 0.0
+            }
+            
+            # Calculate total value
+            for bounty in specified_bounties:
+                amount = bounty["amount"]
+                currency_totals[currency]["value"] += self.currency_client.calculate_erg_value(
+                    amount, currency
+                )
+                
+        return currency_totals
+    
+    def find_featured_bounties(self, count: int = 2) -> List[Dict[str, Any]]:
+        """
+        Find the highest-value bounties to feature.
+        
+        Args:
+            count: Number of featured bounties to return
+            
+        Returns:
+            List of high-value bounty objects with ERG value
+        """
+        featured_bounties = []
+        
+        for bounty in self.bounty_data:
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            
+            if amount != "Not specified" and amount != "Ongoing":
+                try:
+                    # Calculate ERG equivalent
+                    value = self.currency_client.calculate_erg_value(amount, currency)
+                    
+                    featured_bounties.append({
+                        **bounty,
+                        "value": value
+                    })
+                except (ValueError, TypeError):
+                    pass
+        
+        # Sort by value and get top bounties
+        featured_bounties.sort(key=lambda x: x["value"], reverse=True)
+        return featured_bounties[:count]
+    
+    def find_high_value_bounties(self, threshold: float = 1000.0) -> List[Dict[str, Any]]:
+        """
+        Find bounties with value above a threshold.
+        
+        Args:
+            threshold: Minimum ERG value for high-value bounties
+            
+        Returns:
+            List of high-value bounty objects sorted by value
+        """
+        high_value_bounties = []
+        
+        for bounty in self.bounty_data:
+            amount = bounty["amount"]
+            currency = bounty["currency"]
+            
+            if amount != "Not specified" and amount != "Ongoing":
+                try:
+                    # Calculate ERG equivalent
+                    value = self.currency_client.calculate_erg_value(amount, currency)
+                    
+                    if value >= threshold:
+                        high_value_bounties.append({
+                            **bounty,
+                            "value": value
+                        })
+                except (ValueError, TypeError):
+                    pass
+        
+        # Sort by value
+        high_value_bounties.sort(key=lambda x: x["value"], reverse=True)
+        return high_value_bounties
+    
+    def find_beginner_friendly_bounties(self) -> List[Dict[str, Any]]:
+        """
+        Find bounties that are tagged as beginner-friendly.
+        
+        Returns:
+            List of beginner-friendly bounty objects
+        """
+        beginner_tags = [
+            'beginner', 'beginner-friendly', 'good-first-issue', 
+            'good first issue', 'easy', 'starter', 'newbie'
+        ]
+        
+        beginner_bounties = []
+        
+        for bounty in self.bounty_data:
+            labels = [label.lower() for label in bounty.get("labels", [])]
+            
+            if any(tag in label for tag in beginner_tags for label in labels):
+                beginner_bounties.append(bounty)
+                
+        return beginner_bounties

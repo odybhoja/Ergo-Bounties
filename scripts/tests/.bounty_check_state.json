@@ -1,31 +1,11 @@
 {
-  "run_time": "2025-03-17 12:36:26",
+  "run_time": "2025-03-17 13:28:57",
   "github_token": {
     "valid": true,
     "details": {
       "username": "cannonQ",
-      "rate_limit": "4429"
+      "rate_limit": "4805"
     }
-  },
-  "success": true,
-  "execution_time": 58.589674949645996,
-  "total_bounties": 106,
-  "total_value": 45166.89,
-  "conversion_rates": {
-    "SigUSD": 0.819389,
-    "GORT": 12.76516,
-    "RSN": 18.563417,
-    "BENE": 0.819389,
-    "gGOLD": 83.8727591594489
-  },
-  "repositories_processed": 91,
-  "bounties_by_currency": {
-    "BENE": 2,
-    "SigUSD": 54,
-    "ERG": 26,
-    "g": 6,
-    "GORT": 7,
-    "RSN": 6
   },
   "file_counts": {
     "main_files": 5,
@@ -33,5 +13,28 @@
     "currency_files": 8,
     "org_files": 7,
     "total": 27
+  },
+  "total_bounties": 104,
+  "total_value": 45167.89,
+  "conversion_rates": {
+    "BENE": 1.220422,
+    "GORT": 0.078338,
+    "RSN": 0.053869,
+    "SigUSD": 1.220422,
+    "gGOLD": 84.015759
+  },
+  "bounties_by_currency": {
+    "g GOLD": 6,
+    "GORT": 7,
+    "RSN": 6,
+    "ERG": 28,
+    "SigUSD": 54
+  },
+  "repositories_processed": 7,
+  "changes": {
+    "bounty_count_diff": 0,
+    "total_value_diff": 0.0,
+    "files_diff": 0,
+    "currency_changes": {}
   }
 }

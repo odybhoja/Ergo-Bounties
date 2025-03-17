@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """
-Bounty Finder - Main script for finding and processing bounties from GitHub.
+Ergo Bounty Finder - Main Application
 
-This script orchestrates the process of:
-1. Loading configuration
-2. Fetching conversion rates
-3. Processing repositories and organizations
+This script is the main entry point for the Ergo Bounty Finder application. It orchestrates:
+1. Loading configuration and API tokens
+2. Fetching conversion rates for currencies
+3. Processing GitHub repositories and organizations to find bounties
 4. Generating markdown files with bounty information
+
+The application runs automatically via GitHub Actions, but can also be run manually
+for testing and development purposes.
 """
 
 import sys
+import os
 import logging
 from typing import Dict, List, Any
 
@@ -20,32 +24,12 @@ logging.basicConfig(
 )
 logger = logging.getLogger('bounty_finder')
 
-# Import modules - try to handle both direct execution and imports with 'scripts.' prefix
-try:
-    # First try direct imports (for when script is run directly)
-    from bounty_modules.config import BountyConfig
-    from bounty_modules.conversion_rates import get_conversion_rates
-    from bounty_modules.processor import BountyProcessor
-    from bounty_modules.utils import ensure_directory
-    from bounty_modules.generators import (
-        generate_language_files,
-        generate_organization_files,
-        generate_currency_files,
-        generate_price_table,
-        generate_main_file,
-        generate_summary_file,
-        generate_featured_bounties_file,
-        update_readme_table,
-        update_ongoing_programs_table,
-        generate_high_value_bounties_file
-    )
-except ImportError:
-    # Fall back to prefixed imports (for when script is imported as a module)
-    from scripts.bounty_modules.config import BountyConfig
-    from scripts.bounty_modules.conversion_rates import get_conversion_rates
-    from scripts.bounty_modules.processor import BountyProcessor
-    from scripts.bounty_modules.utils import ensure_directory
-    from scripts.bounty_modules.generators import (
+# Import modules
+from scripts.core.config import BountyConfig
+from scripts.api.currency_client import CurrencyClient
+from scripts.core.processor import BountyProcessor
+from scripts.utils.common import ensure_directory
+from scripts.generators.main import (
     generate_language_files,
     generate_organization_files,
     generate_currency_files,
@@ -53,7 +37,7 @@ except ImportError:
     generate_main_file,
     generate_summary_file,
     generate_featured_bounties_file,
-    update_readme_table,
+    update_readme_badges,
     update_ongoing_programs_table,
     generate_high_value_bounties_file
 )
@@ -71,8 +55,8 @@ def main():
         logger.error("Invalid configuration")
         sys.exit(1)
     
-    # Ensure bounties directory exists
-    ensure_directory(bounties_dir)
+    # Ensure bounties directory and subdirectories exist
+    config.ensure_directories()
     
     # Load repositories and organizations
     repos_to_query = config.load_tracked_repos()
@@ -80,7 +64,8 @@ def main():
     
     # Fetch conversion rates
     logger.info("Fetching conversion rates")
-    conversion_rates = get_conversion_rates()
+    currency_client = CurrencyClient()
+    conversion_rates = currency_client.get_all_rates()
     
     # Initialize processor
     processor = BountyProcessor(config.github_token, conversion_rates)
@@ -211,18 +196,12 @@ def main():
         high_value_threshold=1000
     )
     
-    # Update the README.md table and badges with the latest bounty counts and values
-    update_readme_table(
+    # Update the README.md badges with the latest bounty counts and values
+    high_value_bounties = processor.find_high_value_bounties(threshold=1000)
+    update_readme_badges(
         total_bounties,
         total_value,
-        bounties_dir,
-        len(languages),
-        len(currencies_dict),
-        len(orgs),
-        len(conversion_rates),
-        languages=languages,
-        bounty_data=bounty_data,
-        conversion_rates=conversion_rates
+        len(high_value_bounties)
     )
 
     # Print summary
