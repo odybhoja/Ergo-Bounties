@@ -275,13 +275,13 @@ def update_readme_table(
   <p>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-{badge_colors.get('open_bounties', '4CAF50')}" alt="Open Bounties">
-    </a>
+    </a>&nbsp;
     <a href="/bounties/summary.md">
       <img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-{badge_colors.get('total_value', '2196F3')}" alt="Total Value">
-    </a>
+    </a>&nbsp;
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%20{high_value_threshold}%20ERG-{badge_colors.get('high_value', 'FFC107')}" alt="High Value Bounties">
-    </a>
+    </a>&nbsp;
     <a href="/bounties/featured_bounties.md">
       <img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-{badge_colors.get('featured', '9C27B0')}" alt="Featured Bounties">
     </a>
@@ -294,13 +294,13 @@ def update_readme_table(
   <p>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
-    </a>
+    </a>&nbsp;
     <a href="/docs/bounty-submission-guide.md#reserving-a-bounty">
       <img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty">
-    </a>
+    </a>&nbsp;
     <a href="/docs/bounty-submission-guide.md#step-by-step-submission-process">
       <img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment">
-    </a>
+    </a>&nbsp;
     <a href="/docs/add-missing-bounty-guide.md">
       <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
     </a>
