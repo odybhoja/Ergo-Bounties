@@ -1,19 +1,12 @@
-<!-- 
-/** WARNING: AUTO-GENERATED FILE. DO NOT MODIFY DIRECTLY **/
-/** Any changes made to this file will be overwritten by the automated system **/
-/** Instead, update the generation scripts in .github/workflows/scripts/ **/
--->
-
-
 # EF_DAO_LLC Bounties
 
-*Report generated: 2025-03-17 11:03:14 UTC*
+*Report generated: 2025-03-17 11:23:34 UTC*
 
 Total EF_DAO_LLC bounties: **2**
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All_Bounties-106-blue)](../all.md) [![By Language](https://img.shields.io/badge/By_Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By_Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By_Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency_Prices-5-purple)](../currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
 
 ## Filter Bounties
 
@@ -29,7 +22,15 @@ Total EF_DAO_LLC bounties: **2**
 | [development-rewards](https://github.com/EF_DAO_LLC/development-rewards) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | Ongoing ERG | [ERG](../by_currency/erg.md) | [Various](../by_language/various.md) | None | [<kbd>Reserve</kbd>](https://github.com/ErgoDevs/Ergo-Bounties/new/main?filename=submissions/ef_dao_llc-development-rewards-program-dev.json&value=%7B%0A%20%20%22contributor%22%3A%20%22YOUR_GITHUB_USERNAME%22%2C%0A%20%20%22wallet_address%22%3A%20%22YOUR_WALLET_ADDRESS%22%2C%0A%20%20%22contact_method%22%3A%20%22YOUR_CONTACT_INFO%22%2C%0A%20%20%22work_link%22%3A%20%22%22%2C%0A%20%20%22work_title%22%3A%20%22Development%20Reward%20Program%22%2C%0A%20%20%22bounty_id%22%3A%20%22EF_DAO_LLC/development-rewards%23program-dev%22%2C%0A%20%20%22original_issue_link%22%3A%20%22https%3A//docs.ergoplatform.com/contribute/%22%2C%0A%20%20%22payment_currency%22%3A%20%22ERG%22%2C%0A%20%20%22bounty_value%22%3A%200%2C%0A%20%20%22status%22%3A%20%22in-progress%22%2C%0A%20%20%22submission_date%22%3A%20%22%22%2C%0A%20%20%22expected_completion%22%3A%20%22YYYY-MM-DD%22%2C%0A%20%20%22description%22%3A%20%22I%20am%20working%20on%20this%20bounty%22%2C%0A%20%20%22review_notes%22%3A%20%22%22%2C%0A%20%20%22payment_tx_id%22%3A%20%22%22%2C%0A%20%20%22payment_date%22%3A%20%22%22%0A%7D&message=Claim%20Bounty%20EF_DAO_LLC/development-rewards%23program-dev&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20ergo-foundation.%0A%0ABounty:%20Development%20Reward%20Program) |
 
 
-<!-- 
-/** GENERATION END **/
-/** Content above is automatically generated and will be overwritten **/
--->
+---
+
+<div align="center">
+  <p>
+    <a href="../../docs/donate.md">
+      <img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate">
+    </a>
+    <a href="../../docs/bounty-submission-guide.md#reserving-a-bounty">
+      <img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty">
+    </a>
+  </p>
+</div>
