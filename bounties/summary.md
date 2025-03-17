@@ -4,19 +4,19 @@
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](/bounties/all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](/bounties/by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](/bounties/by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](/bounties/by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](/bounties/currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](/bounties/all.md)[![By Language](https://img.shields.io/badge/By%20Language-6-green)](/bounties/by_language/)[![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](/bounties/by_currency/)[![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](/bounties/by_org/)[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](/bounties/currency_prices.md)
 
 ## Projects
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/bounties/by_org/ergoplatform.md) | 85 | 43,833.42 ERG |
+| [ergoplatform](/bounties/by_org/ergoplatform.md) | 85 | 43,833.26 ERG |
 | [input-output-hk](/bounties/by_org/input-output-hk.md) | 1 | 610.21 ERG |
-| [ChainCashLabs](/bounties/by_org/chaincashlabs.md) | 9 | 488.47 ERG |
+| [ChainCashLabs](/bounties/by_org/chaincashlabs.md) | 9 | 488.25 ERG |
 | [StabilityNexus](/bounties/by_org/stabilitynexus.md) | 2 | 122.04 ERG |
 | [rosen-bridge](/bounties/by_org/rosen-bridge.md) | 7 | 113.13 ERG |
 | [EF_DAO_LLC](/bounties/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **106** | **45,167.27 ERG** |
+| **Total** | **106** | **45,166.89 ERG** |
 
 ## Currencies
 
@@ -24,7 +24,7 @@
 |----------|-------|------------------|
 | [SigUSD](/bounties/by_currency/sigusd.md) | 54 | 39602.68 |
 | [ERG](/bounties/by_currency/erg.md) | 26 | 4550.00 |
-| [g GOLD](/bounties/by_currency/gold.md) | 6 | 587.49 |
+| [g GOLD](/bounties/by_currency/gold.md) | 6 | 587.11 |
 | [GORT](/bounties/by_currency/gort.md) | 7 | 191.93 |
 | [BENE](/bounties/by_currency/bene.md) | 2 | 122.04 |
 
