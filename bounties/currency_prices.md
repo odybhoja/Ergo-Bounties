@@ -18,10 +18,106 @@
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE](by_currency/bene.md) | 1.220422 | No market value |
-| [GORT](by_currency/gort.md) | 0.078338 |  |
-| [RSN](by_currency/rsn.md) | 0.053869 |  |
-| [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD |
-| [g GOLD](by_currency/gold.md) | 87.605562 | Price per gram of gold |
+| [BENE](by_currency/bene.md) | 1.220422 | No market value; pegged to $1 USD (same as SigUSD) |
+| [GORT](by_currency/gort.md) | 0.078338 | From Spectrum Finance API (GORT/ERG market) |
+| [RSN](by_currency/rsn.md) | 0.053869 | From Spectrum Finance API (RSN/ERG market) |
+| [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD; from Spectrum Finance API |
+| [g GOLD](by_currency/gold.md) | 87.605562 | Price per gram of gold; from XAU/ERG oracle pool |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
+
+## Data Sources & API Information
+
+The currency prices are fetched from the following sources:
+
+### Spectrum Finance API
+
+Most token prices (SigUSD, GORT, RSN) are fetched from the Spectrum Finance API:
+
+**Endpoint:** `https://api.spectrum.fi/v1/price-tracking/markets`
+
+**Example Request:**
+```bash
+curl -X GET "https://api.spectrum.fi/v1/price-tracking/markets"
+```
+
+**Python Example:**
+```python
+import requests
+response = requests.get("https://api.spectrum.fi/v1/price-tracking/markets", timeout=30)
+markets = response.json()
+```
+
+#### SigUSD
+Fetched by filtering Spectrum markets where `quoteSymbol` is "SigUSD" and `baseSymbol` is "ERG".
+
+**Python Example:**
+```python
+sigusd_markets = [m for m in markets if m.get("quoteSymbol") == "SigUSD" and m.get("baseSymbol") == "ERG"]
+sigusd_rate = float(sigusd_markets[0].get("lastPrice"))
+```
+
+#### GORT & RSN
+Similarly fetched by filtering for their respective symbols paired with ERG:
+
+**Python Example for GORT:**
+```python
+gort_markets = [m for m in markets if m.get("quoteSymbol") == "GORT" and m.get("baseSymbol") == "ERG"]
+gort_rate = float(gort_markets[0].get("lastPrice"))
+```
+
+**Python Example for RSN:**
+```python
+rsn_markets = [m for m in markets if m.get("quoteSymbol") == "RSN" and m.get("baseSymbol") == "ERG"]
+rsn_rate = float(rsn_markets[0].get("lastPrice"))
+```
+
+### Gold Price (g GOLD)
+
+Gold price is fetched from the XAU/ERG oracle pool on the Ergo blockchain:
+
+**Endpoint:** `https://api.ergoplatform.com/api/v1/boxes/unspent/byTokenId/3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a`
+
+**Example Request:**
+```bash
+curl -X GET "https://api.ergoplatform.com/api/v1/boxes/unspent/byTokenId/3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a"
+```
+
+**Python Example:**
+```python
+import requests
+
+# Oracle NFT token ID
+XAU_ERG_ORACLE_NFT = "3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a"
+ERGO_EXPLORER_API = "https://api.ergoplatform.com/api/v1"
+
+# Get boxes containing the oracle pool NFT
+oracle_url = f"{ERGO_EXPLORER_API}/boxes/unspent/byTokenId/{XAU_ERG_ORACLE_NFT}"
+response = requests.get(oracle_url, timeout=60)
+oracle_data = response.json()
+
+# Get the most recent box (usually the first one)
+latest_box = oracle_data['items'][0]
+
+# Extract the R4 register value
+r4_register = latest_box['additionalRegisters']['R4']
+r4_value = r4_register.get('renderedValue') or r4_register.get('value')
+r4_value = float(r4_value)
+
+# Calculate the gold price using the formula
+gold_price_per_gram_erg = (10**18) / (r4_value * 100)
+```
+
+**Calculation:**
+The gold price is calculated from the R4 register of the latest oracle pool box using the formula:
+`gold_price_per_gram_erg = (10^18) / (R4_value * 100)`
+
+### BENE
+
+BENE is pegged to $1 USD, so its ERG equivalent is set to the same value as SigUSD, which is also a USD stablecoin:
+
+**Python Example:**
+```python
+# After getting SigUSD rate
+bene_rate = sigusd_rate
+```
