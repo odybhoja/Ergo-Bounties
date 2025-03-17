@@ -1,11 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 14:22:46 -->
+<!-- Generated on: 2025-03-17 14:37:22 -->
 
 # EF_DAO_LLC Bounties
 
-# EF_DAO_LLC Bounties
-
-*Report generated: 2025-03-17 14:22:46 UTC*
+*Report generated: 2025-03-17 14:37:22 UTC*
 
 Total EF_DAO_LLC bounties: **2**
 

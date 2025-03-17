@@ -1,10 +1,10 @@
 {
-  "run_time": "2025-03-17 14:22:47",
+  "run_time": "2025-03-17 14:37:22",
   "github_token": {
     "valid": true,
     "details": {
       "username": "cannonQ",
-      "rate_limit": "4805"
+      "rate_limit": "4241"
     }
   },
   "file_counts": {
@@ -32,12 +32,9 @@
   },
   "repositories_processed": 7,
   "changes": {
-    "bounty_count_diff": 99,
-    "total_value_diff": 44435.75,
+    "bounty_count_diff": 0,
+    "total_value_diff": 0.0,
     "files_diff": 0,
-    "currency_changes": {
-      "ERG": 26,
-      "SigUSD": 53
-    }
+    "currency_changes": {}
   }
 }

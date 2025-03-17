@@ -86,7 +86,6 @@ def generate_language_files(
         content = ""
         
         # Add timestamp and stats
-        content += f"# {language} Bounties\n\n"
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"Total {language} bounties: **{len(language_bounties)}**\n\n"
         content += f"Total value: **{language_value:.2f} ERG**\n\n"
@@ -200,7 +199,6 @@ def generate_organization_files(
         content = ""
         
         # Add timestamp and stats
-        content += f"# {org} Bounties\n\n"
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"Total {org} bounties: **{len(org_bounties)}**\n\n"
         content += f"Total value: **{org_value:.2f} ERG**\n\n"
@@ -321,7 +319,6 @@ def generate_currency_files(
         content = ""
         
         # Add timestamp and stats
-        content += f"# {currency} Bounties\n\n"
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"Total {currency} bounties: **{len(currency_bounties)}**\n\n"
         content += f"Total value: **{currency_value:.2f} ERG**\n\n"
@@ -412,7 +409,6 @@ def generate_currency_files(
         content = ""
         
         # Add timestamp and stats
-        content += "# Bounties with Unspecified Value\n\n"
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"Total unspecified value bounties: **{len(not_specified_bounties)}**\n\n"
         
