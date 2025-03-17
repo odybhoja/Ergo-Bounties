@@ -1,10 +1,10 @@
 # Currency Prices
 
-*Report generated: 2025-03-17 11:33:37 UTC*
+*Report generated: 2025-03-17 11:38:49 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](all.md)[![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/)[![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/)[![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/)[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
 
 ## Filter Bounties
 
@@ -22,7 +22,7 @@
 | [GORT](by_currency/gort.md) | 0.078338 |  |
 | [RSN](by_currency/rsn.md) | 0.053869 |  |
 | [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD |
-| [g GOLD](by_currency/gold.md) | 83.927675 | Price per gram of gold |
+| [g GOLD](by_currency/gold.md) | 83.872759 | Price per gram of gold |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 
