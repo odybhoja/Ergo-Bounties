@@ -241,7 +241,7 @@ def update_readme_table(
                 color = language_colors.get(lang, "DC322F")
                 # URL encode special characters in language name
                 encoded_lang = lang.replace(" ", "%20").replace("+", "%2B").replace("#", "%23")
-                language_badges += f'<a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{encoded_lang}-{count}-{color}"></a>'
+                language_badges += f'    <a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{encoded_lang}-{count}-{color}"></a>\n'
         
         # Count repositories from tracked_repos.json and tracked_orgs.json
         repos_count = 0
@@ -275,14 +275,8 @@ def update_readme_table(
   <p>
     <a href="/bounties/all.md">
       <img src="https://img.shields.io/badge/Open%20Bounties-{total_bounties}%2B-{badge_colors.get('open_bounties', '4CAF50')}" alt="Open Bounties">
-    </a>
-    <a href="/bounties/summary.md">
-      <img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-{badge_colors.get('total_value', '2196F3')}" alt="Total Value">
-    </a>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%20{high_value_threshold}%20ERG-{badge_colors.get('high_value', 'FFC107')}" alt="High Value Bounties">
-    </a>
-    <a href="/bounties/featured_bounties.md">
+    </a><a href="/bounties/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-{total_erg_value:,.2f}%20ERG-{badge_colors.get('total_value', '2196F3')}" alt="Total Value">
+    </a><a href="/bounties/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-{high_value_count}%2B%20Over%20{high_value_threshold}%20ERG-{badge_colors.get('high_value', 'FFC107')}" alt="High Value Bounties"></a><a href="/bounties/featured_bounties.md">
       <img src="https://img.shields.io/badge/🔥%20Featured%20Bounties-{badge_colors.get('featured', '9C27B0')}" alt="Featured Bounties">
     </a>
   </p>
@@ -292,18 +286,10 @@ def update_readme_table(
   <p><em>Find, claim, and contribute to Ergo ecosystem bounties across {repos_count}+ indexed repositories</em></p>
 
   <p>
-    <a href="/bounties/all.md">
-      <img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties">
-    </a>
-    <a href="/docs/bounty-submission-guide.md#reserving-a-bounty">
-      <img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty">
-    </a>
-    <a href="/docs/bounty-submission-guide.md#step-by-step-submission-process">
-      <img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment">
-    </a>
-    <a href="/docs/add-missing-bounty-guide.md">
-      <img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty">
-    </a>
+    <a href="/bounties/all.md"><img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties"></a>
+    <a href="/docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Reserve-green" alt="Reserve a Bounty"></a>
+    <a href="/docs/bounty-submission-guide.md#step-by-step-submission-process"><img src="https://img.shields.io/badge/💰%20Request%20Payment-orange" alt="Request Payment"></a>
+    <a href="/docs/add-missing-bounty-guide.md"><img src="https://img.shields.io/badge/➕%20Add%20Bounty-red" alt="Add a New Bounty"></a>
   </p>
 
   <h2>📚 Explore Bounties by Category</h2>

@@ -170,7 +170,7 @@ def format_navigation_badges(
     if conversion_rates_count > 0:
         badges.append(f"[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-{conversion_rates_count}-purple)]({relative_path}currency_prices.md)")
     
-    return "".join(badges)
+    return " ".join(badges)
 
 def add_footer_buttons(relative_path: str = "") -> str:
     """
