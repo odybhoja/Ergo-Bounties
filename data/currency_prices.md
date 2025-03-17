@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 14:37:22 -->
+<!-- Generated on: 2025-03-17 14:53:19 -->
 
 # Currency Prices
 
 # Currency Prices
 
-*Report generated: 2025-03-17 14:37:22 UTC*
+*Report generated: 2025-03-17 14:53:19 UTC*
 
 ## Navigation
 
@@ -27,7 +27,7 @@
 | [GORT](by_currency/gort.md) | 0.078338 | Governance token for ErgoDEX |
 | [RSN](by_currency/rsn.md) | 0.053869 | Governance token for Rosen Bridge |
 | [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD |
-| [gGOLD](by_currency/ggold.md) | 84.032555 | Price per gram of gold in ERG |
+| [gGOLD](by_currency/ggold.md) | 83.667208 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 
