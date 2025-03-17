@@ -27,17 +27,15 @@ jobs:
       - name: Run bounty finder
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          FORCE_REFRESH: "true"
         run: |
-          # Run bounty finder directly, bypassing run.py's .env check
-          # This works because BountyConfig checks for GITHUB_TOKEN env var first
+          # Using the module entry point instead of the direct script path
           python -m src.bounty_finder
 
       - name: Commit and push if changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/ README.md
+          git add data/
           git diff --quiet && git diff --staged --quiet || git commit -m "Update bounties: $(date +'%Y-%m-%d %H:%M')"
           git push
 
