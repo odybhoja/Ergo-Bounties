@@ -309,6 +309,62 @@ def generate_price_table(
         
         f.write("\n*Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*\n")
         
+        # Add section explaining how prices are retrieved
+        f.write("\n## How Prices are Retrieved\n\n")
+        f.write("The currency prices are retrieved using different APIs:\n\n")
+        
+        # SigUSD, GORT, RSN
+        f.write("### Spectrum API\n\n")
+        f.write("SigUSD, GORT, and RSN prices are retrieved from the [Spectrum.fi](https://spectrum.fi/) API:\n\n")
+        f.write("```\n")
+        f.write("GET https://api.spectrum.fi/v1/price-tracking/markets\n")
+        f.write("```\n\n")
+        f.write("The API returns market data for various trading pairs. We filter this data to find specific currency pairs:\n\n")
+        f.write("- For SigUSD: We look for markets where `quoteSymbol=SigUSD` and `baseSymbol=ERG`\n")
+        f.write("- For GORT: We look for markets where `quoteSymbol=GORT` and `baseSymbol=ERG`\n")
+        f.write("- For RSN: We look for markets where `quoteSymbol=RSN` and `baseSymbol=ERG`\n\n")
+        f.write("Example response (simplified):\n")
+        f.write("```json\n")
+        f.write("[\n")
+        f.write("  {\n")
+        f.write("    \"baseSymbol\": \"ERG\",\n")
+        f.write("    \"quoteSymbol\": \"SigUSD\",\n")
+        f.write("    \"lastPrice\": \"1.220422\",\n")
+        f.write("    \"baseVolume\": { \"value\": \"12345.67\" }\n")
+        f.write("  },\n")
+        f.write("  // Other market pairs...\n")
+        f.write("]\n")
+        f.write("```\n\n")
+        
+        # BENE
+        f.write("### BENE\n\n")
+        f.write("BENE price is set to be equivalent to SigUSD (which is pegged to USD), making 1 BENE equal to $1 worth of ERG.\n\n")
+        
+        # g GOLD
+        f.write("### Gold Price from Oracle Pool\n\n")
+        f.write("The price of gold (g GOLD) is retrieved from the XAU/ERG oracle pool using the Ergo Explorer API:\n\n")
+        f.write("```\n")
+        f.write("GET https://api.ergoplatform.com/api/v1/boxes/unspent/byTokenId/3c45f29a5165b030fdb5eaf5d81f8108f9d8f507b31487dd51f4ae08fe07cf4a\n")
+        f.write("```\n\n")
+        f.write("This queries for unspent boxes containing the oracle pool NFT. The price is extracted from the R4 register of the latest box using the formula:\n\n")
+        f.write("```\n")
+        f.write("goldPricePerGramErg = (10^18) / (R4_value * 100)\n")
+        f.write("```\n\n")
+        f.write("Example response (simplified):\n")
+        f.write("```json\n")
+        f.write("{\n")
+        f.write("  \"items\": [\n")
+        f.write("    {\n")
+        f.write("      \"additionalRegisters\": {\n")
+        f.write("        \"R4\": {\n")
+        f.write("          \"renderedValue\": \"119226792\"\n")
+        f.write("        }\n")
+        f.write("      }\n")
+        f.write("    }\n")
+        f.write("  ]\n")
+        f.write("}\n")
+        f.write("```\n\n")
+        
         # Add footer with action buttons
         f.write(add_footer_buttons())
     
