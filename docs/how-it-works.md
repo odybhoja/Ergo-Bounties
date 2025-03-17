@@ -9,14 +9,14 @@ The repository uses GitHub Actions to automatically track and update the list of
 ### Automation Schedule
 
 - **Daily Updates**: The bounty list is refreshed every day at midnight UTC
-- **On-Demand Updates**: Triggered whenever `tracked_repos.json` is modified
+- **On-Demand Updates**: Triggered whenever `src/config/tracked_repos.json` is modified
 - **Manual Trigger**: Maintainers can manually run the workflow when needed
 
 ### How It Works
 
 The automation process follows these steps:
 
-1. **Repository Scanning**: The system scans all repositories listed in `tracked_repos.json`
+1. **Repository Scanning**: The system scans all repositories listed in `src/config/tracked_repos.json`
 2. **Issue Identification**: It identifies issues with bounty tags or mentions in their title or description
 3. **Bounty Extraction**: The system extracts bounty amounts and currencies using pattern matching
 4. **Value Calculation**: Where possible, it converts different currencies to ERG equivalent values
@@ -28,7 +28,7 @@ The automation process follows these steps:
 To add a new repository to the tracking system:
 
 1. Fork this repository
-2. Edit the `tracked_repos.json` file to add the new repository
+2. Edit the `src/config/tracked_repos.json` file to add the new repository
    ```json
    {"owner": "repo-owner", "repo": "repo-name"}
    ```
@@ -41,7 +41,7 @@ Once merged, the automation will include the new repository's bounties in the ne
 For bounties that aren't in GitHub repositories or don't follow standard formats:
 
 1. Fork this repository
-2. Edit the `extra_bounties.json` file to add the new bounty:
+2. Edit the `src/config/extra_bounties.json` file to add the new bounty:
    ```json
    {
      "timestamp": "YYYY-MM-DD HH:MM:SS",
@@ -95,8 +95,8 @@ The system recognizes multiple currencies:
 The bounty tracking is implemented in Python using the GitHub API. The main components are:
 
 - **GitHub Actions Workflow**: Defined in `.github/workflows/update-bounties.yml`
-- **Python Script**: Located at `scrape/bounty_finder_github_action.py`
-- **Repository List**: Maintained in `tracked_repos.json`
+- **Python Script**: Located at `src/bounty_finder.py`
+- **Repository List**: Maintained in `src/config/tracked_repos.json`
 
 ### GitHub API Usage
 
@@ -108,11 +108,10 @@ The script uses the GitHub API to:
 ### Output Files
 
 The system generates:
-- A Markdown file (`bounty_issues.md`) with a formatted table of all bounties
-- A CSV file (`scrape/bounty_issues_TIMESTAMP.csv`) with detailed bounty data
-- Language-specific Markdown files in the `bounties/by_language/` directory
-- Currency-specific Markdown files in the `bounties/by_currency/` directory
-- Organization-specific Markdown files in the `bounties/by_org/` directory
+- A Markdown file with a formatted table of all bounties
+- Language-specific Markdown files in the `data/by_language/` directory
+- Currency-specific Markdown files in the `data/by_currency/` directory
+- Organization-specific Markdown files in the `data/by_org/` directory
 - Summary statistics including total counts and values
 
 ## For Developers
@@ -152,11 +151,11 @@ The repository code is structured as follows:
 
 ### Key Components for Developers
 
-#### 1. README Generator (`readme_updater.py`)
+#### 1. README Generator (`update_readme.py`)
 
 This module is responsible for updating the main README.md. Its key features include:
 
-- Loading configurations from `config.json` and `constants.json`
+- Loading configurations from `src/config/constants.json`
 - Generating language badges based on current bounty counts
 - Calculating statistics (high-value bounties, beginner-friendly counts)
 - Formatting dynamic sections based on current data
@@ -166,7 +165,7 @@ This module is responsible for updating the main README.md. Its key features inc
 
 Two main configuration files control the system behavior:
 
-##### `constants.json`
+##### `src/config/constants.json`
 Contains project-wide constants like:
 ```json
 {
@@ -174,21 +173,6 @@ Contains project-wide constants like:
   "fixed_bounties": {
     "fleet_sdk": { "count": 7, "currency": "SigUSD", "amount": 775 },
     "keystone": { "count": 1, "currency": "ERG", "amount": 3000 }
-  }
-}
-```
-
-##### `config.json`
-Controls the README generator specifically:
-```json
-{
-  "readme": {
-    "section_order": ["header", "stats_badges", "get_started"],
-    "display_beginner_friendly": true,
-    "high_value_threshold_erg": 1000
-  },
-  "badges": {
-    "colors": { "open_bounties": "4CAF50", "total_value": "2196F3" }
   }
 }
 ```
@@ -211,7 +195,7 @@ To test changes to the scripts:
 2. Check that generated files match expected formats
 3. Verify error handling by deliberately introducing bad input
 4. Test with various configurations to ensure flexibility
-5. Run the test.py script to validate full system functionality
+5. Run the test.sh script to validate full system functionality
 
 ## Limitations and Edge Cases
 

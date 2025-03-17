@@ -6,7 +6,7 @@ This guide provides instructions for adding bounties that aren't currently track
 
 Before adding a missing bounty, ensure:
 
-1. The bounty is not already listed in the [all bounties](/bounties/all.md) page
+1. The bounty is not already listed in the [all bounties](/data/all.md) page
 2. The bounty meets the criteria for inclusion (described below)
 
 ## Verifying Bounty Requirements

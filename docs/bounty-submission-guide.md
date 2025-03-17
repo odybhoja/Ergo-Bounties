@@ -20,7 +20,7 @@ Reserving a bounty helps:
 
 ### Quick Method (Using the UI)
 
-1. Navigate to the bounty you want to work on in the [bounties list](/bounties/all.md)
+1. Navigate to the bounty you want to work on in the [bounties list](/data/all.md)
 2. Click the "Claim" button next to the bounty
 3. This will open a new GitHub issue in the repository with a pre-filled template
 4. Fill in any additional information requested in the template
