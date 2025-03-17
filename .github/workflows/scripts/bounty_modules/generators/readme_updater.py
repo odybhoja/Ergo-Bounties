@@ -241,7 +241,7 @@ def update_readme_table(
                 color = language_colors.get(lang, "DC322F")
                 # URL encode special characters in language name
                 encoded_lang = lang.replace(" ", "%20").replace("+", "%2B").replace("#", "%23")
-                language_badges += f'    <a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{encoded_lang}-{count}-{color}"></a>\n'
+                language_badges += f'<a href="/bounties/by_language/{lang.lower()}.md"><img src="https://img.shields.io/badge/{encoded_lang}-{count}-{color}"></a>'
         
         # Count repositories from tracked_repos.json and tracked_orgs.json
         repos_count = 0

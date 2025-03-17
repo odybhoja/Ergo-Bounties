@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Dict, List, Any
 
-from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value
+from ..utils import ensure_directory, create_claim_url, format_navigation_badges, calculate_erg_value, add_footer_buttons
 from ..conversion_rates import convert_to_erg
 
 # Configure logging
@@ -125,16 +125,6 @@ def generate_high_value_bounties_file(
             f.write(f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {primary_lang_link} | {erg_equiv:.2f} | {currency_link} | {reserve_button} |\n")
         
         # Add footer with action buttons
-        f.write("\n\n---\n\n")
-        f.write("<div align=\"center\">\n")
-        f.write("  <p>\n")
-        f.write("    <a href=\"/docs/donate.md\">\n")
-        f.write("      <img src=\"https://img.shields.io/badge/❤️%20Donate-F44336\" alt=\"Donate\">\n")
-        f.write("    </a>\n")
-        f.write("    <a href=\"/docs/bounty-submission-guide.md#reserving-a-bounty\">\n")
-        f.write("      <img src=\"https://img.shields.io/badge/🔒%20Claim-4CAF50\" alt=\"Claim a Bounty\">\n")
-        f.write("    </a>\n")
-        f.write("  </p>\n")
-        f.write("</div>\n")
+        f.write(add_footer_buttons())
     
     logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")
