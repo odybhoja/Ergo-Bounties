@@ -4,10 +4,23 @@ In addition to specific bounties, the Ergo ecosystem offers ongoing reward progr
 
 ## Current Ongoing Programs
 
+<!-- BEGIN_ONGOING_PROGRAMS_TABLE -->
 | Organization | Program | Details | Primary Language |
 |-------------|---------|---------|------------------|
 | [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Educational Reward Program](#-educational-reward-program) | [Details](#-educational-reward-program) | [Various](by_language/various.md) |
 | [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Development Reward Program](#-development-reward-program) | [Details](#-development-reward-program) | [Various](by_language/various.md) |
+<!-- END_ONGOING_PROGRAMS_TABLE -->
+
+## Current Active Bounties
+
+<!-- BEGIN_ACTIVE_BOUNTIES_TABLE -->
+The following bounties are currently active and available for contribution:
+
+| Organization | Repository | Title & Link | Bounty Amount | Paid in | Primary Language | Reserve |
+|--------------|------------|--------------|--------------|---------|------------------|---------|
+| [DevDAO](../data/by_org/devdao.md) | [keystone-integration](https://github.com/DevDAO/keystone-integration) | [Keystone Wallet Integration](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | 3000 (3000.00 ERG) | [ERG](../data/by_currency/erg.md) | [Various](../data/by_language/various.md) | [<kbd>Reserve</kbd>](https://github.com/DevDAO/keystone-integration/issues/new?title=Reservation:%20Keystone%20Wallet%20Integration&body=%23%20Bounty%20Reservation%0A%0A%2A%2ATitle%3A%2A%2A%20Keystone%20Wallet%20Integration%0A%2A%2ABounty%20Link%3A%2A%2A%20https%3A%2F%2Fdiscord.com%2Fchannels%2F668903786361651200%2F669989266478202917%2F1344310506277830697%0A%2A%2AValue%3A%2A%2A%203000%20ERG%0A%0A%23%23%20Developer%20Information%0A%0A%2A%2AGitHub%20Username%3A%2A%2A%20%5BYour%20GitHub%20Username%5D%0A%2A%2ADiscord%20Username%20(optional)%3A%2A%2A%20%5BYour%20Discord%20handle%20for%20any%20questions%5D%0A%0A%23%23%20Development%20Plan%0A%0APlease%20share%20a%20brief%20overview%20of%3A%0A%0A-%20Your%20approach%20to%20implementing%20this%20bounty%0A-%20Estimated%20timeframe%20for%20completion%0A-%20Any%20questions%20you%20have%20about%20the%20requirements%0A%0A%2A%2ANote%3A%2A%2A%20By%20submitting%20this%20reservation%2C%20you%20are%20committing%20to%20working%20on%20this%20bounty.%20If%20you%20later%20decide%20not%20to%20proceed%2C%20please%20close%20this%20issue%20so%20others%20can%20work%20on%20it.) |
+| [fleet-sdk](../data/by_org/fleet-sdk.md) | [docs](https://github.com/fleet-sdk/docs) | [[Educational] Fleet-Tutorial + Bounties](https://github.com/fleet-sdk/docs/issues/8) | 775 (775.00 ERG) | [SigUSD](../data/by_currency/sigusd.md) | [Various](../data/by_language/various.md) | [<kbd>Reserve</kbd>](https://github.com/fleet-sdk/docs/issues/new?title=Reservation:%20%5BEducational%5D%20Fleet-Tutorial%20%2B%20Bounties&body=%23%20Bounty%20Reservation%0A%0A%2A%2ATitle%3A%2A%2A%20%5BEducational%5D%20Fleet-Tutorial%20%2B%20Bounties%0A%2A%2ABounty%20Link%3A%2A%2A%20https%3A%2F%2Fgithub.com%2Ffleet-sdk%2Fdocs%2Fissues%2F8%0A%2A%2AValue%3A%2A%2A%20775%20SigUSD%0A%0A%23%23%20Developer%20Information%0A%0A%2A%2AGitHub%20Username%3A%2A%2A%20%5BYour%20GitHub%20Username%5D%0A%2A%2ADiscord%20Username%20(optional)%3A%2A%2A%20%5BYour%20Discord%20handle%20for%20any%20questions%5D%0A%0A%23%23%20Development%20Plan%0A%0APlease%20share%20a%20brief%20overview%20of%3A%0A%0A-%20Your%20approach%20to%20implementing%20this%20bounty%0A-%20Estimated%20timeframe%20for%20completion%0A-%20Any%20questions%20you%20have%20about%20the%20requirements%0A%0A%2A%2ANote%3A%2A%2A%20By%20submitting%20this%20reservation%2C%20you%20are%20committing%20to%20working%20on%20this%20bounty.%20If%20you%20later%20decide%20not%20to%20proceed%2C%20please%20close%20this%20issue%20so%20others%20can%20work%20on%20it.) |
+<!-- END_ACTIVE_BOUNTIES_TABLE -->
 
 
 ## 📚 Educational Reward Program

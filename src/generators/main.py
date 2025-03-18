@@ -734,39 +734,98 @@ def generate_summary_file(
 
 def update_ongoing_programs_table(
     bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
     bounties_dir: str
 ) -> None:
     """
-    Update the table in the ongoing programs markdown file.
+    Update the tables in the ongoing programs markdown file using guardrails.
     
     Args:
         bounty_data: List of bounty data
+        conversion_rates: Dictionary of conversion rates
         bounties_dir: Bounties directory
     """
-    logger.info("Updating ongoing programs table")
+    logger.info("Updating ongoing programs tables with guardrails")
     
-    # Filter for ongoing programs
+    # Filter for ongoing programs (amount == "Ongoing")
     ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
     
-    if not ongoing_programs:
-        logger.info("No ongoing programs found, skipping table update")
-        return
-    
-    # Generate the table content
-    table_content = generate_ongoing_programs_table(ongoing_programs)
-    
-    # Update the file with guardrails
-    success = update_partially_generated_file(
-        'docs/ongoing-programs.md',
-        "## Current Ongoing Programs",
-        "## 📚 Educational Reward Program",
-        table_content
-    )
-    
-    if success:
-        logger.info("Successfully updated ongoing programs table with guardrails")
+    if ongoing_programs:
+        # Generate the ongoing programs table content
+        ongoing_table_content = generate_ongoing_programs_table(ongoing_programs)
+        
+        # Update the table between guardrails
+        try:
+            # Read the file
+            with open('docs/ongoing-programs.md', 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Find the ongoing programs table section
+            start_marker = "<!-- BEGIN_ONGOING_PROGRAMS_TABLE -->"
+            end_marker = "<!-- END_ONGOING_PROGRAMS_TABLE -->"
+            
+            start_pos = content.find(start_marker)
+            end_pos = content.find(end_marker)
+            
+            if start_pos != -1 and end_pos != -1:
+                # Replace the content between the markers
+                pre_content = content[:start_pos + len(start_marker)]
+                post_content = content[end_pos:]
+                
+                # Construct the new content
+                new_content = pre_content + "\n" + ongoing_table_content + "\n" + post_content
+                
+                # Write the updated content back to the file
+                with open('docs/ongoing-programs.md', 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                
+                logger.info("Successfully updated ongoing programs table with guardrails")
+            else:
+                logger.error("Could not find ongoing programs table markers in ongoing-programs.md")
+        except Exception as e:
+            logger.error(f"Error updating ongoing programs table: {e}")
     else:
-        logger.error("Failed to update ongoing programs table with guardrails")
+        logger.info("No ongoing programs found, skipping ongoing table update")
+    
+    # Filter for regular bounties (has "bounty" in labels)
+    regular_bounties = [b for b in bounty_data if "bounty" in b.get("labels", [])]
+    
+    if regular_bounties:
+        # Generate the regular bounties table
+        bounty_table_content = "The following bounties are currently active and available for contribution:\n\n" + generate_standard_bounty_table(regular_bounties, conversion_rates)
+        
+        # Update the table between guardrails
+        try:
+            # Read the file
+            with open('docs/ongoing-programs.md', 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Find the active bounties table section
+            start_marker = "<!-- BEGIN_ACTIVE_BOUNTIES_TABLE -->"
+            end_marker = "<!-- END_ACTIVE_BOUNTIES_TABLE -->"
+            
+            start_pos = content.find(start_marker)
+            end_pos = content.find(end_marker)
+            
+            if start_pos != -1 and end_pos != -1:
+                # Replace the content between the markers
+                pre_content = content[:start_pos + len(start_marker)]
+                post_content = content[end_pos:]
+                
+                # Construct the new content
+                new_content = pre_content + "\n" + bounty_table_content + "\n" + post_content
+                
+                # Write the updated content back to the file
+                with open('docs/ongoing-programs.md', 'w', encoding='utf-8') as f:
+                    f.write(new_content)
+                
+                logger.info("Successfully updated active bounties table with guardrails")
+            else:
+                logger.error("Could not find active bounties table markers in ongoing-programs.md")
+        except Exception as e:
+            logger.error(f"Error updating active bounties table: {e}")
+    else:
+        logger.info("No regular bounties found, skipping bounties table update")
 
 def generate_featured_bounties_file(
     bounty_data: List[Dict[str, Any]], 

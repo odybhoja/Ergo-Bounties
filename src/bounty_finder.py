@@ -156,6 +156,7 @@ def main():
     # Update ongoing programs table
     update_ongoing_programs_table(
         bounty_data,
+        conversion_rates,
         bounties_dir
     )
 
