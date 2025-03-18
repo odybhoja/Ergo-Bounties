@@ -636,11 +636,11 @@ def generate_summary_file(
     summary_file = f'{bounties_dir}/summary.md'
     
     # Build content
-    content = "## 📋 Open Bounties\n\n"
-    content += f"**[View Current Open Bounties →](/{bounties_dir}/all.md)**\n\n"
+    #content = "## 📋 Open Bounties\n\n"
+    #content += f"**[View Current Open Bounties →](/{bounties_dir}/all.md)**\n\n"
     
     # Add navigation badges with links to respective headers
-    content += generate_navigation_section(
+    content = generate_navigation_section(
         total_bounties, 
         len(languages), 
         len(currencies_dict), 
