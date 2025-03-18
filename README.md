@@ -8,7 +8,7 @@
     <a href="/docs/ongoing-programs.md"><img src="https://img.shields.io/badge/🔥%20Grants%20and%20Initiatives-9C27B0" alt="Featured Bounties"></a>
   </p>
   <h2>🚀 Get Started</h2>
-  <p><em>Find, claim, and contribute to Ergo ecosystem bounties across 18+ indexed repositories</em></p>
+  <p><em>Find, claim, and contribute to Ergo ecosystem bounties across 100+ indexed repositories</em></p>
   <p>
     <a href="/data/all.md"><img src="https://img.shields.io/badge/✅%20Browse%20Bounties-3F51B5" alt="Browse Bounties"></a>
     <a href="/docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Reserve%20a%20Bounty-green" alt="Reserve a Bounty"></a>

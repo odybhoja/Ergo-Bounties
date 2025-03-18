@@ -7,7 +7,7 @@
     "url": "https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697",
     "amount": "3000",
     "currency": "ERG",
-    "primary_lang": "Various",
+    "primary_lang": "Rust",
     "secondary_lang": "None",
     "labels": ["bounty", "development"],
     "issue_number": "keystone-integration",
