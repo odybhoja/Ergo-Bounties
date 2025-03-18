@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 10:42:38 -->
+<!-- Generated on: 2025-03-18 10:54:51 -->
 
 # Featured Bounties
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](summary.md#projects) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
 
 ## Top Bounties by Value
 
