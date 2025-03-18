@@ -5,7 +5,7 @@
 
 *Report generated: 2025-03-18 10:54:51 UTC*
 
-![Total Bounties](https://img.shields.io/badge/Total%20Bounties-71-blue) ![Total Value](https://img.shields.io/badge/Total%20Value-41623.57%20ERG-green)
+![Total Bounties: 71](https://img.shields.io/badge/Total%20Bounties-71-blue) ![Total Value: 41623.57 ERG](https://img.shields.io/badge/Total%20Value-41623.57%20ERG-green)
 
 ## Navigation
 

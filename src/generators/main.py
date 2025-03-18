@@ -87,8 +87,8 @@ def generate_language_files(
         
         # Add timestamp and stats
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
-        content += f"![Total Bounties](https://img.shields.io/badge/Total%20Bounties-{len(language_bounties)}-blue) "
-        content += f"![Total Value](https://img.shields.io/badge/Total%20Value-{language_value:.2f}%20ERG-green)\n\n"
+        content += f"![Total Bounties: {len(language_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(language_bounties)}-blue) "
+        content += f"![Total Value: {language_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{language_value:.2f}%20ERG-green)\n\n"
         
         # Add navigation badges
         content += generate_navigation_section(
@@ -164,8 +164,8 @@ def generate_organization_files(
         
         # Add timestamp and stats
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
-        content += f"![Total Bounties](https://img.shields.io/badge/Total%20Bounties-{len(org_bounties)}-blue) "
-        content += f"![Total Value](https://img.shields.io/badge/Total%20Value-{org_value:.2f}%20ERG-green)\n\n"
+        content += f"![Total Bounties: {len(org_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(org_bounties)}-blue) "
+        content += f"![Total Value: {org_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{org_value:.2f}%20ERG-green)\n\n"
         
         # Add navigation badges
         content += generate_navigation_section(
@@ -248,8 +248,8 @@ def generate_currency_files(
         
         # Add timestamp and stats
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
-        content += f"![Total Bounties](https://img.shields.io/badge/Total%20Bounties-{len(currency_bounties)}-blue) "
-        content += f"![Total Value](https://img.shields.io/badge/Total%20Value-{currency_value:.2f}%20ERG-green)\n\n"
+        content += f"![Total Bounties: {len(currency_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(currency_bounties)}-blue) "
+        content += f"![Total Value: {currency_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{currency_value:.2f}%20ERG-green)\n\n"
         
         # Add navigation badges
         content += generate_navigation_section(
@@ -303,7 +303,7 @@ def generate_currency_files(
         
         # Add timestamp and stats
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
-        content += f"![Total Bounties](https://img.shields.io/badge/Total%20Bounties-{len(not_specified_bounties)}-blue)\n\n"
+        content += f"![Total Bounties: {len(not_specified_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(not_specified_bounties)}-blue)\n\n"
         
         # Add navigation badges
         content += generate_navigation_section(
@@ -357,8 +357,7 @@ def generate_price_table(
     # Build content
     content = ""
     
-    # Add timestamp
-    content += "# Currency Prices\n\n"
+    # Add timestamp - no need to add title here as it's added by wrap_with_guardrails
     content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
     
     # Add navigation badges

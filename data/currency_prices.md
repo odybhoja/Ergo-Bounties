@@ -3,8 +3,6 @@
 
 # Currency Prices
 
-# Currency Prices
-
 *Report generated: 2025-03-18 10:54:51 UTC*
 
 ## Navigation

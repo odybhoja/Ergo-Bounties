@@ -192,5 +192,5 @@ If you encounter issues with your submission:
 
 - Ask in the original bounty issue
 - Open an issue in the Ergo-Bounties repository
-- Join the [Ergo Discord](https://discord.gg/ergo) and ask in the appropriate channel
+- Join the [Ergo Discord](https://discord.gg/f6DNycM9sS) and ask in the appropriate channel
 - Contact the bounty creator directly through GitHub
