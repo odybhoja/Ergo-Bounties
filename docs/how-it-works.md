@@ -175,10 +175,7 @@ Two main configuration files control the system behavior:
 Contains project-wide constants like:
 ```json
 {
-  "language_colors": { "Scala": "DC322F", "Rust": "DEA584" },
-  "fixed_bounties": {
-    "fleet_sdk": { "count": 7, "currency": "SigUSD", "amount": 775 },
-    "keystone": { "count": 1, "currency": "ERG", "amount": 3000 }
+  "language_colors": { "Scala": "DC322F", "Rust": "DEA584" }
   }
 }
 ```
