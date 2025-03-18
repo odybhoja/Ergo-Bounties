@@ -1,0 +1,18 @@
+{
+  "contributor": "rhuze-emryk",
+  "wallet_address": "9he6BZYMN8FMKxYKsqPvQJ6fbNar4bWuhJsR9JJt4x9Z6fiqSo1",
+  "contact_method": "GitHub: rhuze-emryk",
+  "work_link": "https://github.com/ergoplatform/sigma-rust/pull/810",
+  "work_title": "Fix for Issue #759 with Linux Instructions",
+  "bounty_id": "sigma-rust#759",
+  "original_issue_link": "https://github.com/ergoplatform/sigma-rust/issues/759",
+  "payment_currency": "SigUSD",
+  "bounty_value": 550,
+  "status": "awaiting-review",
+  "submission_date": "2025-03-17",
+  "description": "Fixed issue #759 (3 hours) and added additional Linux instructions (2 hours). Also created a downloadable Linux Toolbx instance running the Rigel Miner, tested on Aurora Linux.",
+  
+  "review_notes": "",
+  "payment_tx_id": "",
+  "payment_date": ""
+}

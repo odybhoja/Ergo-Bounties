@@ -1,0 +1,27 @@
+{
+  "currency_file_names": {
+    "ERG": "erg",
+    "SigUSD": "sigusd",
+    "GORT": "gort",
+    "RSN": "rsn",
+    "BENE": "bene",
+    "g GOLD": "gold"
+  },
+  "currency_display_names": {
+    "SigUSD": "SigUSD ($1)",
+    "GORT": "GORT (Governance Token)",
+    "RSN": "RSN (Governance Token)",
+    "BENE": "BENE ($1)",
+    "g GOLD": "Gold (per gram)",
+    "gGOLD": "Gold (per gram)"
+  },
+  "currency_notes": {
+    "SigUSD": "Stablecoin pegged to USD",
+    "GORT": "Governance token for ErgoDEX",
+    "RSN": "Governance token for Rosen Bridge",
+    "BENE": "Each BENE is worth $1 in ERG",
+    "g GOLD": "Price per gram of gold in ERG",
+    "gGOLD": "Price per gram of gold in ERG"
+  },
+  "no_rate_inversion": ["gGOLD"]
+}
