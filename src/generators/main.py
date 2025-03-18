@@ -787,12 +787,30 @@ def update_ongoing_programs_table(
     else:
         logger.info("No ongoing programs found, skipping ongoing table update")
     
-    # Filter for regular bounties (has "bounty" in labels)
-    regular_bounties = [b for b in bounty_data if "bounty" in b.get("labels", [])]
+    # Filter for extra bounties from src/config/extra_bounties.json (only those with "bounty" label)
+    # The assumption is that bounties from extra_bounties.json will have distinctive characteristics
+    # like url format or other properties that make them identifiable
+    extra_bounties = []
     
-    if regular_bounties:
-        # Generate the regular bounties table
-        bounty_table_content = "The following bounties are currently active and available for contribution:\n\n" + generate_standard_bounty_table(regular_bounties, conversion_rates)
+    # Identification criteria for entries from extra_bounties.json
+    # These will typically have fully qualified URLs (like Discord links or external URLs)
+    # or have specific sources/origins
+    for bounty in bounty_data:
+        # Check if it has "bounty" label but is not an "ongoing" program
+        if "bounty" in bounty.get("labels", []) and bounty.get("amount") != "Ongoing":
+            # Only include bounties that are from extra_bounties.json
+            # We don't directly check the file, but we can identify them by specific properties
+            # like their format, source, or other characteristics
+            
+            # For example, if they're from src/config/extra_bounties.json, they have URLs that aren't GitHub
+            # or they have specific creators, or they have the status field
+            if "status" in bounty:  # Status field is only added to extra_bounties.json entries
+                extra_bounties.append(bounty)
+    
+    if extra_bounties:
+        # Generate the extra bounties table with an explanatory header
+        intro_text = "These grants and additional bounties are pulled from src/config/extra_bounties.json:\n\n"
+        bounty_table_content = intro_text + generate_standard_bounty_table(extra_bounties, conversion_rates)
         
         # Update the table between guardrails
         try:
@@ -819,13 +837,13 @@ def update_ongoing_programs_table(
                 with open('docs/ongoing-programs.md', 'w', encoding='utf-8') as f:
                     f.write(new_content)
                 
-                logger.info("Successfully updated active bounties table with guardrails")
+                logger.info("Successfully updated grants and additional bounties table with guardrails")
             else:
                 logger.error("Could not find active bounties table markers in ongoing-programs.md")
         except Exception as e:
-            logger.error(f"Error updating active bounties table: {e}")
+            logger.error(f"Error updating grants and additional bounties table: {e}")
     else:
-        logger.info("No regular bounties found, skipping bounties table update")
+        logger.info("No extra bounties found, skipping bounties table update")
 
 def generate_featured_bounties_file(
     bounty_data: List[Dict[str, Any]], 
