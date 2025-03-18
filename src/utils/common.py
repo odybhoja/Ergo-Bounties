@@ -138,9 +138,7 @@ def format_navigation_badges(
     badges.append(f"[![By Currency](https://img.shields.io/badge/By%20Currency-{currencies_count}-yellow)]({relative_path}summary.md#currencies)")
     badges.append(f"[![By Organization](https://img.shields.io/badge/By%20Organization-{orgs_count}-orange)]({relative_path}summary.md#projects)")
     
-    if conversion_rates_count > 0:
-        badges.append(f"[![Currency Prices](https://img.shields.io/badge/Currency%20Prices-{conversion_rates_count}-purple)]({relative_path}currency_prices.md)")
-    
+  
     return " ".join(badges)
 
 def add_footer_buttons(relative_path: str = "") -> str:

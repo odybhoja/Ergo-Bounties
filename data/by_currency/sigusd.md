@@ -1,15 +1,15 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 11:24:39 -->
+<!-- Generated on: 2025-03-18 11:31:32 -->
 
 # SigUSD Bounties
 
-*Report generated: 2025-03-18 11:24:39 UTC*
+*Report generated: 2025-03-18 11:31:32 UTC*
 
 ![Total Bounties: 53](https://img.shields.io/badge/Total%20Bounties-53-blue) ![Total Value: 39592.98 ERG](https://img.shields.io/badge/Total%20Value-39592.98%20ERG-green)
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../summary.md#projects) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../summary.md#projects)
 
 ## Current SigUSD Rate
 
