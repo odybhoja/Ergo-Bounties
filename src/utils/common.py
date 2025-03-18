@@ -170,7 +170,7 @@ def add_footer_buttons(relative_path: str = "") -> str:
 <div align="center">
   <p>
     <a href="{relative_path}../docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
-    <a href="{relative_path}../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty"></a>
+    <a href="{relative_path}../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20How%20To%20Claim-4CAF50" alt="Claim a Bounty"></a>
   </p>
 </div>
 """

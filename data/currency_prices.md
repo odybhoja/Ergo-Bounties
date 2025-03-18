@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 13:08:38 -->
+<!-- Generated on: 2025-03-18 14:27:30 -->
 
 # Currency Prices
 
-*Report generated: 2025-03-18 13:08:38 UTC*
+*Report generated: 2025-03-18 14:27:30 UTC*
 
 ## Navigation
 
@@ -13,11 +13,11 @@
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE](by_currency/bene.md) | 1.248990 | Each BENE is worth $1 in ERG |
+| [BENE](by_currency/bene.md) | 1.253947 | Each BENE is worth $1 in ERG |
 | [GORT](by_currency/gort.md) | 0.083913 | Governance token for ErgoDEX |
 | [RSN](by_currency/rsn.md) | 0.053791 | Governance token for Rosen Bridge |
-| [SigUSD](by_currency/sigusd.md) | 1.248990 | Stablecoin pegged to USD |
-| [gGOLD](by_currency/ggold.md) | 81.912210 | Price per gram of gold in ERG |
+| [SigUSD](by_currency/sigusd.md) | 1.253947 | Stablecoin pegged to USD |
+| [gGOLD](by_currency/ggold.md) | 81.651590 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 
@@ -60,7 +60,7 @@ This queries for unspent boxes containing the oracle pool NFT. The price is extr
 <div align="center">
   <p>
     <a href="../docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
-    <a href="../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty"></a>
+    <a href="../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20How%20To%20Claim-4CAF50" alt="Claim a Bounty"></a>
   </p>
 </div>
 

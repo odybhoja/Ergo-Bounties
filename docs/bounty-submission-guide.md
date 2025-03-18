@@ -91,7 +91,7 @@ user123-ergoscript-fsmtest.json
 
 #### 3. Fill Out the JSON File
 
-Copy the template from `templates/submission-template.json` and fill in your details:
+Copy the template from `submissions/example-user-ergoscript-fsmtest.json` and fill in your details:
 
 ```json
 {

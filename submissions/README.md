@@ -49,7 +49,7 @@ The following fields will be filled out by reviewers:
 
 ## Example
 
-See the [submission template](../templates/submission-template.json) for a complete example.
+See the [submission template](example-user-ergoscript-fsmtest.json) for a complete example.
 
 ## Review Process
 
