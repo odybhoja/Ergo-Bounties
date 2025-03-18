@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 14:16:18 -->
+<!-- Generated on: 2025-03-18 14:26:03 -->
 
 # TypeScript Bounties
 
-*Report generated: 2025-03-18 14:16:18 UTC*
+*Report generated: 2025-03-18 14:26:03 UTC*
 
 ![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 112.96 ERG](https://img.shields.io/badge/Total%20Value-112.96%20ERG-green)
 
@@ -28,7 +28,7 @@
 <div align="center">
   <p>
     <a href="../../docs/donate.md"><img src="https://img.shields.io/badge/❤️%20Donate-F44336" alt="Donate"></a>
-    <a href="../../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20Claim-4CAF50" alt="Claim a Bounty"></a>
+    <a href="../../docs/bounty-submission-guide.md#reserving-a-bounty"><img src="https://img.shields.io/badge/🔒%20How%20To%20Claim-4CAF50" alt="Claim a Bounty"></a>
   </p>
 </div>
 

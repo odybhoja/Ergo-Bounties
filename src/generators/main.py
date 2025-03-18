@@ -688,6 +688,11 @@ def generate_summary_file(
     
     # Add currency breakdown
     content += "## Currencies\n\n"
+
+    content += "Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n"
+    
+    content += f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n"
+
     content += "| Currency | Count | Total Value (ERG) |\n"
     content += "|----------|-------|------------------|\n"
     
@@ -716,9 +721,7 @@ def generate_summary_file(
     
     content += f"\n[View all languages →](/{bounties_dir}/by_language/)\n\n"
     
-    content += "Open bounties are updated daily with values shown in ERG equivalent. Some bounties may be paid in other tokens as noted in the \"Paid in\" column of the bounty listings.\n"
-    
-    content += f"\n[View current currency prices →](/{bounties_dir}/currency_prices.md)\n"
+   
     
     # Add footer with action buttons
     content += add_footer_buttons()
