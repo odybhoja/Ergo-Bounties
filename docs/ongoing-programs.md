@@ -6,8 +6,8 @@ In addition to specific bounties, the Ergo ecosystem offers ongoing reward progr
 
 | Organization | Program | Details | Primary Language |
 |-------------|---------|---------|------------------|
-| [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Educational Reward Program](https://docs.ergoplatform.com/contribute/) | [Details](https://docs.ergoplatform.com/contribute/) | [Various](by_language/various.md) |
-| [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Development Reward Program](https://docs.ergoplatform.com/contribute/) | [Details](https://docs.ergoplatform.com/contribute/) | [Various](by_language/various.md) |
+| [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Educational Reward Program](#-educational-reward-program) | [Details](#-educational-reward-program) | [Various](by_language/various.md) |
+| [EF_DAO_LLC](by_org/ef_dao_llc.md) | [Development Reward Program](#-development-reward-program) | [Details](#-development-reward-program) | [Various](by_language/various.md) |
 
 
 ## 📚 Educational Reward Program
