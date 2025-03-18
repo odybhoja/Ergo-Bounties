@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 16:13:38 -->
+<!-- Generated on: 2025-03-18 10:42:38 -->
 
 # EF_DAO_LLC Bounties
 
-*Report generated: 2025-03-17 16:13:38 UTC*
+*Report generated: 2025-03-18 10:42:38 UTC*
 
 Total EF_DAO_LLC bounties: **2**
 
@@ -11,13 +11,7 @@ Total value: **0.00 ERG**
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-104-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
-
-## Filter by Category
-
-**Languages used by EF_DAO_LLC:** [Various (2)](../by_language/various.md)
-
-**Currencies offered by EF_DAO_LLC:** [ERG (2)](../by_currency/erg.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
 
 ## EF_DAO_LLC Bounties
 

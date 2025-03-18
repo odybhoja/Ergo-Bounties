@@ -1,33 +1,33 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 16:13:38 -->
+<!-- Generated on: 2025-03-18 10:42:38 -->
 
 # Currency Prices
 
 # Currency Prices
 
-*Report generated: 2025-03-17 16:13:38 UTC*
+*Report generated: 2025-03-18 10:42:38 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-104-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](currency_prices.md)
 
 ## Filter Bounties
 
-**By Programming Language:** [Svelte (2)](by_language/svelte.md) • [Scala (71)](by_language/scala.md) • [Java (1)](by_language/java.md) • [Rust (22)](by_language/rust.md) • [TypeScript (6)](by_language/typescript.md) • [Various (2)](by_language/various.md)
+**By Programming Language:** [Svelte (2)](by_language/svelte.md) • [Scala (71)](by_language/scala.md) • [Java (1)](by_language/java.md) • [Rust (21)](by_language/rust.md) • [TypeScript (6)](by_language/typescript.md) • [Various (2)](by_language/various.md)
 
-**By Currency:** [BENE (2)](by_currency/bene.md) • [SigUSD (54)](by_currency/sigusd.md) • [ERG (28)](by_currency/erg.md) • [g GOLD (6)](by_currency/gold.md) • [GORT (7)](by_currency/gort.md) • [RSN (6)](by_currency/rsn.md)
+**By Currency:** [BENE (2)](by_currency/bene.md) • [SigUSD (53)](by_currency/sigusd.md) • [ERG (28)](by_currency/erg.md) • [g GOLD (6)](by_currency/gold.md) • [GORT (7)](by_currency/gort.md) • [RSN (6)](by_currency/rsn.md)
 
-**By Organization:** [StabilityNexus (2)](by_org/stabilitynexus.md) • [input-output-hk (1)](by_org/input-output-hk.md) • [ergoplatform (84)](by_org/ergoplatform.md) • [rosen-bridge (6)](by_org/rosen-bridge.md) • [ChainCashLabs (9)](by_org/chaincashlabs.md) • [EF_DAO_LLC (2)](by_org/ef_dao_llc.md)
+**By Organization:** [StabilityNexus (2)](by_org/stabilitynexus.md) • [input-output-hk (1)](by_org/input-output-hk.md) • [ergoplatform (83)](by_org/ergoplatform.md) • [rosen-bridge (6)](by_org/rosen-bridge.md) • [ChainCashLabs (9)](by_org/chaincashlabs.md) • [EF_DAO_LLC (2)](by_org/ef_dao_llc.md)
 
 ## Current Prices
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE](by_currency/bene.md) | 1.220422 | Each BENE is worth $1 in ERG |
-| [GORT](by_currency/gort.md) | 0.078338 | Governance token for ErgoDEX |
-| [RSN](by_currency/rsn.md) | 0.053869 | Governance token for Rosen Bridge |
-| [SigUSD](by_currency/sigusd.md) | 1.220422 | Stablecoin pegged to USD |
-| [gGOLD](by_currency/ggold.md) | 83.594300 | Price per gram of gold in ERG |
+| [BENE](by_currency/bene.md) | 1.248990 | Each BENE is worth $1 in ERG |
+| [GORT](by_currency/gort.md) | 0.083913 | Governance token for ErgoDEX |
+| [RSN](by_currency/rsn.md) | 0.053792 | Governance token for Rosen Bridge |
+| [SigUSD](by_currency/sigusd.md) | 1.248990 | Stablecoin pegged to USD |
+| [gGOLD](by_currency/ggold.md) | 82.048948 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 

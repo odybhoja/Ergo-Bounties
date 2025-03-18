@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-17 16:13:38 -->
+<!-- Generated on: 2025-03-18 10:42:38 -->
 
 # ERG Bounties
 
-*Report generated: 2025-03-17 16:13:38 UTC*
+*Report generated: 2025-03-18 10:42:38 UTC*
 
 Total ERG bounties: **28**
 
@@ -11,13 +11,7 @@ Total value: **4550.00 ERG**
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-104-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
-
-## Filter by Category
-
-**Languages for ERG bounties:** [Scala (15)](../by_language/scala.md) • [Java (1)](../by_language/java.md) • [Rust (10)](../by_language/rust.md) • [Various (2)](../by_language/various.md)
-
-**Organizations offering ERG:** [ergoplatform (26)](../by_org/ergoplatform.md) • [EF_DAO_LLC (2)](../by_org/ef_dao_llc.md)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../by_language/) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../by_currency/) [![By Organization](https://img.shields.io/badge/By%20Organization-6-orange)](../by_org/) [![Currency Prices](https://img.shields.io/badge/Currency%20Prices-5-purple)](../currency_prices.md)
 
 ## ERG Bounties
 
