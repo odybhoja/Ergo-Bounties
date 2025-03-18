@@ -166,8 +166,11 @@ def generate_standard_bounty_table(
         primary_lang_link = format_language_link(primary_lang)
         currency_link = format_currency_link(currency)
         
-        # Create a reserve button
-        reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
+        # Create a reserve button or status label based on bounty status
+        if "status" in bounty and bounty["status"] == "In Progress":
+            reserve_button = "<kbd>In Progress</kbd>"
+        else:
+            reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
         
         # Format the amount display based on special cases
         if amount == "Not specified":
