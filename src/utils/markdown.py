@@ -180,7 +180,13 @@ def generate_standard_bounty_table(
         else:
             amount_display = f"{amount} {erg_display}"
         
-        content += f"| {org_link} | [{repo_name}](https://github.com/{owner}/{repo_name}) | [{title}]({url}) | {amount_display} | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
+        # Check if repo_name is already a full URL
+        if repo_name.startswith('http://') or repo_name.startswith('https://'):
+            repo_link = f"[{repo_name}]({repo_name})"
+        else:
+            repo_link = f"[{repo_name}](https://github.com/{owner}/{repo_name})"
+        
+        content += f"| {org_link} | {repo_link} | [{title}]({url}) | {amount_display} | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
     
     return content
 

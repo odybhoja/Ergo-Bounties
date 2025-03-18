@@ -36,7 +36,7 @@ To add a new repository to the tracking system:
 
 Once merged, the automation will include the new repository's bounties in the next update.
 
-## Adding Manual Bounties
+## Adding Manual Bounties and Grants
 
 For bounties that aren't in GitHub repositories or don't follow standard formats:
 
@@ -55,12 +55,18 @@ For bounties that aren't in GitHub repositories or don't follow standard formats
      "secondary_lang": "None",
      "labels": ["bounty", "manual-entry"],
      "issue_number": "ext-123",
-     "creator": "your-username"
+     "creator": "your-username",
+     "description": "Brief description of the bounty",
+     "status": "Open"
    }
    ```
 3. Submit a PR with title: `[ADD MANUAL BOUNTY] Bounty Title`
 
-The system will automatically include these manual bounties alongside GitHub-sourced bounties in all listings.
+The `status` field can be set to:
+- `"Open"`: The bounty is available for claiming (displays a "Reserve" button)
+- `"In Progress"`: Someone is already working on the bounty (displays "In Progress" instead of the "Reserve" button)
+
+Manual bounties added to `extra_bounties.json` will appear in the "Grants and Additional Bounties" section of the ongoing-programs.md file, separate from the automatically discovered GitHub issues which appear in their own dedicated pages.
 
 ## Bounty Detection Logic
 

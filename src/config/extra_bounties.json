@@ -2,7 +2,7 @@
   {
     "timestamp": "2025-03-18 12:15:37",
     "owner": "DevDAO",
-    "repo": "keystone-integration",
+    "repo": "https://github.com/Alesfatalis/keystone-sdk-rust/tree/feat/ergo_support",
     "title": "Keystone Wallet Integration",
     "url": "https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697",
     "amount": "3000",

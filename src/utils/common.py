@@ -53,7 +53,7 @@ def create_claim_url(
     
     Args:
         owner: Repository owner
-        repo_name: Repository name
+        repo_name: Repository name (can be a full URL)
         issue_number: Issue number
         title: Issue title
         url: Issue URL
@@ -64,6 +64,18 @@ def create_claim_url(
     Returns:
         URL that opens a GitHub PR with pre-filled template
     """
+    # Extract just the repo name if repo_name is a full URL
+    repo_name_for_filename = repo_name
+    if repo_name.startswith('http://') or repo_name.startswith('https://'):
+        # Extract the last part of the path from the URL
+        # Skip /tree/branch part if present
+        path_parts = repo_name.rstrip('/').split('/')
+        if 'tree' in path_parts:
+            tree_index = path_parts.index('tree')
+            repo_name_for_filename = path_parts[tree_index - 1]
+        else:
+            repo_name_for_filename = path_parts[-1]
+    
     logger.debug(f"Creating claim URL for {owner}/{repo_name}#{issue_number}")
     
     # Create JSON template using json.dumps to properly escape special characters
@@ -93,7 +105,7 @@ def create_claim_url(
     # Create the claim URL
     claim_url = (
         f"https://github.com/ErgoDevs/Ergo-Bounties/new/main"
-        f"?filename=submissions/{owner.lower()}-{repo_name.lower()}-{issue_number}.json"
+        f"?filename=submissions/{owner.lower()}-{repo_name_for_filename.lower()}-{issue_number}.json"
         f"&value={encoded_json}"
         f"&message=Claim%20Bounty%20{owner}/{repo_name}%23{issue_number}"
         f"&description=I%20want%20to%20claim%20this%20bounty%20posted%20by%20{creator}.%0A%0ABounty:%20{urllib.parse.quote(title)}"

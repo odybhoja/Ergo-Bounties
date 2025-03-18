@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 12:42:21 -->
+<!-- Generated on: 2025-03-18 12:58:27 -->
 
 # DevDAO Bounties
 
-*Report generated: 2025-03-18 12:42:21 UTC*
+*Report generated: 2025-03-18 12:58:27 UTC*
 
 ![Total Bounties: 1](https://img.shields.io/badge/Total%20Bounties-1-blue) ![Total Value: 3000.00 ERG](https://img.shields.io/badge/Total%20Value-3000.00%20ERG-green)
 
@@ -15,7 +15,7 @@
 
 |Organisation|Repository|Title & Link|Bounty Amount|Paid in|Primary Language|Reserve|
 |---|---|---|---|---|---|---|
-| [DevDAO](by_org/devdao.md) | [keystone-integration](https://github.com/DevDAO/keystone-integration) | [Keystone Wallet Integration](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | 3000  | [ERG](by_currency/erg.md) | [Various](by_language/various.md) | <kbd>In Progress</kbd> |
+| [DevDAO](by_org/devdao.md) | [https://github.com/Alesfatalis/keystone-sdk-rust/tree/feat/ergo_support](https://github.com/Alesfatalis/keystone-sdk-rust/tree/feat/ergo_support) | [Keystone Wallet Integration](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | 3000  | [ERG](by_currency/erg.md) | [Various](by_language/various.md) | <kbd>In Progress</kbd> |
 
 
 ---

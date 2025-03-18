@@ -915,7 +915,7 @@ def generate_featured_bounties_file(
     content += "\n## Weekly Summary\n\n"
     content += "| Date | Open Bounties | Total Value |\n"
     content += "|------|--------------|-------------|\n"
-    content += f"| {current_date} | {total_bounties} | {total_value:,.2f} ERG |\n\n"
+    content += f"| [{current_date}](/{bounties_dir}/all.md#all-bounties) | {total_bounties} | {total_value:,.2f} ERG |\n\n"
 
     # Add footer with action buttons
     content += add_footer_buttons()
