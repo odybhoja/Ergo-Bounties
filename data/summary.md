@@ -1,5 +1,5 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 13:01:36 -->
+<!-- Generated on: 2025-03-18 13:08:38 -->
 
 # Summary of Bounties
 
@@ -42,9 +42,9 @@
 | Language | Count | Percentage |
 |----------|-------|------------|
 | [Scala](/data/by_language/scala.md) | 71 | 67.6% |
-| [Rust](/data/by_language/rust.md) | 21 | 20.0% |
+| [Rust](/data/by_language/rust.md) | 22 | 21.0% |
 | [TypeScript](/data/by_language/typescript.md) | 6 | 5.7% |
-| [Various](/data/by_language/various.md) | 4 | 3.8% |
+| [Various](/data/by_language/various.md) | 3 | 2.9% |
 | [Svelte](/data/by_language/svelte.md) | 2 | 1.9% |
 
 [View all languages →](/data/by_language/)
