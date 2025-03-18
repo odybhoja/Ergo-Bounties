@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 10:59:35 -->
+<!-- Generated on: 2025-03-18 11:24:39 -->
 
 # GORT Bounties
 
-*Report generated: 2025-03-18 10:59:35 UTC*
+*Report generated: 2025-03-18 11:24:39 UTC*
 
-![Total Bounties](https://img.shields.io/badge/Total%20Bounties-7-blue) ![Total Value](https://img.shields.io/badge/Total%20Value-205.59%20ERG-green)
+![Total Bounties: 7](https://img.shields.io/badge/Total%20Bounties-7-blue) ![Total Value: 205.59 ERG](https://img.shields.io/badge/Total%20Value-205.59%20ERG-green)
 
 ## Navigation
 

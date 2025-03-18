@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 10:59:35 -->
+<!-- Generated on: 2025-03-18 11:24:39 -->
 
 # ERG Bounties
 
-*Report generated: 2025-03-18 10:59:35 UTC*
+*Report generated: 2025-03-18 11:24:39 UTC*
 
-![Total Bounties](https://img.shields.io/badge/Total%20Bounties-28-blue) ![Total Value](https://img.shields.io/badge/Total%20Value-4550.00%20ERG-green)
+![Total Bounties: 28](https://img.shields.io/badge/Total%20Bounties-28-blue) ![Total Value: 4550.00 ERG](https://img.shields.io/badge/Total%20Value-4550.00%20ERG-green)
 
 ## Navigation
 
