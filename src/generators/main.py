@@ -100,42 +100,6 @@ def generate_language_files(
             "../"
         )
         
-        # Add filter section based on parent categories
-        content += "## Filter by Category\n\n"
-        
-        # Group by org for this language
-        orgs_in_language = {}
-        for bounty in language_bounties:
-            org = bounty["owner"]
-            if org not in orgs_in_language:
-                orgs_in_language[org] = []
-            orgs_in_language[org].append(bounty)
-        
-        # Organizations
-        content += "**Organizations using {language}:** ".format(language=language)
-        org_links = []
-        for org_name, org_bounties_list in orgs_in_language.items():
-            org_links.append(f"[{org_name} ({len(org_bounties_list)})](../by_org/{org_name.lower()}.md)")
-        content += " • ".join(org_links)
-        content += "\n\n"
-        
-        # Group by currency for this language
-        currencies_in_language = {}
-        for bounty in language_bounties:
-            currency = bounty["currency"]
-            if currency not in currencies_in_language:
-                currencies_in_language[currency] = []
-            currencies_in_language[currency].append(bounty)
-        
-        # Currencies
-        content += "**Currencies for {language} bounties:** ".format(language=language)
-        currency_links = []
-        for currency_name, currency_bounties_list in currencies_in_language.items():
-            currency_file_name = format_currency_filename(currency_name)
-            currency_links.append(f"[{currency_name} ({len(currency_bounties_list)})](../by_currency/{currency_file_name}.md)")
-        content += " • ".join(currency_links)
-        content += "\n\n"
-        
         # Add bounties table
         content += "## {language} Bounties\n\n".format(language=language)
         content += generate_standard_bounty_table(language_bounties, conversion_rates)
@@ -212,42 +176,6 @@ def generate_organization_files(
             len(conversion_rates), 
             "../"
         )
-        
-        # Add filter section based on parent categories
-        content += "## Filter by Category\n\n"
-        
-        # Group by language for this org
-        languages_in_org = {}
-        for bounty in org_bounties:
-            lang = bounty["primary_lang"]
-            if lang not in languages_in_org:
-                languages_in_org[lang] = []
-            languages_in_org[lang].append(bounty)
-        
-        # Languages
-        content += "**Languages used by {org}:** ".format(org=org)
-        lang_links = []
-        for lang_name, lang_bounties_list in languages_in_org.items():
-            lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](../by_language/{lang_name.lower()}.md)")
-        content += " • ".join(lang_links)
-        content += "\n\n"
-        
-        # Group by currency for this org
-        currencies_in_org = {}
-        for bounty in org_bounties:
-            currency = bounty["currency"]
-            if currency not in currencies_in_org:
-                currencies_in_org[currency] = []
-            currencies_in_org[currency].append(bounty)
-        
-        # Currencies
-        content += "**Currencies offered by {org}:** ".format(org=org)
-        currency_links = []
-        for currency_name, currency_bounties_list in currencies_in_org.items():
-            currency_file_name = format_currency_filename(currency_name)
-            currency_links.append(f"[{currency_name} ({len(currency_bounties_list)})](../by_currency/{currency_file_name}.md)")
-        content += " • ".join(currency_links)
-        content += "\n\n"
         
         # Add bounties table
         content += "## {org} Bounties\n\n".format(org=org)
@@ -332,41 +260,6 @@ def generate_currency_files(
             len(conversion_rates), 
             "../"
         )
-        
-        # Add filter section based on parent categories
-        content += "## Filter by Category\n\n"
-        
-        # Group by language for this currency
-        languages_in_currency = {}
-        for bounty in currency_bounties:
-            lang = bounty["primary_lang"]
-            if lang not in languages_in_currency:
-                languages_in_currency[lang] = []
-            languages_in_currency[lang].append(bounty)
-        
-        # Languages
-        content += "**Languages for {currency} bounties:** ".format(currency=currency)
-        lang_links = []
-        for lang_name, lang_bounties_list in languages_in_currency.items():
-            lang_links.append(f"[{lang_name} ({len(lang_bounties_list)})](../by_language/{lang_name.lower()}.md)")
-        content += " • ".join(lang_links)
-        content += "\n\n"
-        
-        # Group by org for this currency
-        orgs_in_currency = {}
-        for bounty in currency_bounties:
-            org = bounty["owner"]
-            if org not in orgs_in_currency:
-                orgs_in_currency[org] = []
-            orgs_in_currency[org].append(bounty)
-        
-        # Organizations
-        content += "**Organizations offering {currency}:** ".format(currency=currency)
-        org_links = []
-        for org_name, org_bounties_list in orgs_in_currency.items():
-            org_links.append(f"[{org_name} ({len(org_bounties_list)})](../by_org/{org_name.lower()}.md)")
-        content += " • ".join(org_links)
-        content += "\n\n"
         
         # Add conversion rate if available
         if currency in conversion_rates:
@@ -557,6 +450,112 @@ def generate_price_table(
     
     logger.info("Generated currency price table")
 
+def generate_high_value_bounties_file(
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
+    total_value: float,
+    languages: Dict[str, List[Dict[str, Any]]],
+    currencies_dict: Dict[str, List[Dict[str, Any]]],
+    orgs: Dict[str, List[Dict[str, Any]]],
+    bounties_dir: str,
+    high_value_threshold: float = 1000.0
+) -> None:
+    """
+    Generate a high-value bounties markdown file.
+    
+    Args:
+        bounty_data: List of bounty data
+        conversion_rates: Dictionary of conversion rates
+        total_bounties: Total number of bounties
+        total_value: Total value of bounties
+        languages: Dictionary of languages and their bounties
+        currencies_dict: Dictionary of currencies and their bounties
+        orgs: Dictionary of organizations and their bounties
+        bounties_dir: Bounties directory
+        high_value_threshold: Minimum ERG value to be considered high-value
+    """
+    logger.info(f"Generating high-value bounties file (threshold: {high_value_threshold} ERG)")
+    
+    from ..core.processor import BountyProcessor
+    
+    # Set up processor for finding high-value bounties
+    processor = BountyProcessor("", conversion_rates)
+    processor.bounty_data = bounty_data
+    
+    # Find high-value bounties
+    high_value_bounties = processor.find_high_value_bounties(threshold=high_value_threshold)
+    
+    high_value_file = f'{bounties_dir}/high-value-bounties.md'
+    
+    # Build content
+    content = ""
+    
+    # Add timestamp and stats
+    content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
+    content += f"Total high-value bounties: **{len(high_value_bounties)}**\n\n"
+    
+    # Add navigation badges
+    content += generate_navigation_section(
+        total_bounties, 
+        len(languages), 
+        len(currencies_dict), 
+        len(orgs), 
+        len(conversion_rates)
+    )
+    
+    # Add filter section
+    content += generate_filter_section(
+        languages, 
+        currencies_dict, 
+        orgs
+    )
+    
+    # Add high-value bounties table
+    content += "## High-Value Bounties\n\n"
+    content += "| Bounty | Organization | Value | Currency | Primary Language | Reserve |\n"
+    content += "|--------|--------------|-------|----------|------------------|--------|\n"
+    
+    # Add rows for each high-value bounty
+    for bounty in high_value_bounties:
+        owner = bounty["owner"]
+        repo_name = bounty["repo"]
+        title = bounty["title"]
+        url = bounty["url"]
+        currency = bounty["currency"]
+        primary_lang = bounty["primary_lang"]
+        issue_number = bounty["issue_number"]
+        creator = bounty["creator"]
+        amount = bounty["amount"]
+        
+        # Calculate ERG value
+        erg_value = bounty["value"]
+        
+        # Create a claim link that opens a PR template
+        claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
+        
+        # Add organization, language and currency links
+        org_link = format_organization_link(owner)
+        primary_lang_link = format_language_link(primary_lang)
+        currency_link = format_currency_link(currency)
+        
+        # Create a reserve button
+        reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
+        
+        content += f"| [{title}]({url}) | {org_link} | {erg_value:.2f} ERG | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
+    
+    # Add footer with action buttons
+    content += add_footer_buttons()
+    
+    # Wrap with guardrails
+    final_content = wrap_with_full_guardrails(content, f"# High-Value Bounties (Over {high_value_threshold:,.0f} ERG)")
+    
+    # Write to file
+    with open(high_value_file, 'w', encoding='utf-8') as f:
+        f.write(final_content)
+    
+    logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")
+
 def generate_main_file(
     bounty_data: List[Dict[str, Any]], 
     project_totals: Dict[str, Dict[str, Any]], 
@@ -661,7 +660,7 @@ def generate_summary_file(
     content = "## 📋 Open Bounties\n\n"
     content += f"**[View Current Open Bounties →](/{bounties_dir}/all.md)**\n\n"
     
-    # Add navigation badges
+    # Add navigation badges with links to respective headers
     content += generate_navigation_section(
         total_bounties, 
         len(languages), 
@@ -873,110 +872,3 @@ def generate_featured_bounties_file(
         f.write(final_content)
     
     logger.info("Generated featured bounties file")
-
-def generate_high_value_bounties_file(
-    bounty_data: List[Dict[str, Any]],
-    conversion_rates: Dict[str, float],
-    total_bounties: int,
-    total_value: float,
-    languages: Dict[str, List[Dict[str, Any]]],
-    currencies_dict: Dict[str, List[Dict[str, Any]]],
-    orgs: Dict[str, List[Dict[str, Any]]],
-    bounties_dir: str,
-    high_value_threshold: float = 1000.0
-) -> None:
-    """
-    Generate a high-value bounties markdown file.
-    
-    Args:
-        bounty_data: List of bounty data
-        conversion_rates: Dictionary of conversion rates
-        total_bounties: Total number of bounties
-        total_value: Total value of bounties
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
-        bounties_dir: Bounties directory
-        high_value_threshold: Minimum ERG value to be considered high-value
-    """
-    logger.info(f"Generating high-value bounties file (threshold: {high_value_threshold} ERG)")
-    
-    from ..core.processor import BountyProcessor
-    
-    # Set up processor for finding high-value bounties
-    processor = BountyProcessor("", conversion_rates)
-    processor.bounty_data = bounty_data
-    
-    # Find high-value bounties
-    high_value_bounties = processor.find_high_value_bounties(threshold=high_value_threshold)
-    
-    high_value_file = f'{bounties_dir}/high-value-bounties.md'
-    
-    # Build content
-    content = ""
-    
-    # Add timestamp and stats
-    content += f"# High-Value Bounties (Over {high_value_threshold:,.0f} ERG)\n\n"
-    content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
-    content += f"Total high-value bounties: **{len(high_value_bounties)}**\n\n"
-    
-    # Add navigation badges
-    content += generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
-        len(conversion_rates)
-    )
-    
-    # Add filter section
-    content += generate_filter_section(
-        languages, 
-        currencies_dict, 
-        orgs
-    )
-    
-    # Add high-value bounties table
-    content += "## High-Value Bounties\n\n"
-    content += "| Bounty | Organization | Value | Currency | Primary Language | Reserve |\n"
-    content += "|--------|--------------|-------|----------|------------------|--------|\n"
-    
-    # Add rows for each high-value bounty
-    for bounty in high_value_bounties:
-        owner = bounty["owner"]
-        repo_name = bounty["repo"]
-        title = bounty["title"]
-        url = bounty["url"]
-        currency = bounty["currency"]
-        primary_lang = bounty["primary_lang"]
-        issue_number = bounty["issue_number"]
-        creator = bounty["creator"]
-        amount = bounty["amount"]
-        
-        # Calculate ERG value
-        erg_value = bounty["value"]
-        
-        # Create a claim link that opens a PR template
-        claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
-        
-        # Add organization, language and currency links
-        org_link = format_organization_link(owner)
-        primary_lang_link = format_language_link(primary_lang)
-        currency_link = format_currency_link(currency)
-        
-        # Create a reserve button
-        reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
-        
-        content += f"| [{title}]({url}) | {org_link} | {erg_value:.2f} ERG | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
-    
-    # Add footer with action buttons
-    content += add_footer_buttons()
-    
-    # Wrap with guardrails
-    final_content = wrap_with_full_guardrails(content, f"# High-Value Bounties (Over {high_value_threshold:,.0f} ERG)")
-    
-    # Write to file
-    with open(high_value_file, 'w', encoding='utf-8') as f:
-        f.write(final_content)
-    
-    logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")

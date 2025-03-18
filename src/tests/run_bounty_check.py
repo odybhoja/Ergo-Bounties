@@ -46,7 +46,7 @@ except ImportError:
 
 # Get paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..'))
+PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
 BOUNTIES_DIR = os.path.join(PROJECT_ROOT, 'data')
 SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'src')
 
@@ -136,40 +136,70 @@ def validate_github_token() -> Tuple[bool, Dict[str, Any]]:
 def get_file_count(directory: str, pattern: str = "*") -> int:
     """Get the number of files matching a pattern in a directory."""
     from glob import glob
-    return len(glob(os.path.join(directory, pattern)))
+    
+    # Ensure directory path is absolute
+    abs_directory = os.path.abspath(directory)
+    logger.info(f"Counting files matching '{pattern}' in '{abs_directory}'")
+    
+    # Get absolute file paths
+    files = glob(os.path.join(abs_directory, pattern))
+    
+    # Log found files for debugging
+    if len(files) > 0:
+        logger.info(f"Found {len(files)} files")
+        for file in files[:5]:  # Log first 5 files
+            logger.info(f"  - {os.path.basename(file)}")
+        if len(files) > 5:
+            logger.info(f"  - ... and {len(files) - 5} more")
+    else:
+        logger.warning(f"No files found matching '{pattern}' in '{abs_directory}'")
+    
+    return len(files)
 
 def count_markdown_files() -> Dict[str, int]:
     """Count the markdown files in the project."""
     result = {}
+    
+    # Log the bounties directory
+    logger.info(f"Counting files in BOUNTIES_DIR: {BOUNTIES_DIR}")
+    logger.info(f"Absolute path: {os.path.abspath(BOUNTIES_DIR)}")
     
     # Count main files
     main_files = [
         'all.md', 'summary.md', 'featured_bounties.md', 
         'currency_prices.md', 'high-value-bounties.md'
     ]
-    count = sum(1 for f in main_files if os.path.exists(os.path.join(BOUNTIES_DIR, f)))
+    main_found = [f for f in main_files if os.path.exists(os.path.join(BOUNTIES_DIR, f))]
+    count = len(main_found)
     result["main_files"] = count
+    logger.info(f"Found {count} main files: {', '.join(main_found)}")
     
     # Count language files
     lang_dir = os.path.join(BOUNTIES_DIR, 'by_language')
-    if os.path.exists(lang_dir):
+    if os.path.exists(lang_dir) and os.path.isdir(lang_dir):
         result["language_files"] = get_file_count(lang_dir, "*.md")
+        logger.info(f"Found {result['language_files']} language files in {lang_dir}")
     else:
         result["language_files"] = 0
+        logger.warning(f"Language directory {lang_dir} does not exist or is not a directory")
     
     # Count currency files
     currency_dir = os.path.join(BOUNTIES_DIR, 'by_currency')
-    if os.path.exists(currency_dir):
+    if os.path.exists(currency_dir) and os.path.isdir(currency_dir):
         result["currency_files"] = get_file_count(currency_dir, "*.md")
+        logger.info(f"Found {result['currency_files']} currency files in {currency_dir}")
     else:
         result["currency_files"] = 0
+        logger.warning(f"Currency directory {currency_dir} does not exist or is not a directory")
     
     # Count organization files
     org_dir = os.path.join(BOUNTIES_DIR, 'by_org')
-    if os.path.exists(org_dir):
+    if os.path.exists(org_dir) and os.path.isdir(org_dir):
         result["org_files"] = get_file_count(org_dir, "*.md")
+        logger.info(f"Found {result['org_files']} organization files in {org_dir}")
     else:
         result["org_files"] = 0
+        logger.warning(f"Organization directory {org_dir} does not exist or is not a directory")
     
     result["total"] = (
         result["main_files"] + 
@@ -178,7 +208,81 @@ def count_markdown_files() -> Dict[str, int]:
         result["org_files"]
     )
     
+    logger.info(f"Total files found: {result['total']}")
     return result
+
+def validate_api_prices() -> Dict[str, Any]:
+    """
+    Validate currency prices from APIs by making actual requests.
+    
+    Returns:
+        Dictionary with validation results for each price source
+    """
+    logger.info("Validating API price sources...")
+    results = {}
+    
+    # Import the currency client
+    try:
+        from src.api.currency_client import CurrencyClient
+        
+        # Create client instance and get rates
+        logger.info("Creating CurrencyClient instance...")
+        client = CurrencyClient()
+        rates = client.get_all_rates()
+        
+        logger.info(f"Retrieved rates: {rates}")
+        
+        # Check each expected currency rate
+        expected_currencies = ['SigUSD', 'GORT', 'RSN', 'BENE', 'gGOLD']
+        
+        results["rates_retrieved"] = rates
+        results["rates_complete"] = all(currency in rates for currency in expected_currencies)
+        results["rates_valid"] = all(rates.get(currency, 0) > 0 for currency in expected_currencies)
+        
+        # Check specific API endpoints
+        results["sources"] = {}
+        
+        # Check Spectrum API
+        try:
+            logger.info("Testing Spectrum API directly...")
+            response = requests.get(CurrencyClient.SPECTRUM_API_URL, timeout=30)
+            results["sources"]["spectrum_api"] = {
+                "status": response.status_code,
+                "valid": response.status_code == 200
+            }
+            logger.info(f"Spectrum API status: {response.status_code}")
+        except Exception as e:
+            results["sources"]["spectrum_api"] = {
+                "status": "error",
+                "error": str(e),
+                "valid": False
+            }
+            logger.error(f"Error testing Spectrum API: {e}")
+        
+        # Check Ergo Explorer API for gold oracle
+        try:
+            logger.info("Testing Ergo Explorer API directly...")
+            oracle_url = f"{CurrencyClient.ERGO_EXPLORER_API}/boxes/unspent/byTokenId/{CurrencyClient.XAU_ERG_ORACLE_NFT}"
+            response = requests.get(oracle_url, timeout=60)
+            results["sources"]["oracle_api"] = {
+                "status": response.status_code,
+                "valid": response.status_code == 200
+            }
+            logger.info(f"Oracle API status: {response.status_code}")
+        except Exception as e:
+            results["sources"]["oracle_api"] = {
+                "status": "error",
+                "error": str(e),
+                "valid": False
+            }
+            logger.error(f"Error testing Oracle API: {e}")
+            
+    except Exception as e:
+        logger.error(f"Failed to validate API prices: {e}")
+        results["error"] = str(e)
+        results["valid"] = False
+    
+    return results
 
 def extract_info_from_files() -> Dict[str, Any]:
     """Extract useful information from output files."""
@@ -251,6 +355,10 @@ def extract_info_from_files() -> Dict[str, Any]:
     org_dir = os.path.join(BOUNTIES_DIR, 'by_org')
     if os.path.exists(org_dir):
         info["repositories_processed"] = len(os.listdir(org_dir))
+    
+    # Validate API prices
+    api_prices = validate_api_prices()
+    info["api_prices"] = api_prices
     
     return info
 
@@ -363,6 +471,33 @@ def print_summary_table(results: Dict[str, Any]) -> None:
                 f"Error: {error}"
             ])
     
+    # Generate API Validation section
+    api_data = []
+    if "api_prices" in results:
+        api_prices = results["api_prices"]
+        
+        # Check Spectrum API
+        if "sources" in api_prices and "spectrum_api" in api_prices["sources"]:
+            spectrum = api_prices["sources"]["spectrum_api"]
+            status = "✓" if spectrum.get("valid", False) else "✗"
+            status_code = spectrum.get("status", "unknown")
+            api_data.append([
+                "Spectrum API (Crypto rates)", 
+                f"{Fore.GREEN}{status}{Style.RESET_ALL}" if COLORED_OUTPUT and spectrum.get("valid", False) else f"{Fore.RED}{status}{Style.RESET_ALL}" if COLORED_OUTPUT else status, 
+                f"Status: {status_code}"
+            ])
+        
+        # Check Oracle API
+        if "sources" in api_prices and "oracle_api" in api_prices["sources"]:
+            oracle = api_prices["sources"]["oracle_api"]
+            status = "✓" if oracle.get("valid", False) else "✗"
+            status_code = oracle.get("status", "unknown")
+            api_data.append([
+                "Oracle API (Gold price)", 
+                f"{Fore.GREEN}{status}{Style.RESET_ALL}" if COLORED_OUTPUT and oracle.get("valid", False) else f"{Fore.RED}{status}{Style.RESET_ALL}" if COLORED_OUTPUT else status, 
+                f"Status: {status_code}"
+            ])
+    
     # Generate Currency Rates section
     rates_data = []
     if "conversion_rates" in results:
@@ -408,7 +543,7 @@ def print_summary_table(results: Dict[str, Any]) -> None:
         
         files_data.append([
             "Generated Files (Total)", 
-            f"{Fore.GREEN}✓{Style.RESET_ALL}" if COLORED_OUTPUT else "✓", 
+            f"{Fore.GREEN}✓{Style.RESET_ALL}" if COLORED_OUTPUT and counts['total'] > 0 else f"{Fore.RED}✗{Style.RESET_ALL}" if COLORED_OUTPUT else "✓" if counts['total'] > 0 else "✗", 
             f"{counts['total']} files"
         ])
         
@@ -421,6 +556,10 @@ def print_summary_table(results: Dict[str, Any]) -> None:
     if auth_data:
         print(f"\n{Fore.CYAN}AUTHENTICATION{Style.RESET_ALL}" if COLORED_OUTPUT else "\nAUTHENTICATION")
         print(format_table(auth_data, ["Check", "Status", "Details"]))
+    
+    if api_data:
+        print(f"\n{Fore.CYAN}API PRICE SOURCES{Style.RESET_ALL}" if COLORED_OUTPUT else "\nAPI PRICE SOURCES")
+        print(format_table(api_data, ["API Endpoint", "Status", "Details"]))
     
     if rates_data:
         print(f"\n{Fore.CYAN}CURRENCY RATES{Style.RESET_ALL}" if COLORED_OUTPUT else "\nCURRENCY RATES")
@@ -549,14 +688,14 @@ def main() -> int:
         print_changes_table(results["changes"], previous_run_time)
     
     # Return exit code based on validation
-    # Modified to not require a valid GitHub token for testing
+    # Check files, token validity, total bounties and API rates
     success = (
-        # results["github_token"]["valid"] and  # Skip token validation for testing
+        # GitHub token not required for successful tests
+        # results["github_token"]["valid"] and
         results["file_counts"]["total"] > 0 and
-        "total_bounties" in results
+        "total_bounties" in results and 
+        "api_prices" in results and
+        results["api_prices"].get("rates_valid", False)
     )
     
     return 0 if success else 1
-
-if __name__ == "__main__":
-    sys.exit(main())

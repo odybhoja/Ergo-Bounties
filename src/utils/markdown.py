@@ -318,8 +318,13 @@ def update_readme_badges(
                     line = f"<!-- Latest Update: {today} -->"
                     print(f"DEBUG: Updated timestamp: {line}")
                 
-                # Write the line back to the file
-                f.write(line + '\n')
+                # Don't add newlines after the final line with content
+                if line.strip() or line.startswith("<!-- Latest Update:"):
+                    f.write(line + '\n')
+                else:
+                    # Only preserve exactly one blank line at the end
+                    if not f.tell() or f.tell() and f.tell() and content.split('\n')[-1].strip():
+                        f.write('\n')
             
         logger.info("Updated README.md badges successfully")
         return True
