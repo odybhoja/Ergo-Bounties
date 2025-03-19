@@ -14,7 +14,6 @@ import time
 import logging
 from datetime import datetime
 from pathlib import Path
-import requests
 from typing import Dict, Any, List, Tuple, Optional
 
 # Add the parent directory to sys.path so we can import modules correctly
