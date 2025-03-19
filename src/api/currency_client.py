@@ -25,6 +25,10 @@ class CurrencyClient(BaseClient):
     Provides methods for retrieving and processing currency data.
     """
 
+    R4_REGISTER_KEY = 'R4'
+    RENDERED_VALUE_KEY = 'renderedValue'
+    VALUE_KEY = 'value'
+
     # API endpoints
     SPECTRUM_API_URL = "https://api.spectrum.fi/v1/price-tracking/markets"
     ERGO_EXPLORER_API = "https://api.ergoplatform.com/api/v1"
@@ -174,18 +178,18 @@ class CurrencyClient(BaseClient):
             # Extract the R4 register value
             if (
                 "additionalRegisters" not in latest_box
-                or "R4" not in latest_box["additionalRegisters"]
+                or self.R4_REGISTER_KEY not in latest_box["additionalRegisters"]
             ):
                 logger.error("R4 register not found in oracle pool box")
                 return
 
-            r4_register = latest_box["additionalRegisters"]["R4"]
+            r4_register = latest_box["additionalRegisters"][self.R4_REGISTER_KEY]
             r4_value = None
 
-            if "renderedValue" in r4_register:
-                r4_value = r4_register["renderedValue"]
-            elif "value" in r4_register:
-                r4_value = r4_register["value"]
+            if self.RENDERED_VALUE_KEY in r4_register:
+                r4_value = r4_register[self.RENDERED_VALUE_KEY]
+            elif self.VALUE_KEY in r4_register:
+                r4_value = r4_register[self.VALUE_KEY]
 
             if not r4_value:
                 logger.error("Could not extract R4 value from register")

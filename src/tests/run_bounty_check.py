@@ -87,18 +87,25 @@ def validate_github_token() -> Tuple[bool, Dict[str, Any]]:
     token = os.environ.get("GITHUB_TOKEN")
     if not token:
         # Also try to load from .env file like config.py does
-        env_file = Path(os.path.join('src', '.env'))
-        if env_file.exists():
-            try:
-                with open(env_file, 'r') as f:
-                    for line in f:
-                        line = line.strip()
-                        if line and not line.startswith('#'):
-                            if line.startswith('github_token='):
-                                token = line.split('=', 1)[1].strip('"\'')
-                                print(f"DEBUG: Found token in scripts/.env: {token[:4]}...{token[-4:]}")
-            except Exception as e:
-                print(f"ERROR reading .env file: {e}")
+        env_files = [
+            Path(os.path.join('src', '.env')),
+            Path(os.path.join(PROJECT_ROOT, '.env'))
+        ]
+        for env_file in env_files:
+            if env_file.exists():
+                try:
+                    with open(env_file, 'r') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line and not line.startswith('#'):
+                                if line.startswith('github_token='):
+                                    token = line.split('=', 1)[1].strip('"\'')
+                                    print(f"DEBUG: Found token in {env_file}: {token[:4]}...{token[-4:]}")
+                                    break
+                        if token:
+                            break
+                except Exception as e:
+                    print(f"ERROR reading {env_file}: {e}")
     
     if not token:
         return False, {"error": "No GITHUB_TOKEN environment variable or in .env file found"}

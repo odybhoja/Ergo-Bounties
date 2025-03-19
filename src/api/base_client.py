@@ -66,7 +66,7 @@ class BaseClient:
                 )
 
                 # Check for rate limiting
-                if response.status_code == 403 and 'X-RateLimit-Remaining' in response.headers:
+                if response.status_code in (403, 429) and 'X-RateLimit-Remaining' in response.headers:
                     remaining = int(response.headers['X-RateLimit-Remaining'])
                     if remaining == 0:
                         reset_time = int(response.headers['X-RateLimit-Reset'])
