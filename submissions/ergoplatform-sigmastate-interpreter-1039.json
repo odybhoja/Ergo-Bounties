@@ -1,0 +1,18 @@
+{
+  "contributor": "novamon",
+  "wallet_address": "9guu9uV9fQrYg6k5MZuoXeV1ZDzWdPzvfjHMdoHZZ8sTQoJxGYy",
+  "contact_method": "Discord: novamon_25735#1340839158788128861",
+  "work_link": "https://github.com/ergoplatform/sigmastate-interpreter/pull/1055",
+  "work_title": "Finish executeFromSelfReg implementation",
+  "bounty_id": "sigmastate-interpreter#1039",
+  "original_issue_link": "https://github.com/ergoplatform/sigmastate-interpreter/issues/1039",
+  "payment_currency": "SigUSD",
+  "bounty_value": 500.0,
+  "status": "awaiting-review",
+  "submission_date": "2025-03-04",
+  "expected_completion": "2025-03-19",
+  "description": "Finished implementation of executeFromSelfReg and tests, patched per reviews. Awaiting review and merge",
+  "review_notes": "",
+  "payment_tx_id": "",
+  "payment_date": ""
+}
