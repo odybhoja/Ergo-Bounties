@@ -231,22 +231,9 @@ class CurrencyClient(BaseClient):
         conversion_rates = rates if rates is not None else self.rates
 
         try:
-            if currency == "ERG":
-                return amount
-            elif currency == "SigUSD" and "SigUSD" in conversion_rates:
-                return f"{float(amount) / conversion_rates['SigUSD']:.2f}"
-            elif currency == "GORT" and "GORT" in conversion_rates:
-                return f"{float(amount) / conversion_rates['GORT']:.2f}"
-            elif currency == "RSN" and "RSN" in conversion_rates:
-                return f"{float(amount) / conversion_rates['RSN']:.2f}"
-            elif currency == "BENE" and "BENE" in conversion_rates:
-                return f"{float(amount) / conversion_rates['BENE']:.2f}"
-            elif currency == "g GOLD" and "gGOLD" in conversion_rates:
-                return f"{float(amount) * conversion_rates['gGOLD']:.2f}"
-            else:
-                logger.warning(f"Cannot convert {currency} to ERG (no conversion rate available)")
-                return amount
-        except (ValueError, TypeError) as e:
+            erg_value = self._convert_currency_to_erg(amount, currency, conversion_rates)
+            return f"{erg_value:.2f}" if erg_value != 0.0 else amount
+        except Exception as e:
             logger.error(f"Error converting {amount} {currency} to ERG: {e}")
             return amount
 
@@ -274,18 +261,36 @@ class CurrencyClient(BaseClient):
         conversion_rates = rates if rates is not None else self.rates
 
         try:
+            return self._convert_currency_to_erg(amount, currency, conversion_rates)
+        except Exception as e:
+            logger.error(f"Error converting {amount} {currency} to ERG: {e}")
+            return 0.0
+
+    def _convert_currency_to_erg(self, amount: str, currency: str, rates: Dict[str, float]) -> float:
+        """
+        Helper function to convert an amount in a specific currency to ERG.
+
+        Args:
+            amount: Amount to convert as a string
+            currency: Currency code
+            rates: Dictionary of conversion rates
+
+        Returns:
+            ERG equivalent amount as a float, or 0 if conversion not possible
+        """
+        try:
             if currency == "ERG":
                 return float(amount)
-            elif currency == "SigUSD" and "SigUSD" in conversion_rates:
-                return float(amount) / conversion_rates["SigUSD"]
-            elif currency == "GORT" and "GORT" in conversion_rates:
-                return float(amount) / conversion_rates["GORT"]
-            elif currency == "RSN" and "RSN" in conversion_rates:
-                return float(amount) / conversion_rates["RSN"]
-            elif currency == "BENE" and "BENE" in conversion_rates:
-                return float(amount) / conversion_rates["BENE"]
-            elif currency == "g GOLD" and "gGOLD" in conversion_rates:
-                return float(amount) * conversion_rates["gGOLD"]
+            elif currency == "SigUSD" and "SigUSD" in rates:
+                return float(amount) / rates["SigUSD"]
+            elif currency == "GORT" and "GORT" in rates:
+                return float(amount) / rates["GORT"]
+            elif currency == "RSN" and "RSN" in rates:
+                return float(amount) / rates["RSN"]
+            elif currency == "BENE" and "BENE" in rates:
+                return float(amount) / rates["BENE"]
+            elif currency == "g GOLD" and "gGOLD" in rates:
+                return float(amount) * rates["gGOLD"]
             else:
                 logger.warning(f"Unknown currency or missing conversion rate: {currency}")
                 return 0.0

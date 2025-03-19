@@ -93,13 +93,12 @@ class GitHubClient(BaseClient):
         data, _ = self._make_request(url)
         if not data:
             return []
-            
         # Sort languages by bytes of code and get top 2 (or all if fewer than 2)
-        sorted_languages = sorted(data.items(), key=lambda x: x[1], reverse=True)
+        sorted_languages = sorted(data.items(), key=lambda x: x[1], reverse=True)[:2]
         result = [lang[0] for lang in sorted_languages]
-        
+
         logger.debug(f"Languages for {owner}/{repo}: {result}")
-        return result[:2]
+        return result
 
     def get_repository_issues(
         self, owner: str, repo: str, state: str = "open"

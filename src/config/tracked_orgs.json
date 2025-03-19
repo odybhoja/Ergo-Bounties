@@ -6,9 +6,12 @@
     "org": "rosen-bridge"
   },
   {
-    "org": "ChainCashLabs"
+    "org": "chaincashlabs"
   },
   {
     "org": "fleet-sdk"
+  },
+  {
+    "org": "stabilitynexus"
   }
 ]

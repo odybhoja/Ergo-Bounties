@@ -16,32 +16,38 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Tuple, Optional
 
+import requests
+
 # Add the parent directory to sys.path so we can import modules correctly
 sys.path.append(str(Path(__file__).parent.parent))
 
+def _install_and_import(module_name: str):
+    """Install a module if it's not already installed and then import it."""
+    try:
+        return __import__(module_name)
+    except ImportError:
+        print(f"Installing {module_name}...")
+        import subprocess
+        subprocess.check_call([sys.executable, "-m", "pip", "install", module_name])
+        return __import__(module_name)
+
 # Configure colorful output
 try:
-    from colorama import init, Fore, Style
+    colorama = _install_and_import("colorama")
+    init = colorama.init
+    Fore = colorama.Fore
+    Style = colorama.Style
     init(autoreset=True)
     COLORED_OUTPUT = True
 except ImportError:
-    print("Installing colorama for colored output...")
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "colorama"])
-    from colorama import init, Fore, Style
-    init(autoreset=True)
-    COLORED_OUTPUT = True
+    COLORED_OUTPUT = False
 
 # Try to import tabulate for table formatting
 try:
-    from tabulate import tabulate
+    tabulate = _install_and_import("tabulate")
     TABULATE_AVAILABLE = True
 except ImportError:
-    print("Installing tabulate for table formatting...")
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "tabulate"])
-    from tabulate import tabulate
-    TABULATE_AVAILABLE = True
+    TABULATE_AVAILABLE = False
 
 # Get paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))

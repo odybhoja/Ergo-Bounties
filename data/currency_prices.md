@@ -1,13 +1,13 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-19 16:08:46 -->
+<!-- Generated on: 2025-03-19 16:22:44 -->
 
 # Currency Prices
 
-*Report generated: 2025-03-19 16:08:46 UTC*
+*Report generated: 2025-03-19 16:22:44 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-8-orange)](summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-107-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](summary.md#projects)
 
 ## Current Prices
 
@@ -17,7 +17,7 @@
 | [GORT](by_currency/gort.md) | 0.083403 | Governance token for ErgoDEX |
 | [RSN](by_currency/rsn.md) | 0.053788 | Governance token for Rosen Bridge |
 | [SigUSD](by_currency/sigusd.md) | 1.211764 | Stablecoin pegged to USD |
-| [gGOLD](by_currency/ggold.md) | 84.594451 | Price per gram of gold in ERG |
+| [gGOLD](by_currency/ggold.md) | 84.082927 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 

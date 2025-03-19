@@ -87,6 +87,6 @@ class BaseClient:
                     time.sleep(self.retry_delay)
                 else:
                     logger.error(f"Max retries exceeded for URL: {url}")
-                    return None, None
+                    raise requests.exceptions.RequestException(f"Max retries exceeded for URL: {url}")
 
         return None, None
