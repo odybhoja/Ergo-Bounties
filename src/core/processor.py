@@ -147,7 +147,8 @@ class BountyProcessor:
                     "secondary_lang": secondary_lang,
                     "labels": [label['name'] for label in labels],
                     "issue_number": issue['number'],
-                    "creator": issue['user']['login']  # GitHub username of the issue creator
+                    "creator": issue['user']['login'],  # GitHub username of the issue creator
+                    "status": issue['state']  # Add status
                 }
                 
                 self.bounty_data.append(bounty_info)
@@ -358,7 +359,8 @@ class BountyProcessor:
                     if value >= threshold:
                         high_value_bounties.append({
                             **bounty,
-                            "value": value
+                            "value": value,
+                            "status": bounty.get("status", "")
                         })
                 except (ValueError, TypeError):
                     pass

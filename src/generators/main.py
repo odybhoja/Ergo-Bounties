@@ -528,8 +528,11 @@ def generate_high_value_bounties_file(
         primary_lang_link = format_language_link(primary_lang)
         currency_link = format_currency_link(currency)
         
-        # Create a reserve button
-        reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
+        # Create a reserve button, or display "Reserved" if applicable
+        if bounty.get("status") == "In Progress":
+            reserve_button = "Reserved"
+        else:
+            reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
         
         content += f"| [{title}]({url}) | {org_link} | {erg_value:.2f} ERG | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
     
@@ -800,54 +803,60 @@ def update_ongoing_programs_table(
     
     # Filter for extra bounties from src/config/extra_bounties.json (only those with "bounty" label)
     # The assumption is that bounties from extra_bounties.json will have distinctive characteristics
-    # like url format or other properties that make them identifiable
     extra_bounties = []
     
-    # Identification criteria for entries from extra_bounties.json
-    # These will typically have fully qualified URLs (like Discord links or external URLs)
-    # or have specific sources/origins
-    for bounty in bounty_data:
-        # Check if it has "bounty" label but is not an "ongoing" program
-        if "bounty" in bounty.get("labels", []) and bounty.get("amount") != "Ongoing":
-            # Only include bounties that are from extra_bounties.json
-            # We don't directly check the file, but we can identify them by specific properties
-            # like their format, source, or other characteristics
-            
-            # For example, if they're from src/config/extra_bounties.json, they have URLs that aren't GitHub
-            # or they have specific creators, or they have the status field
-            if "status" in bounty:  # Status field is only added to extra_bounties.json entries
-                extra_bounties.append(bounty)
+    import json
+
+    extra_bounties = []
     
+    # Load extra bounties data from JSON file
+    try:
+        with open("src/config/extra_bounties.json", "r", encoding="utf-8") as f:
+            extra_bounties_data = json.load(f)
+    except FileNotFoundError:
+        logger.error("Could not find extra_bounties.json")
+        extra_bounties_data = []
+
+    # Filter for extra bounties by comparing against loaded JSON data
+    for bounty in bounty_data:
+        for extra_bounty in extra_bounties_data:
+            if (
+                bounty.get("url") == extra_bounty.get("url")
+                and bounty.get("title") == extra_bounty.get("title")
+            ):
+                extra_bounties.append(bounty)
+                break  # Move to the next bounty in bounty_data
+
     if extra_bounties:
         # Generate the extra bounties table with an explanatory header
         intro_text = "These grants and additional bounties are pulled from src/config/extra_bounties.json:\n\n"
         bounty_table_content = intro_text + generate_standard_bounty_table(extra_bounties, conversion_rates)
-        
+
         # Update the table between guardrails
         try:
             # Read the file
             with open('docs/ongoing-programs.md', 'r', encoding='utf-8') as f:
                 content = f.read()
-            
+
             # Find the active bounties table section
             start_marker = "<!-- BEGIN_ACTIVE_BOUNTIES_TABLE -->"
             end_marker = "<!-- END_ACTIVE_BOUNTIES_TABLE -->"
-            
+
             start_pos = content.find(start_marker)
             end_pos = content.find(end_marker)
-            
+
             if start_pos != -1 and end_pos != -1:
                 # Replace the content between the markers
                 pre_content = content[:start_pos + len(start_marker)]
                 post_content = content[end_pos:]
-                
+
                 # Construct the new content
                 new_content = pre_content + "\n" + bounty_table_content + "\n" + post_content
-                
+
                 # Write the updated content back to the file
                 with open('docs/ongoing-programs.md', 'w', encoding='utf-8') as f:
                     f.write(new_content)
-                
+
                 logger.info("Successfully updated grants and additional bounties table with guardrails")
             else:
                 logger.error("Could not find active bounties table markers in ongoing-programs.md")
