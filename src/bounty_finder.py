@@ -202,7 +202,8 @@ def main():
     update_readme_badges(
         total_bounties,
         total_value,
-        len(high_value_bounties)
+        len(high_value_bounties),
+        languages
     )
 
     # Print summary

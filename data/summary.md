@@ -1,5 +1,5 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-18 14:26:03 -->
+<!-- Generated on: 2025-03-19 15:59:41 -->
 
 # Summary of Bounties
 
@@ -11,15 +11,15 @@
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/data/by_org/ergoplatform.md) | 83 | 43,960.05 ERG |
+| [ergoplatform](/data/by_org/ergoplatform.md) | 83 | 42,652.53 ERG |
 | [DevDAO](/data/by_org/devdao.md) | 1 | 3,000.00 ERG |
-| [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 971.81 ERG |
-| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 626.97 ERG |
-| [ChainCashLabs](/data/by_org/chaincashlabs.md) | 9 | 490.24 ERG |
-| [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 125.39 ERG |
-| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 112.96 ERG |
+| [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 939.12 ERG |
+| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 605.88 ERG |
+| [ChainCashLabs](/data/by_org/chaincashlabs.md) | 9 | 501.01 ERG |
+| [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 121.18 ERG |
+| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 112.95 ERG |
 | [EF_DAO_LLC](/data/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **105** | **49,287.43 ERG** |
+| **Total** | **105** | **47,932.68 ERG** |
 
 ## Currencies
 
@@ -28,11 +28,11 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 [View current currency prices →](/data/currency_prices.md)
 | Currency | Count | Total Value (ERG) |
 |----------|-------|------------------|
-| [SigUSD](/data/by_currency/sigusd.md) | 54 | 40721.92 |
+| [SigUSD](/data/by_currency/sigusd.md) | 54 | 39352.05 |
 | [ERG](/data/by_currency/erg.md) | 27 | 7550.00 |
-| [g GOLD](/data/by_currency/gold.md) | 6 | 571.56 |
-| [GORT](/data/by_currency/gort.md) | 7 | 205.59 |
-| [BENE](/data/by_currency/bene.md) | 2 | 125.39 |
+| [g GOLD](/data/by_currency/gold.md) | 6 | 592.16 |
+| [GORT](/data/by_currency/gort.md) | 7 | 204.34 |
+| [BENE](/data/by_currency/bene.md) | 2 | 121.18 |
 
 [View all currencies →](/data/by_currency/)
 

@@ -307,28 +307,31 @@ def generate_currency_files(
         
         # Add navigation badges
         content += generate_navigation_section(
-            total_bounties, 
-            len(languages), 
+            total_bounties,
+            len(languages),
             len(currencies_dict) + 1,  # +1 for "Not specified"
-            len(orgs), 
-            len(conversion_rates), 
+            len(orgs),
+            len(conversion_rates),
             "../"
         )
-        
+
         # Add bounties table
         content += "## Bounties with Unspecified Value\n\n"
         content += generate_standard_bounty_table(not_specified_bounties, conversion_rates)
-        
+
+        # Add a link to the summary file
+        content += "\n[View summary of bounties with unspecified value in summary file →](../summary.md#bounties-with-unspecified-value)\n\n"
+
         # Add footer with action buttons
         content += add_footer_buttons("../")
-        
+
         # Wrap with guardrails
         final_content = wrap_with_full_guardrails(content, "# Bounties with Unspecified Value")
-        
+
         # Write to file
         with open(not_specified_file, 'w', encoding='utf-8') as f:
             f.write(final_content)
-    
+
     logger.info(f"Generated {len(currencies_dict)} currency-specific files")
 
 def generate_price_table(
@@ -728,12 +731,17 @@ def generate_summary_file(
     
     # Wrap with guardrails
     final_content = wrap_with_full_guardrails(content, "# Summary of Bounties")
-    
+
     # Write to file
     with open(summary_file, 'w', encoding='utf-8') as f:
         f.write(final_content)
-    
+
     logger.info("Generated summary file")
+
+    # Update README badges
+    from ..utils.markdown import update_readme_badges
+    update_readme_badges(total_bounties, total_value, 0, languages)
+
 
 def update_ongoing_programs_table(
     bounty_data: List[Dict[str, Any]],

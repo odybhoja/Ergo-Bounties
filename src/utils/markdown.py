@@ -223,8 +223,9 @@ def generate_ongoing_programs_table(ongoing_programs: List[Dict[str, Any]]) -> s
 
 def update_readme_badges(
     total_bounties: int,
-    total_value: float, 
-    high_value_count: int
+    total_value: float,
+    high_value_count: int,
+    languages: Dict[str, List[Dict[str, Any]]]
 ) -> bool:
     """
     Update the badges in the README.md file.
@@ -233,6 +234,7 @@ def update_readme_badges(
         total_bounties: Total number of bounties
         total_value: Total ERG value of all bounties
         high_value_count: Number of high-value bounties
+        languages: Dictionary of languages and their bounties
         
     Returns:
         True if successful, False otherwise
@@ -303,21 +305,24 @@ def update_readme_badges(
                     print(f"DEBUG: Updated currency rates badge line: {line}")
                 
                 # By language badges
-                elif "/bounties/by_language/" in line:
+                elif "/data/by_language/" in line:
                     # Update all language badge paths
                     line = line.replace("/bounties/by_language/", "/data/by_language/")
+                    # Also update the language badge counts (example: Scala-71-DC322F)
+                    for lang, lang_bounties in languages.items():
+                        line = re.sub(
+                            r'('+re.escape(lang)+r'-)\d+(-[0-9A-F]+)', 
+                            r'\g<1>'+str(len(lang_bounties))+r'\g<2>', 
+                            line
+                        )
                     print(f"DEBUG: Updated language badge line: {line}")
-                
+
                 # By currency badges
                 elif "/bounties/by_currency/" in line:
-                    # Update all currency badge paths
-                    line = line.replace("/bounties/by_currency/", "/data/by_currency/")
                     print(f"DEBUG: Updated currency badge line: {line}")
-                
+
                 # By org badges
                 elif "/bounties/by_org/" in line:
-                    # Update all org badge paths
-                    line = line.replace("/bounties/by_org/", "/data/by_org/")
                     print(f"DEBUG: Updated org badge line: {line}")
                 
                 # Latest Update line (at the end of the file)
