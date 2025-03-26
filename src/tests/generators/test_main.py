@@ -119,7 +119,7 @@ def test_generate_main_file(mock_ts, mock_ensure_dir, mock_file_open, mock_bount
     assert "Test Bounty 1" in written_content
     assert "Test Bounty 2" in written_content
     assert "Ongoing Program" in written_content # Check if ongoing programs are included
-    assert "![Total Bounties: 3]" in written_content # Check navigation badge alt text
+    assert "![All Bounties]" in written_content # Check navigation badge alt text
     assert "2025-03-26 14:00:00 UTC" in written_content # Check timestamp
 
 # Add more tests here for other generator functions
