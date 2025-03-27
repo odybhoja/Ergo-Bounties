@@ -9,3 +9,11 @@
 scripts/.env
 scripts/tests/.bounty_check_state.json
 src/.env
+.aider*
+.clinerules
+memory-bank/activeContext.md
+memory-bank/productContext.md
+memory-bank/progress.md
+memory-bank/projectbrief.md
+memory-bank/systemPatterns.md
+memory-bank/techContext.md

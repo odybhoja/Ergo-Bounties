@@ -692,10 +692,26 @@ def main() -> int:
     # 5. Save current state for next run
     save_current_state(results)
     
-    # 6. Print summary tables
-    print_summary_table(results)
+    # 6. Dynamically update dashboard by re-reading file counts to simulate real-time updates
+    import time
+    for i in range(5):
+        # Simulate dynamic changes by updating file counts
+        dynamic_counts = count_markdown_files()  # Re-read file counts from current state of BOUNTIES_DIR
+        results["file_counts"] = dynamic_counts
+        # Also re-extract info, if needed (optional, uncomment next line if dynamic content is expected)
+        # results.update(extract_info_from_files())
+        # Clear screen using ANSI escape codes
+        print("\033c", end="")
+        print_header("Dynamic Dashboard [Test Environment]")
+        print_summary_table(results)
+        if "changes" in results:
+            print_changes_table(results["changes"], previous_run_time)
+        time.sleep(2)
     
-    # 7. Print changes if available
+    # Final static display of the summary after dynamic updates
+    print("\033c", end="")
+    print_header("Ergo Bounties Final Validation Summary")
+    print_summary_table(results)
     if "changes" in results:
         print_changes_table(results["changes"], previous_run_time)
     
