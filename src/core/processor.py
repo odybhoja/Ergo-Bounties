@@ -18,7 +18,7 @@ from typing import Dict, List, Any, Tuple, Optional, Set
 
 from ..api.github_client import GitHubClient
 from ..api.currency_client import CurrencyClient
-from .extractors import BountyExtractor
+from .extractors import is_bounty_issue, extract_bounty_info
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -143,11 +143,11 @@ class BountyProcessor:
             labels = issue['labels']
 
             # Check if this is a bounty issue
-            if BountyExtractor.is_bounty_issue(title, labels):
+            if is_bounty_issue(title, labels):
                 title = title.replace(",", " ")
 
                 # Extract bounty information
-                amount, currency = BountyExtractor.extract_bounty_info(issue)
+                amount, currency = extract_bounty_info(issue)
 
                 # Store the bounty information
                 bounty_info = {
@@ -227,181 +227,3 @@ class BountyProcessor:
         total_bounties = sum(project["count"] for project in self.project_totals.values())
         total_value = sum(project["value"] for project in self.project_totals.values())
         return total_bounties, total_value
-
-    def group_by_language(self) -> Dict[str, List[Dict[str, Any]]]:
-        """
-        Group bounties by language.
-
-        Returns:
-            Dictionary of language -> list of bounties
-        """
-        languages = {}
-        for bounty in self.bounty_data:
-            # Skip bounties with "Not specified" amounts for "Unknown" language
-            if bounty["primary_lang"] == "Unknown" and bounty["amount"] == "Not specified":
-                continue
-
-            primary_lang = bounty["primary_lang"]
-            if primary_lang not in languages:
-                languages[primary_lang] = []
-            languages[primary_lang].append(bounty)
-
-        # Remove "Unknown" language if it's empty after filtering
-        if "Unknown" in languages and len(languages["Unknown"]) == 0:
-            del languages["Unknown"]
-
-        return languages
-
-    def group_by_organization(self) -> Dict[str, List[Dict[str, Any]]]:
-        """
-        Group bounties by organization.
-
-        Returns:
-            Dictionary of organization -> list of bounties
-        """
-        orgs = {}
-        for bounty in self.bounty_data:
-            owner = bounty["owner"]
-            if owner not in orgs:
-                orgs[owner] = []
-            orgs[owner].append(bounty)
-        return orgs
-
-    def group_by_currency(self) -> Dict[str, List[Dict[str, Any]]]:
-        """
-        Group bounties by currency.
-
-        Returns:
-            Dictionary of currency -> list of bounties
-        """
-        currencies_dict = {}
-        for bounty in self.bounty_data:
-            currency = bounty["currency"]
-
-            # Skip "Not specified" currency
-            if currency == "Not specified":
-                continue
-
-            if currency not in currencies_dict:
-                currencies_dict[currency] = []
-            currencies_dict[currency].append(bounty)
-        return currencies_dict
-
-    def calculate_currency_totals(self) -> Dict[str, Dict[str, Any]]:
-        """
-        Calculate totals by currency.
-
-        Returns:
-            Dictionary of currency -> {count, value} totals
-        """
-        currency_totals = {}
-        currencies_dict = self.group_by_currency()
-
-        for currency, currency_bounties in currencies_dict.items():
-            # Count only bounties with specified amounts (excluding "Ongoing" programs)
-            specified_bounties = [
-                b for b in currency_bounties 
-                if b["amount"] != "Not specified" and b["amount"] != "Ongoing"
-            ]
-
-            currency_totals[currency] = {
-                "count": len(specified_bounties), 
-                "value": 0.0
-            }
-
-            # Calculate total value
-            for bounty in specified_bounties:
-                amount = bounty["amount"]
-                currency_totals[currency]["value"] += self.currency_client.calculate_erg_value(
-                    amount, currency
-                )
-
-        return currency_totals
-
-    def find_featured_bounties(self, count: int = 2) -> List[Dict[str, Any]]:
-        """
-        Find the highest-value bounties to feature.
-
-        Args:
-            count: Number of featured bounties to return
-
-        Returns:
-            List of high-value bounty objects with ERG value
-        """
-        featured_bounties = []
-
-        for bounty in self.bounty_data:
-            amount = bounty["amount"]
-            currency = bounty["currency"]
-
-            if amount != "Not specified" and amount != "Ongoing":
-                try:
-                    # Calculate ERG equivalent
-                    value = self.currency_client.calculate_erg_value(amount, currency)
-
-                    featured_bounties.append({
-                        **bounty,
-                        "value": value
-                    })
-                except (ValueError, TypeError):
-                    pass
-
-        # Sort by value and get top bounties
-        featured_bounties.sort(key=lambda x: x["value"], reverse=True)
-        return featured_bounties[:count]
-
-    def find_high_value_bounties(self, threshold: float = 1000.0) -> List[Dict[str, Any]]:
-        """
-        Find bounties with value above a threshold.
-
-        Args:
-            threshold: Minimum ERG value for high-value bounties
-
-        Returns:
-            List of high-value bounty objects sorted by value
-        """
-        high_value_bounties = []
-
-        for bounty in self.bounty_data:
-            amount = bounty["amount"]
-            currency = bounty["currency"]
-
-            if amount != "Not specified" and amount != "Ongoing":
-                try:
-                    # Calculate ERG equivalent
-                    value = self.currency_client.calculate_erg_value(amount, currency)
-
-                    if value >= threshold:
-                        high_value_bounties.append({
-                            **bounty,
-                            "value": value,
-                            "status": bounty.get("status", "")
-                        })
-                except (ValueError, TypeError):
-                    pass
-
-        # Sort by value
-        high_value_bounties.sort(key=lambda x: x["value"], reverse=True)
-        return high_value_bounties
-
-    def find_beginner_friendly_bounties(self) -> List[Dict[str, Any]]:
-        """
-        Find bounties that are tagged as beginner-friendly.
-
-        Returns:
-            List of beginner-friendly bounty objects
-        """
-        beginner_tags = [
-            'beginner', 'beginner-friendly', 'good-first-issue', 
-            'good first issue', 'easy', 'starter', 'newbie'
-        ]
-
-        beginner_bounties = []
-
-        for bounty in self.bounty_data:
-            labels = [label.lower() for label in bounty.get("labels", [])]
-
-            if any(tag in label for tag in beginner_tags for label in labels):
-                beginner_bounties.append(bounty)
-
-        return beginner_bounties

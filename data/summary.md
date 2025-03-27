@@ -1,26 +1,26 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-27 21:05:18 -->
+<!-- Generated on: 2025-03-27 21:24:31 -->
 
 # Summary of Bounties
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](/data/all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](/data/summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](/data/summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](/data/summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](/data/all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](/data/summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](/data/summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](/data/summary.md#projects)
 
 ## Projects
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/data/by_org/ergoplatform.md) | 81 | 42,265.07 ERG |
+| [ergoplatform](/data/by_org/ergoplatform.md) | 81 | 42,265.90 ERG |
 | [DevDAO](/data/by_org/devdao.md) | 1 | 3,000.00 ERG |
 | [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 944.47 ERG |
 | [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 609.34 ERG |
-| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 497.13 ERG |
+| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 498.23 ERG |
 | [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 121.87 ERG |
 | [stabilitynexus](/data/by_org/stabilitynexus.md) | 2 | 121.87 ERG |
 | [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.73 ERG |
 | [EF_DAO_LLC](/data/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **105** | **47,674.47 ERG** |
+| **Total** | **105** | **47,676.40 ERG** |
 
 ## Currencies
 
@@ -31,7 +31,7 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 |----------|-------|------------------|
 | [SigUSD](/data/by_currency/sigusd.md) | 54 | 39576.39 |
 | [ERG](/data/by_currency/erg.md) | 25 | 6950.00 |
-| [g GOLD](/data/by_currency/gold.md) | 6 | 585.08 |
+| [g GOLD](/data/by_currency/gold.md) | 6 | 587.01 |
 | [BENE](/data/by_currency/bene.md) | 4 | 243.73 |
 | [GORT](/data/by_currency/gort.md) | 7 | 204.54 |
 

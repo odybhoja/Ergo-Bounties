@@ -39,42 +39,270 @@ from ..api.currency_client import CurrencyClient
 # Configure logging
 logger = logging.getLogger(__name__)
 
+
+# --- Grouping and Filtering Functions (Moved from BountyProcessor) ---
+
+def group_by_language(bounty_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Group bounties by language.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+
+    Returns:
+        Dictionary of language -> list of bounties
+    """
+    languages = {}
+    for bounty in bounty_data:
+        # Skip bounties with "Not specified" amounts for "Unknown" language
+        if bounty["primary_lang"] == "Unknown" and bounty["amount"] == "Not specified":
+            continue
+
+        primary_lang = bounty["primary_lang"]
+        if primary_lang not in languages:
+            languages[primary_lang] = []
+        languages[primary_lang].append(bounty)
+
+    # Remove "Unknown" language if it's empty after filtering
+    if "Unknown" in languages and len(languages["Unknown"]) == 0:
+        del languages["Unknown"]
+
+    return languages
+
+
+def group_by_organization(bounty_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Group bounties by organization.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+
+    Returns:
+        Dictionary of organization -> list of bounties
+    """
+    orgs = {}
+    for bounty in bounty_data:
+        owner = bounty["owner"]
+        if owner not in orgs:
+            orgs[owner] = []
+        orgs[owner].append(bounty)
+    return orgs
+
+
+def group_by_currency(bounty_data: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
+    """
+    Group bounties by currency.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+
+    Returns:
+        Dictionary of currency -> list of bounties
+    """
+    currencies_dict = {}
+    for bounty in bounty_data:
+        currency = bounty["currency"]
+
+        # Skip "Not specified" currency
+        if currency == "Not specified":
+            continue
+
+        if currency not in currencies_dict:
+            currencies_dict[currency] = []
+        currencies_dict[currency].append(bounty)
+    return currencies_dict
+
+
+def calculate_currency_totals(
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float]
+) -> Dict[str, Dict[str, Any]]:
+    """
+    Calculate totals by currency.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+        conversion_rates: Dictionary of currency conversion rates
+
+    Returns:
+        Dictionary of currency -> {count, value} totals
+    """
+    currency_totals = {}
+    currencies_dict = group_by_currency(bounty_data)
+    currency_client = CurrencyClient()
+    currency_client.rates = conversion_rates
+
+    for currency, currency_bounties in currencies_dict.items():
+        # Count only bounties with specified amounts (excluding "Ongoing" programs)
+        specified_bounties = [
+            b for b in currency_bounties
+            if b["amount"] != "Not specified" and b["amount"] != "Ongoing"
+        ]
+
+        currency_totals[currency] = {
+            "count": len(specified_bounties),
+            "value": 0.0
+        }
+
+        # Calculate total value
+        for bounty in specified_bounties:
+            amount = bounty["amount"]
+            currency_totals[currency]["value"] += currency_client.calculate_erg_value(
+                amount, currency
+            )
+
+    return currency_totals
+
+
+def find_featured_bounties(
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    count: int = 2
+) -> List[Dict[str, Any]]:
+    """
+    Find the highest-value bounties to feature.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+        conversion_rates: Dictionary of currency conversion rates
+        count: Number of featured bounties to return
+
+    Returns:
+        List of high-value bounty objects with ERG value
+    """
+    featured_bounties = []
+    currency_client = CurrencyClient()
+    currency_client.rates = conversion_rates
+
+    for bounty in bounty_data:
+        amount = bounty["amount"]
+        currency = bounty["currency"]
+
+        if amount != "Not specified" and amount != "Ongoing":
+            try:
+                # Calculate ERG equivalent
+                value = currency_client.calculate_erg_value(amount, currency)
+
+                featured_bounties.append({
+                    **bounty,
+                    "value": value
+                })
+            except (ValueError, TypeError):
+                pass
+
+    # Sort by value and get top bounties
+    featured_bounties.sort(key=lambda x: x["value"], reverse=True)
+    return featured_bounties[:count]
+
+
+def find_high_value_bounties(
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    threshold: float = 1000.0
+) -> List[Dict[str, Any]]:
+    """
+    Find bounties with value above a threshold.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+        conversion_rates: Dictionary of currency conversion rates
+        threshold: Minimum ERG value for high-value bounties
+
+    Returns:
+        List of high-value bounty objects sorted by value
+    """
+    high_value_bounties = []
+    currency_client = CurrencyClient()
+    currency_client.rates = conversion_rates
+
+    for bounty in bounty_data:
+        amount = bounty["amount"]
+        currency = bounty["currency"]
+
+        if amount != "Not specified" and amount != "Ongoing":
+            try:
+                # Calculate ERG equivalent
+                value = currency_client.calculate_erg_value(amount, currency)
+
+                if value >= threshold:
+                    high_value_bounties.append({
+                        **bounty,
+                        "value": value,
+                        "status": bounty.get("status", "")
+                    })
+            except (ValueError, TypeError):
+                pass
+
+    # Sort by value
+    high_value_bounties.sort(key=lambda x: x["value"], reverse=True)
+    return high_value_bounties
+
+
+def find_beginner_friendly_bounties(bounty_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Find bounties that are tagged as beginner-friendly.
+
+    Args:
+        bounty_data: List of bounty data dictionaries
+
+    Returns:
+        List of beginner-friendly bounty objects
+    """
+    beginner_tags = [
+        'beginner', 'beginner-friendly', 'good-first-issue',
+        'good first issue', 'easy', 'starter', 'newbie'
+    ]
+
+    beginner_bounties = []
+
+    for bounty in bounty_data:
+        labels = [label.lower() for label in bounty.get("labels", [])]
+
+        if any(tag in label for tag in beginner_tags for label in labels):
+            beginner_bounties.append(bounty)
+
+    return beginner_bounties
+
+
+# --- Generator Functions ---
+
 def generate_language_files(
-    bounty_data: List[Dict[str, Any]], 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    currencies_count: int, 
-    orgs_count: int, 
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     bounties_dir: str
 ) -> None:
     """
     Generate language-specific markdown files.
-    
+
     Args:
         bounty_data: List of bounty data
-        languages: Dictionary of languages and their bounties
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        currencies_count: Number of currencies
-        orgs_count: Number of organizations
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0) # Add 1 for "Not specified" if present
+    orgs_count = len(orgs)
+
     logger.info(f"Generating language-specific files for {len(languages)} languages")
-    
+
     # Create a directory for language-specific files if it doesn't exist
     language_dir = f'{bounties_dir}/by_language'
     ensure_directory(language_dir)
-    
+
     # Set up currency client for value calculations
     currency_client = CurrencyClient()
+    ensure_directory(language_dir)
     currency_client.rates = conversion_rates
-    
+
     # Write language-specific Markdown files
     for language, language_bounties in languages.items():
         language_file = f'{language_dir}/{language.lower()}.md'
         logger.debug(f"Writing language file: {language_file}")
-        
+
         # Calculate total value for this language
         language_value = sum(
             currency_client.calculate_erg_value(b["amount"], b["currency"])
@@ -89,17 +317,17 @@ def generate_language_files(
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"![Total Bounties: {len(language_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(language_bounties)}-blue) "
         content += f"![Total Value: {language_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{language_value:.2f}%20ERG-green)\n\n"
-        
+
         # Add navigation badges
         content += generate_navigation_section(
-            total_bounties, 
-            len(languages), 
-            currencies_count, 
-            orgs_count, 
-            len(conversion_rates), 
+            total_bounties,
+            len(languages),
+            currencies_count,
+            orgs_count,
+            len(conversion_rates),
             "../"
         )
-        
+
         # Add bounties table
         content += "## {language} Bounties\n\n".format(language=language)
         content += generate_standard_bounty_table(language_bounties, conversion_rates)
@@ -116,42 +344,42 @@ def generate_language_files(
     
     logger.info(f"Generated {len(languages)} language-specific files")
 
+
 def generate_organization_files(
-    bounty_data: List[Dict[str, Any]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    currencies_count: int, 
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     bounties_dir: str
 ) -> None:
     """
     Generate organization-specific markdown files.
-    
+
     Args:
         bounty_data: List of bounty data
-        orgs: Dictionary of organizations and their bounties
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        languages: Dictionary of languages and their bounties
-        currencies_count: Number of currencies
         bounties_dir: Bounties directory
     """
+    orgs = group_by_organization(bounty_data)
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info(f"Generating organization-specific files for {len(orgs)} organizations")
-    
+
     # Create a directory for organization-specific files if it doesn't exist
     org_dir = f'{bounties_dir}/by_org'
     ensure_directory(org_dir)
-    
+
     # Set up currency client for value calculations
     currency_client = CurrencyClient()
     currency_client.rates = conversion_rates
-    
+
     # Write organization-specific Markdown files
     for org, org_bounties in orgs.items():
         org_file = f'{org_dir}/{org.lower()}.md'
         logger.debug(f"Writing organization file: {org_file}")
-        
+
         # Calculate total value for this organization
         org_value = sum(
             currency_client.calculate_erg_value(b["amount"], b["currency"])
@@ -166,17 +394,17 @@ def generate_organization_files(
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"![Total Bounties: {len(org_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(org_bounties)}-blue) "
         content += f"![Total Value: {org_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{org_value:.2f}%20ERG-green)\n\n"
-        
+
         # Add navigation badges
         content += generate_navigation_section(
-            total_bounties, 
-            len(languages), 
-            currencies_count, 
-            len(orgs), 
-            len(conversion_rates), 
+            total_bounties,
+            len(languages),
+            currencies_count,
+            len(orgs),
+            len(conversion_rates),
             "../"
         )
-        
+
         # Add bounties table
         content += "## {org} Bounties\n\n".format(org=org)
         content += generate_standard_bounty_table(org_bounties, conversion_rates)
@@ -193,44 +421,42 @@ def generate_organization_files(
     
     logger.info(f"Generated {len(orgs)} organization-specific files")
 
+
 def generate_currency_files(
-    bounty_data: List[Dict[str, Any]], 
-    currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     bounties_dir: str
 ) -> None:
     """
     Generate currency-specific markdown files.
-    
+
     Args:
         bounty_data: List of bounty data
-        currencies_dict: Dictionary of currencies and their bounties
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        languages: Dictionary of languages and their bounties
-        orgs: Dictionary of organizations and their bounties
         bounties_dir: Bounties directory
     """
+    currencies_dict = group_by_currency(bounty_data)
+    languages = group_by_language(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info(f"Generating currency-specific files for {len(currencies_dict)} currencies")
-    
+
     # Create a directory for currency-specific files if it doesn't exist
     currency_dir = f'{bounties_dir}/by_currency'
     ensure_directory(currency_dir)
-    
+
     # Set up currency client for value calculations
     currency_client = CurrencyClient()
     currency_client.rates = conversion_rates
-    
+
     # Write currency-specific Markdown files
     for currency, currency_bounties in currencies_dict.items():
         # Skip "Not specified" currency if present
-        if currency == "Not specified":
-            logger.info("Skipping 'Not specified' currency")
-            continue
-            
+        # (Handled separately below)
+
         # Format the currency name for the file
         currency_file_name = format_currency_filename(currency)
         currency_file = f'{currency_dir}/{currency_file_name}.md'
@@ -250,17 +476,17 @@ def generate_currency_files(
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"![Total Bounties: {len(currency_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(currency_bounties)}-blue) "
         content += f"![Total Value: {currency_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{currency_value:.2f}%20ERG-green)\n\n"
-        
+
         # Add navigation badges
         content += generate_navigation_section(
-            total_bounties, 
-            len(languages), 
-            len(currencies_dict), 
-            len(orgs), 
-            len(conversion_rates), 
+            total_bounties,
+            len(languages),
+            currencies_count, # Use calculated count including "Not specified"
+            len(orgs),
+            len(conversion_rates),
             "../"
         )
-        
+
         # Add conversion rate if available
         if currency in conversion_rates:
             content += f"## Current {currency} Rate\n\n"
@@ -304,12 +530,12 @@ def generate_currency_files(
         # Add timestamp and stats
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"![Total Bounties: {len(not_specified_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(not_specified_bounties)}-blue)\n\n"
-        
+
         # Add navigation badges
         content += generate_navigation_section(
             total_bounties,
             len(languages),
-            len(currencies_dict) + 1,  # +1 for "Not specified"
+            currencies_count, # Use calculated count
             len(orgs),
             len(conversion_rates),
             "../"
@@ -332,31 +558,33 @@ def generate_currency_files(
         with open(not_specified_file, 'w', encoding='utf-8') as f:
             f.write(final_content)
 
-    logger.info(f"Generated {len(currencies_dict)} currency-specific files")
+    logger.info(f"Generated {len(currencies_dict) + (1 if not_specified_bounties else 0)} currency-specific files")
+
 
 def generate_price_table(
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
+    bounty_data: List[Dict[str, Any]], # Added bounty_data
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     bounties_dir: str
 ) -> None:
     """
     Generate a currency price table markdown file.
-    
+
     Args:
+        bounty_data: List of bounty data
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info("Generating currency price table")
-    
+
     price_table_file = f'{bounties_dir}/currency_prices.md'
-    
+
     # Build content
     content = ""
     
@@ -365,13 +593,13 @@ def generate_price_table(
     
     # Add navigation badges
     content += generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
+        total_bounties,
+        len(languages),
+        currencies_count, # Use calculated count
+        len(orgs),
         len(conversion_rates)
     )
-    
+
     
     # Currency notes mapping
     currency_notes = {
@@ -446,44 +674,36 @@ def generate_price_table(
     
     logger.info("Generated currency price table")
 
+
 def generate_high_value_bounties_file(
     bounty_data: List[Dict[str, Any]],
     conversion_rates: Dict[str, float],
     total_bounties: int,
-    total_value: float,
-    languages: Dict[str, List[Dict[str, Any]]],
-    currencies_dict: Dict[str, List[Dict[str, Any]]],
-    orgs: Dict[str, List[Dict[str, Any]]],
     bounties_dir: str,
     high_value_threshold: float = 1000.0
 ) -> None:
     """
     Generate a high-value bounties markdown file.
-    
+
     Args:
         bounty_data: List of bounty data
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        total_value: Total value of bounties
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
         bounties_dir: Bounties directory
         high_value_threshold: Minimum ERG value to be considered high-value
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info(f"Generating high-value bounties file (threshold: {high_value_threshold} ERG)")
-    
-    from ..core.processor import BountyProcessor
-    
-    # Set up processor for finding high-value bounties
-    processor = BountyProcessor("", conversion_rates)
-    processor.bounty_data = bounty_data
-    
-    # Find high-value bounties
-    high_value_bounties = processor.find_high_value_bounties(threshold=high_value_threshold)
-    
+
+    # Find high-value bounties using the module-level function
+    high_value_bounties = find_high_value_bounties(bounty_data, conversion_rates, threshold=high_value_threshold)
+
     high_value_file = f'{bounties_dir}/high-value-bounties.md'
-    
+
     # Build content
     content = ""
     
@@ -493,13 +713,13 @@ def generate_high_value_bounties_file(
     
     # Add navigation badges
     content += generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
+        total_bounties,
+        len(languages),
+        currencies_count, # Use calculated count
+        len(orgs),
         len(conversion_rates)
     )
-    
+
     # Add high-value bounties table
     content += "## High-Value Bounties\n\n"
     content += "| Bounty | Organization | Value | Currency | Primary Language | Reserve |\n"
@@ -548,47 +768,43 @@ def generate_high_value_bounties_file(
     
     logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")
 
+
 def generate_main_file(
-    bounty_data: List[Dict[str, Any]], 
-    project_totals: Dict[str, Dict[str, Any]], 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    total_value: float, 
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     bounties_dir: str
 ) -> None:
     """
     Generate the main markdown file with all bounties.
-    
+
     Args:
         bounty_data: List of bounty data
-        project_totals: Dictionary of project totals
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
-        total_value: Total value of bounties
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info("Generating main bounty file")
-    
+
     md_file = f'{bounties_dir}/all.md'
-    
+
     # Build content
     content = ""
     
     # Add navigation section
     content += generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
+        total_bounties,
+        len(languages),
+        currencies_count, # Use calculated count
+        len(orgs),
         len(conversion_rates)
     )
-    
+
     # Check if there are any ongoing programs
     ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
     
@@ -614,47 +830,49 @@ def generate_main_file(
     
     logger.info("Generated main bounty file")
 
+
 def generate_summary_file(
-    project_totals: Dict[str, Dict[str, Any]], 
-    languages: Dict[str, List[Dict[str, Any]]], 
-    currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
-    total_value: float, 
+    bounty_data: List[Dict[str, Any]], # Added bounty_data
+    project_totals: Dict[str, Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
+    total_value: float,
     bounties_dir: str
 ) -> None:
     """
     Generate a summary markdown file for README reference.
-    
+
     Args:
+        bounty_data: List of bounty data
         project_totals: Dictionary of project totals
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
         total_value: Total value of bounties
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info("Generating summary file")
-    
+
     summary_file = f'{bounties_dir}/summary.md'
-    
+
     # Build content
     #content = "## 📋 Open Bounties\n\n"
     #content += f"**[View Current Open Bounties →](/{bounties_dir}/all.md)**\n\n"
     
     # Add navigation badges with links to respective headers
     content = generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
-        len(conversion_rates), 
+        total_bounties,
+        len(languages),
+        currencies_count, # Use calculated count
+        len(orgs),
+        len(conversion_rates),
         f"/{bounties_dir}/"
     )
-    
+
     # Projects section
     content += "## Projects\n\n"
     content += "| Project | Count | Value |\n"
@@ -670,28 +888,10 @@ def generate_summary_file(
     # Add overall total
     content += f"| **Total** | **{total_bounties}** | **{total_value:,.2f} ERG** |\n\n"
     
-    # Set up currency client for calculations
-    currency_client = CurrencyClient()
-    currency_client.rates = conversion_rates
-    
-    # Calculate totals by currency (excluding bounties with "Not specified" amounts)
-    currency_totals = {}
-    for currency, currency_bounties in currencies_dict.items():
-        # Count only bounties with specified amounts (excluding "Ongoing" programs)
-        specified_bounties = [
-            b for b in currency_bounties 
-            if b["amount"] != "Not specified" and b["amount"] != "Ongoing"
-        ]
-        
-        if specified_bounties:
-            currency_totals[currency] = {
-                "count": len(specified_bounties),
-                "value": sum(
-                    currency_client.calculate_erg_value(b["amount"], b["currency"])
-                    for b in specified_bounties
-                )
-            }
-    
+
+    # Calculate currency totals using the module-level function
+    currency_totals = calculate_currency_totals(bounty_data, conversion_rates)
+
     # Add currency breakdown
     content += "## Currencies\n\n"
 
@@ -742,7 +942,7 @@ def generate_summary_file(
     logger.info("Generated summary file")
 
     # Update README badges
-    from ..utils.markdown import update_readme_badges
+    # from ..utils.markdown import update_readme_badges # Already imported
     update_readme_badges(total_bounties, total_value, 0, languages)
 
 
@@ -866,53 +1066,52 @@ def update_ongoing_programs_table(
         logger.info("No extra bounties found, skipping bounties table update")
 
 def generate_featured_bounties_file(
-    bounty_data: List[Dict[str, Any]], 
-    conversion_rates: Dict[str, float], 
-    total_bounties: int, 
+    bounty_data: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    total_bounties: int,
     total_value: float,
-    languages: Dict[str, List[Dict[str, Any]]], 
-    currencies_dict: Dict[str, List[Dict[str, Any]]], 
-    orgs: Dict[str, List[Dict[str, Any]]], 
+    # languages: Dict[str, List[Dict[str, Any]]], # Removed, calculated internally
+    # currencies_dict: Dict[str, List[Dict[str, Any]]], # Removed, calculated internally
+    # orgs: Dict[str, List[Dict[str, Any]]], # Removed, calculated internally
     bounties_dir: str
 ) -> None:
     """
     Generate a featured bounties markdown file.
-    
+
     Args:
         bounty_data: List of bounty data
         conversion_rates: Dictionary of conversion rates
         total_bounties: Total number of bounties
         total_value: Total value of bounties
-        languages: Dictionary of languages and their bounties
-        currencies_dict: Dictionary of currencies and their bounties
-        orgs: Dictionary of organizations and their bounties
+        # languages: Dictionary of languages and their bounties # Removed
+        # currencies_dict: Dictionary of currencies and their bounties # Removed
+        # orgs: Dictionary of organizations and their bounties # Removed
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data) # Calculate internally
+    currencies_dict = group_by_currency(bounty_data) # Calculate internally
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info("Generating featured bounties file")
-    
-    from ..core.processor import BountyProcessor
-    
-    # Set up processor for finding high-value bounties
-    processor = BountyProcessor("", conversion_rates)
-    processor.bounty_data = bounty_data
-    
-    # Find top bounties
-    featured_bounties = processor.find_featured_bounties(count=2)
-    
+
+    # Find top bounties using the module-level function
+    featured_bounties = find_featured_bounties(bounty_data, conversion_rates, count=2)
+
     featured_bounties_file = f'{bounties_dir}/featured_bounties.md'
-    
+
     # Build content
     content = ""
     
     # Add navigation section
     content += generate_navigation_section(
-        total_bounties, 
-        len(languages), 
-        len(currencies_dict), 
-        len(orgs), 
+        total_bounties,
+        len(languages),
+        currencies_count, # Use calculated count
+        len(orgs),
         len(conversion_rates)
     )
-    
+
     # Get current date for the week row
     current_date = datetime.now().strftime("%b %d, %Y")
     

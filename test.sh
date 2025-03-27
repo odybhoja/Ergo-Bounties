@@ -103,6 +103,10 @@ update_dashboard() {
   print_metric_row "Validation Tool" "$VALIDATION_STATUS" "" "$( [ "$VALIDATION_STATUS" = "Passed" ] && echo "$CHECKMARK" || echo "$CROSS" )"
   print_metric_row "Freshness Check" "$FRESHNESS_STATUS" "" "$( [ "$FRESHNESS_STATUS" = "Passed" ] && echo "$CHECKMARK" || echo "$CROSS" )"
   print_metric_row "GitHub Actions" "$GHA_STATUS" "" "$( [ "$GHA_STATUS" = "Passed" ] && echo "$CHECKMARK" || echo "$CROSS" )"
+  # Add Unit Tests status row
+  print_metric_row "Unit Tests" "$UNIT_TEST_STATUS" "" "$( [ "$UNIT_TEST_STATUS" = "Passed" ] && echo "$CHECKMARK" || echo "$CROSS" )"
+  # Add API Connectivity status row
+  print_metric_row "API Checks" "$API_STATUS" "" "$( [ "$API_STATUS" = "Passed" ] && echo "$CHECKMARK" || echo "$CROSS" )"
   print_table_footer
 }
 
@@ -114,6 +118,7 @@ chmod +x src/bounty_finder.py
 chmod +x src/tests/test_runner.py
 chmod +x src/tests/run_bounty_check.py
 chmod +x src/tests/freshness.py
+chmod +x src/tests/check_apis.py # Added
 chmod +x run.py
 echo "Scripts permissions set."
 
@@ -154,8 +159,35 @@ if python -m src.tests.github_actions_check &> /dev/null; then
   fi
 echo "GitHub Actions check completed."
 
+# Run Python unit tests using pytest.
+echo "Running Python unit tests with pytest..."
+# Run tests verbosely with pytest, capture output
+UNIT_TEST_OUTPUT=$(pytest -v src/tests 2>&1)
+if [ $? -eq 0 ]; then
+  UNIT_TEST_STATUS="Passed"
+else
+  UNIT_TEST_STATUS="Failed"
+  # Optionally print output only on failure
+  echo -e "${RED}Unit tests failed:\n$UNIT_TEST_OUTPUT${NC}"
+fi
+echo "Unit tests completed."
+
+# Run API connectivity check.
+echo "Running API connectivity check..."
+# Run check, capture output to avoid cluttering main output unless failed
+API_CHECK_OUTPUT=$(python -m src.tests.check_apis 2>&1)
+if [ $? -eq 0 ]; then
+  API_STATUS="Passed"
+else
+  API_STATUS="Failed"
+  # Optionally print output only on failure
+  echo -e "${RED}API connectivity check failed:\n$API_CHECK_OUTPUT${NC}"
+fi
+echo "API connectivity check completed."
+
+
 # Check if all tests passed
-if [ "$VALIDATION_STATUS" = "Passed" ] && [ "$FRESHNESS_STATUS" = "Passed" ] && [ "$GHA_STATUS" = "Passed" ]; then
+if [ "$VALIDATION_STATUS" = "Passed" ] && [ "$FRESHNESS_STATUS" = "Passed" ] && [ "$GHA_STATUS" = "Passed" ] && [ "$UNIT_TEST_STATUS" = "Passed" ] && [ "$API_STATUS" = "Passed" ]; then
   echo -e "\n${GREEN}All tests completed successfully.${NC}"
 else
   echo -e "\n${RED}One or more tests failed.${NC}"

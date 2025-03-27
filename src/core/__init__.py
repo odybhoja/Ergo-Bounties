@@ -9,4 +9,4 @@ This package contains the core functionality of the application:
 
 from .config import BountyConfig
 from .processor import BountyProcessor
-from .extractors import BountyExtractor
+# from .extractors import BountyExtractor # Removed as it no longer exists

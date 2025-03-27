@@ -39,7 +39,10 @@ from src.generators.main import (
     generate_featured_bounties_file,
     update_readme_badges,
     update_ongoing_programs_table,
-    generate_high_value_bounties_file
+    generate_high_value_bounties_file,
+    # Import moved functions needed for badge update
+    find_high_value_bounties,
+    group_by_language
 )
 
 def main():
@@ -89,70 +92,51 @@ def main():
     project_totals = processor.get_project_totals()
     total_bounties, total_value = processor.get_total_stats()
     
-    # Group data
-    languages = processor.group_by_language()
-    orgs = processor.group_by_organization()
-    currencies_dict = processor.group_by_currency()
+    # No need to group data here anymore, generators handle it
     
     # Generate output files
     logger.info("Generating output files")
     
     # Generate language-specific files
     generate_language_files(
-        bounty_data, 
-        languages, 
-        conversion_rates, 
-        total_bounties, 
-        len(currencies_dict), 
-        len(orgs), 
+        bounty_data,
+        conversion_rates,
+        total_bounties,
         bounties_dir
     )
 
     # Generate organization-specific files
     generate_organization_files(
-        bounty_data, 
-        orgs, 
-        conversion_rates, 
-        total_bounties, 
-        languages, 
-        len(currencies_dict), 
+        bounty_data,
+        conversion_rates,
+        total_bounties,
         bounties_dir
     )
 
     # Generate currency-specific files
     generate_currency_files(
-        bounty_data, 
-        currencies_dict, 
-        conversion_rates, 
-        total_bounties, 
-        languages, 
-        orgs, 
+        bounty_data,
+        conversion_rates,
+        total_bounties,
         bounties_dir
     )
 
     # Generate currency price table
     generate_price_table(
-        conversion_rates, 
-        total_bounties, 
-        languages, 
-        currencies_dict, 
-        orgs, 
+        bounty_data, # Pass bounty_data now
+        conversion_rates,
+        total_bounties,
         bounties_dir
     )
 
     # Generate main file
     generate_main_file(
-        bounty_data, 
-        project_totals, 
-        languages, 
-        currencies_dict, 
-        orgs, 
-        conversion_rates, 
-        total_bounties, 
-        total_value, 
+        bounty_data,
+        conversion_rates,
+        total_bounties,
         bounties_dir
     )
-    
+
     # Update ongoing programs table
     update_ongoing_programs_table(
         bounty_data,
@@ -162,48 +146,49 @@ def main():
 
     # Generate summary file
     generate_summary_file(
-        project_totals, 
-        languages, 
-        currencies_dict, 
-        orgs, 
-        conversion_rates, 
-        total_bounties, 
-        total_value, 
+        bounty_data, # Pass bounty_data now
+        project_totals,
+        conversion_rates,
+        total_bounties,
+        total_value,
         bounties_dir
     )
 
     # Generate featured bounties file
     generate_featured_bounties_file(
-        bounty_data, 
-        conversion_rates, 
-        total_bounties, 
+        bounty_data,
+        conversion_rates,
+        total_bounties,
         total_value,
-        languages, 
-        currencies_dict, 
-        orgs, 
+        # Pass the necessary arguments based on the updated function signature
+        # languages_dict, # Not needed directly by this generator anymore
+        # currencies_dict, # Not needed directly by this generator anymore
+        # orgs_dict, # Not needed directly by this generator anymore
         bounties_dir
     )
-    
+
     # Generate high-value bounties file
     generate_high_value_bounties_file(
         bounty_data,
         conversion_rates,
         total_bounties,
-        total_value,
-        languages,
-        currencies_dict,
-        orgs,
+        # total_value, # Removed (not needed by generator)
+        # languages, # Removed
+        # currencies_dict, # Removed
+        # orgs, # Removed
         bounties_dir,
         high_value_threshold=1000
     )
-    
+
     # Update the README.md badges with the latest bounty counts and values
-    high_value_bounties = processor.find_high_value_bounties(threshold=1000)
+    # Need to get high_value_bounties count and languages dict now
+    high_value_bounties_list = find_high_value_bounties(bounty_data, conversion_rates, threshold=1000)
+    languages_dict = group_by_language(bounty_data)
     update_readme_badges(
         total_bounties,
         total_value,
-        len(high_value_bounties),
-        languages
+        len(high_value_bounties_list),
+        languages_dict # Pass the generated dict
     )
 
     # Print summary

@@ -1,15 +1,15 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-27 21:05:18 -->
+<!-- Generated on: 2025-03-27 21:24:31 -->
 
 # RSN Bounties
 
-*Report generated: 2025-03-27 21:05:18 UTC*
+*Report generated: 2025-03-27 21:24:31 UTC*
 
 ![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 114.73 ERG](https://img.shields.io/badge/Total%20Value-114.73%20ERG-green)
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-6-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
 
 ## Current RSN Rate
 
