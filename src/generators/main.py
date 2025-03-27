@@ -296,7 +296,10 @@ def _generate_markdown_page(
     conversion_rates: Dict[str, float],
     total_bounties: int, # Overall total
     nav_relative_path: str = "../",
-    extra_content: str = "" # For things like currency rate display
+    extra_content: str = "", # For things like currency rate display
+    # Add flags to control table columns
+    show_org: bool = True,
+    show_language: bool = True
 ) -> None:
     """
     Helper function to generate a standard markdown bounty page.
@@ -355,9 +358,14 @@ def _generate_markdown_page(
     if extra_content:
         content += extra_content + "\n"
 
-    # Add the main bounty table for the page
+    # Add the main bounty table for the page, passing the flags
     content += f"## {title.lstrip('# ')}\n\n" # Use title for H2 heading
-    content += generate_standard_bounty_table(page_bounties, conversion_rates)
+    content += generate_standard_bounty_table(
+        page_bounties,
+        conversion_rates,
+        show_org=show_org,
+        show_language=show_language
+    )
 
     # Add footer buttons
     content += add_footer_buttons(nav_relative_path)
@@ -406,7 +414,8 @@ def generate_language_files(
             all_bounty_data=bounty_data,
             conversion_rates=conversion_rates,
             total_bounties=total_bounties,
-            nav_relative_path="../"
+            nav_relative_path="../",
+            show_language=False # Don't show language column on language page
         )
     logger.info(f"Generated {len(languages)} language-specific files")
 
@@ -443,7 +452,8 @@ def generate_organization_files(
             all_bounty_data=bounty_data,
             conversion_rates=conversion_rates,
             total_bounties=total_bounties,
-            nav_relative_path="../"
+            nav_relative_path="../",
+            show_org=False # Don't show org column on org page
         )
     logger.info(f"Generated {len(orgs)} organization-specific files")
 
@@ -512,6 +522,7 @@ def generate_currency_files(
             content += f"## Current {display_name} Rate\n\n1 {currency} = {display_rate:.6f} ERG\n\n"
 
         content += f"## {display_name} Bounties\n\n"
+        # Currency pages show all columns (defaults are True)
         content += generate_standard_bounty_table(currency_bounties, conversion_rates)
         content += add_footer_buttons("../")
 
@@ -546,6 +557,7 @@ def generate_currency_files(
             "../"
         )
         content += "## Bounties with Unspecified Value\n\n"
+        # Not specified page shows all columns (defaults are True)
         content += generate_standard_bounty_table(not_specified_bounties, conversion_rates)
         content += "\n[View summary of bounties with unspecified value in summary file →](../summary.md#bounties-with-unspecified-value)\n\n"
         content += add_footer_buttons("../")
@@ -792,6 +804,7 @@ def generate_main_file(
         content += "**[View Ongoing Programs →](/docs/ongoing-programs.md)**\n\n"
 
     content += "## All Bounties\n\n"
+    # Main page shows all columns (defaults are True)
     content += generate_standard_bounty_table(bounty_data, conversion_rates)
     content += add_footer_buttons()
 
@@ -1009,6 +1022,7 @@ def update_ongoing_programs_table(
     if extra_bounties:
         # Generate the extra bounties table with an explanatory header
         intro_text = "These grants and additional bounties are pulled from src/config/extra_bounties.json:\n\n"
+        # Ongoing programs page shows all columns (defaults are True)
         bounty_table_content = intro_text + generate_standard_bounty_table(extra_bounties, conversion_rates)
 
         # Update the table between guardrails

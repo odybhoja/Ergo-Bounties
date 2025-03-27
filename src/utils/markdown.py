@@ -114,35 +114,53 @@ def generate_filter_section(
     return content
 
 def generate_standard_bounty_table(
-    bounties: List[Dict[str, Any]], 
-    conversion_rates: Dict[str, float]
+    bounties: List[Dict[str, Any]],
+    conversion_rates: Dict[str, float],
+    show_org: bool = True,
+    show_language: bool = True
 ) -> str:
     """
-    Generate a standard bounty table for markdown files.
-    
+    Generate a standard bounty table for markdown files with configurable columns.
+
     Args:
         bounties: List of bounty data
         conversion_rates: Dictionary of conversion rates
-        
+        show_org: Whether to include the Organisation column.
+        show_language: Whether to include the Primary Language column.
+
     Returns:
         Formatted bounty table as markdown
     """
     from ..api.currency_client import CurrencyClient
-    
-    content = "|Organisation|Repository|Title & Link|Bounty Amount|Paid in|Primary Language|Reserve|\n"
-    content += "|---|---|---|---|---|---|---|\n"
-    
+
+    # Dynamically build header and separator
+    header_parts = []
+    separator_parts = []
+    if show_org:
+        header_parts.append("Organisation")
+        separator_parts.append("---")
+    header_parts.extend(["Bounty", "Bounty Value"]) # Renamed columns
+    separator_parts.extend(["---", "---"])
+    if show_language:
+        header_parts.append("Primary Language")
+        separator_parts.append("---")
+    header_parts.append("Reserve") # Reserve is always shown
+    separator_parts.append("---")
+
+    content = "|" + "|".join(header_parts) + "|\n"
+    content += "|" + "|".join(separator_parts) + "|\n"
+
     # Set up currency client for conversions
     currency_client = CurrencyClient()
     currency_client.rates = conversion_rates
-    
+
     # Sort bounties by ERG value (highest first)
     sorted_bounties = sorted(
         bounties,
         key=lambda b: currency_client.calculate_erg_value(b["amount"], b["currency"]),
         reverse=True
     )
-    
+
     # Add rows for each bounty
     for bounty in sorted_bounties:
         owner = bounty["owner"]
@@ -150,42 +168,53 @@ def generate_standard_bounty_table(
         title = bounty["title"]
         url = bounty["url"]
         amount = bounty["amount"]
-        currency = bounty["currency"]
+        currency = bounty["currency"] # Needed for claim URL
         primary_lang = bounty["primary_lang"]
         issue_number = bounty["issue_number"]
-        creator = bounty["creator"]
-        
+        creator = bounty["creator"] # Keep creator for claim URL
+
         # Calculate ERG equivalent for display
         erg_value = currency_client.calculate_erg_value(amount, currency) # Returns float
-        erg_display = f"({erg_value:.2f} ERG)" if erg_value > 0.0 else "" # Format float, check > 0
+        # Format as Σ{int} or "-"
+        erg_value_display = f"Σ{int(erg_value)}" if erg_value > 0.0 else "-"
 
         # Create a claim link that opens a PR template
         claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
-        
-        # Add organization, language and currency links
-        org_link = format_organization_link(owner)
-        primary_lang_link = format_language_link(primary_lang)
-        currency_link = format_currency_link(currency)
-        
-        # Create a reserve button or status label based on bounty status
-        if "status" in bounty and bounty["status"] == "In Progress":
-            reserve_button = "<kbd>In Progress</kbd>"
-        else:
-            reserve_button = f"[<kbd>Reserve</kbd>]({claim_url})"
-        
-        # Format the amount display based on special cases
-        if amount == "Not specified":
-            amount_display = "Not specified"
-        elif amount == "Ongoing":
-            amount_display = "Ongoing program"
-        else:
-            amount_display = f"{amount} {erg_display}"
 
-        # Use helper to get clean repo name and format link
+        # Use helper to get clean repo name and create repo link
         repo_name_simple = get_repo_name_from_input(repo_name)
-        repo_link = f"[{repo_name_simple}](https://github.com/{owner}/{repo_name_simple})"
+        repo_url = f"https://github.com/{owner}/{repo_name_simple}"
+        # Combine repo link and title link for the 'Bounty' column
+        bounty_display = f"[{repo_name_simple}]({repo_url})/[{title}]({url})"
 
-        content += f"| {org_link} | {repo_link} | [{title}]({url}) | {amount_display} | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
+        # Add organization and language links (only if shown)
+        org_link = format_organization_link(owner) if show_org else ""
+        primary_lang_link = format_language_link(primary_lang) if show_language else ""
+
+        # Create a nicer reserve button/status badge using shields.io
+        if "status" in bounty and bounty["status"] == "Reserved":
+            # Grey badge for Reserved
+            reserve_button = f"![Reserved](https://img.shields.io/badge/-Reserved-lightgrey?style=flat-square)"
+        elif "status" in bounty and bounty["status"] == "In Progress":
+             # Orange badge for In Progress
+            reserve_button = f"![In Progress](https://img.shields.io/badge/-In%20Progress-orange?style=flat-square)"
+        elif amount == "Ongoing": # Handle ongoing programs specifically
+             # Link to details for ongoing programs
+             reserve_button = "[Details](/docs/ongoing-programs.md)"
+        else:
+            # Green reserve badge/button
+            reserve_button = f"[![Reserve](https://img.shields.io/badge/-Reserve-brightgreen?style=flat-square)]({claim_url})"
+
+        # Build row dynamically
+        row_parts = []
+        if show_org:
+            row_parts.append(org_link)
+        row_parts.extend([bounty_display, erg_value_display])
+        if show_language:
+            row_parts.append(primary_lang_link)
+        row_parts.append(reserve_button)
+
+        content += f"| {' | '.join(row_parts)} |\n"
     return content
 
 def generate_ongoing_programs_table(ongoing_programs: List[Dict[str, Any]]) -> str:
