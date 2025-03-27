@@ -20,6 +20,9 @@ from ..api.github_client import GitHubClient
 from ..api.currency_client import CurrencyClient
 from .extractors import is_bounty_issue, extract_bounty_info
 
+import os # Added for os.listdir and os.path.isdir
+import re # Added for regex in submission parsing
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -43,6 +46,27 @@ class BountyProcessor:
         self.bounty_data = []
         self.project_totals = {}
         self.reserved_count = 0
+        self.submitted_issue_numbers = self._get_submitted_issue_numbers()
+
+    def _get_submitted_issue_numbers(self) -> Set[str]:
+        """
+        Scans the submissions directory and returns a set of issue numbers
+        extracted from the JSON filenames.
+        """
+        submission_path = "submissions"
+        issue_numbers = set()
+        if os.path.isdir(submission_path):
+            logger.info(f"Scanning {submission_path} for submitted issue numbers...")
+            for filename in os.listdir(submission_path):
+                if filename.endswith(".json"):
+                    # Extract number, assuming format like owner-repo-NUMBER.json
+                    match = re.search(r'-(\d+)\.json$', filename)
+                    if match:
+                        issue_numbers.add(match.group(1))
+            logger.info(f"Found {len(issue_numbers)} submitted issue numbers.")
+        else:
+            logger.warning(f"Submissions directory not found: {submission_path}")
+        return issue_numbers
 
     def process_repositories(self, repos_to_query: List[Dict[str, str]]) -> None:
         """
@@ -126,18 +150,12 @@ class BountyProcessor:
             secondary_lang: Secondary language of the repository
         """
         if issue['state'] == 'open':
-            # Instead of checking pull requests, check if a JSON exists in the submissions folder for this issue
-            import os
-            submission_path = "submissions"
+            # Check against pre-scanned submission issue numbers
             issue_number_str = str(issue['number'])
-            found_submission = False
-            if os.path.isdir(submission_path):
-                for filename in os.listdir(submission_path):
-                    if filename.endswith(".json") and issue_number_str in filename:
-                        found_submission = True
-                        break
-            if found_submission:
-                issue['state'] = 'Reserved'
+            if issue_number_str in self.submitted_issue_numbers:
+                 logger.debug(f"Issue {issue['html_url']} marked as Reserved due to submission file.")
+                 issue['state'] = 'Reserved' # Mark as Reserved if submission exists
+                 self.reserved_count += 1 # Increment counter
 
             title = issue['title']
             labels = issue['labels']

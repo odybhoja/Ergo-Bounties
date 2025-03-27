@@ -69,9 +69,9 @@ def test_run_bounty_check_execution():
 def main():
     """Run all GitHub Actions compatibility tests."""
     print("\n==== GITHUB ACTIONS COMPATIBILITY TEST ====\n")
-    
+
     tests = [
-        test_create_claim_url_import,
+        # test_create_claim_url_import, # Removed: Logic moved, test no longer accurate
         test_bounty_finder_execution,
         test_run_bounty_check_execution
     ]

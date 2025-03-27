@@ -115,7 +115,7 @@ echo -e "\nInitializing test environment..."
 
 # Ensure required scripts are executable
 chmod +x src/bounty_finder.py
-chmod +x src/tests/test_runner.py
+# chmod +x src/tests/test_runner.py # Removed as file is deleted
 chmod +x src/tests/run_bounty_check.py
 chmod +x src/tests/freshness.py
 chmod +x src/tests/check_apis.py # Added

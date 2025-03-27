@@ -45,6 +45,44 @@ class GitHubClient(BaseClient):
         self.token = token
         self.session.headers.update({"Authorization": f"token {token}"})
 
+    def _fetch_paginated_data(self, url: str, item_type: str = "items") -> List[Dict[str, Any]]:
+        """
+        Helper method to fetch data from paginated GitHub API endpoints.
+
+        Args:
+            url: The initial API endpoint URL.
+            item_type: A descriptive name for the items being fetched (for logging).
+
+        Returns:
+            A list containing all items fetched across all pages.
+        """
+        all_items = []
+        current_url: Optional[str] = url
+        page_num = 1
+
+        logger.debug(f"Fetching paginated {item_type} starting with URL: {current_url}")
+
+        while current_url:
+            data, links = self._make_request(current_url)
+            if data is None: # Check for None explicitly, as empty list is valid
+                logger.warning(f"Request failed or returned no data for {current_url}")
+                break # Stop pagination if request fails
+
+            # Ensure data is a list before extending
+            if isinstance(data, list):
+                all_items.extend(data)
+                logger.debug(f"Page {page_num}: Fetched {len(data)} {item_type}, total: {len(all_items)}")
+            else:
+                 logger.error(f"Expected a list but got {type(data)} for {current_url}")
+                 break # Stop if the data format is unexpected
+
+            # Get the URL for the next page
+            current_url = links.get("next", {}).get("url") if links else None
+            page_num += 1
+
+        logger.info(f"Finished fetching paginated {item_type}. Total items: {len(all_items)}")
+        return all_items
+
     def get_organization_repos(self, org: str) -> List[Dict[str, Any]]:
         """
         Get all repositories for an organization.
@@ -55,25 +93,8 @@ class GitHubClient(BaseClient):
         Returns:
             List of repository objects
         """
-        url = f"/orgs/{org}/repos?per_page=100"
-        all_repos = []
-
-        logger.info(f"Fetching repositories for organization: {org}")
-
-        while url:
-            data, links = self._make_request(url)
-            if not data:
-                break
-
-            all_repos.extend(data)
-            url = links.get("next", {}).get("url") if links else None
-
-            logger.debug(
-                f"Fetched {len(data)} repositories from {org}, total: {len(all_repos)}"
-            )
-
-        logger.info(f"Successfully fetched {len(all_repos)} repositories from {org}")
-        return all_repos
+        initial_url = f"/orgs/{org}/repos?per_page=100"
+        return self._fetch_paginated_data(initial_url, item_type="repositories")
 
     def get_repository_languages(self, owner: str, repo: str) -> List[str]:
         """
@@ -114,22 +135,5 @@ class GitHubClient(BaseClient):
         Returns:
             List of issue objects
         """
-        url = f"/repos/{owner}/{repo}/issues?state={state}&per_page=100"
-        all_issues = []
-
-        logger.info(f"Fetching {state} issues from repository: {owner}/{repo}")
-
-        while url:
-            data, links = self._make_request(url)
-            if not data:
-                break
-
-            all_issues.extend(data)
-            url = links.get("next", {}).get("url") if links else None
-
-            logger.debug(
-                f"Fetched {len(data)} issues from {owner}/{repo}, total: {len(all_issues)}"
-            )
-
-        logger.info(f"Successfully fetched {len(all_issues)} issues from {owner}/{repo}")
-        return all_issues
+        initial_url = f"/repos/{owner}/{repo}/issues?state={state}&per_page=100"
+        return self._fetch_paginated_data(initial_url, item_type=f"{state} issues")

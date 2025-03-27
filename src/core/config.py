@@ -109,7 +109,47 @@ class BountyConfig:
         except Exception as e:
             logger.warning(f"Error loading constants from {constants_path}: {e}")
             return {}
-    
+
+    def _load_json_config(self, filename: str, data_key: str = "items") -> List[Any]:
+        """
+        Helper to load JSON configuration files with fallback path logic.
+
+        Args:
+            filename: The name of the JSON file (e.g., 'tracked_repos.json').
+            data_key: Optional key to extract data from if the JSON is structured (not used here, but good practice).
+
+        Returns:
+            Loaded data as a list, or an empty list on error.
+        """
+        primary_path = Path('src/config') / filename
+        fallback_path = self.bounties_dir / filename # Assumes self.bounties_dir is 'data'
+
+        config_path = primary_path if primary_path.exists() else fallback_path
+
+        if not config_path.exists():
+             logger.error(f"Configuration file not found at {primary_path} or {fallback_path}")
+             return []
+
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                # If data is expected under a specific key (like {"items": [...]}), extract it.
+                # For current files, the root is the list.
+                # data = data.get(data_key, []) if isinstance(data, dict) else data
+
+                if not isinstance(data, list):
+                     logger.error(f"Expected a list in {config_path}, but got {type(data)}")
+                     return []
+
+                logger.info(f"Loaded {len(data)} items from {config_path}")
+                return data
+        except json.JSONDecodeError as e:
+            logger.error(f"Error decoding JSON from {config_path}: {e}")
+            return []
+        except Exception as e:
+            logger.error(f"Error reading {config_path}: {e}")
+            return []
+
     def load_tracked_repos(self) -> List[Dict[str, str]]:
         """
         Load tracked repositories from configuration file.
@@ -117,20 +157,8 @@ class BountyConfig:
         Returns:
             List of repository objects with 'owner' and 'repo' keys
         """
-        # First try in config directory
-        repos_path = Path('src/config/tracked_repos.json')
-        if not repos_path.exists():
-            # For backward compatibility
-            repos_path = self.bounties_dir / 'tracked_repos.json'
-        try:
-            with open(repos_path, 'r', encoding='utf-8') as f:
-                repos = json.load(f)
-                logger.info(f"Loaded {len(repos)} tracked repositories")
-                return repos
-        except Exception as e:
-            logger.error(f"Error reading {repos_path}: {e}")
-            return []
-    
+        return self._load_json_config('tracked_repos.json')
+
     def load_tracked_orgs(self) -> List[Dict[str, str]]:
         """
         Load tracked organizations from configuration file.
@@ -138,85 +166,28 @@ class BountyConfig:
         Returns:
             List of organization objects with 'org' key
         """
-        # First try in config directory
-        orgs_path = Path('src/config/tracked_orgs.json')
-        if not orgs_path.exists():
-            # For backward compatibility
-            orgs_path = self.bounties_dir / 'tracked_orgs.json'
-        try:
-            with open(orgs_path, 'r', encoding='utf-8') as f:
-                orgs = json.load(f)
-                logger.info(f"Loaded {len(orgs)} tracked organizations")
-                return orgs
-        except Exception as e:
-            logger.warning(f"Error reading {orgs_path}: {e}")
-            return []
-    
+        return self._load_json_config('tracked_orgs.json')
+
     def load_extra_bounties(self) -> List[Dict[str, Any]]:
         """
         Load manually added bounties from extra_bounties.json file.
         
         Returns:
-            List of bounty objects with all required fields
+            List of bounty objects with all required fields, including updated timestamps.
         """
-        # First try in config directory
-        extra_bounties_path = Path('src/config/extra_bounties.json')
-        if not extra_bounties_path.exists():
-            # For backward compatibility
-            extra_bounties_path = self.bounties_dir / 'extra_bounties.json'
-        try:
-            with open(extra_bounties_path, 'r', encoding='utf-8') as f:
-                extra_bounties = json.load(f)
-                
-                # Update timestamp for each bounty to ensure it's current
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                for bounty in extra_bounties:
-                    if 'timestamp' not in bounty or not bounty['timestamp']:
-                        bounty['timestamp'] = timestamp
-                        
-                logger.info(f"Loaded {len(extra_bounties)} extra bounties")
-                return extra_bounties
-        except Exception as e:
-            logger.warning(f"Error reading {extra_bounties_path}: {e}")
-            return []
-    
-    def get_currency_file_name(self, currency: str) -> str:
-        """
-        Get the filename to use for a currency.
-        
-        Args:
-            currency: Currency code
-            
-        Returns:
-            Normalized filename for the currency
-        """
-        currency_file_names = self.constants.get("currency_file_names", {})
-        
-        if currency in currency_file_names:
-            return currency_file_names[currency]
-        elif currency == "Not specified":
-            return "not_specified"
-        elif currency == "g GOLD":
-            return "gold"
-        else:
-            return currency.lower()
-    
-    def get_currency_display_name(self, currency: str) -> str:
-        """
-        Get the display name for a currency.
-        
-        Args:
-            currency: Currency code
-            
-        Returns:
-            Formatted display name for the currency
-        """
-        currency_display_names = self.constants.get("currency_display_names", {})
-        
-        if currency in currency_display_names:
-            return currency_display_names[currency]
-        return currency
-    
+        extra_bounties = self._load_json_config('extra_bounties.json')
+
+        # Update timestamp for each bounty to ensure it's current
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        for bounty in extra_bounties:
+            if 'timestamp' not in bounty or not bounty['timestamp']:
+                bounty['timestamp'] = timestamp
+
+        return extra_bounties
+
+    # Removed get_currency_file_name (moved to utils.common)
+    # Removed get_currency_display_name (moved to utils.common)
+
     def is_valid(self) -> bool:
         """
         Check if the configuration is valid for running the application.

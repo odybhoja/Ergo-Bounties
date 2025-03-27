@@ -17,15 +17,16 @@ from typing import Dict, List, Any, Optional
 from datetime import datetime
 
 from .common import (
-    format_navigation_badges, 
+    format_navigation_badges,
     add_footer_buttons,
-    format_currency_filename, 
+    get_currency_filename, # Use renamed function
     format_currency_link,
     format_organization_link,
     format_language_link,
     get_current_timestamp,
     wrap_with_guardrails,
-    create_claim_url
+    create_claim_url,
+    get_repo_name_from_input # Added import for helper
 )
 
 # Configure logging
@@ -155,9 +156,9 @@ def generate_standard_bounty_table(
         creator = bounty["creator"]
         
         # Calculate ERG equivalent for display
-        erg_equiv = currency_client.convert_to_erg(amount, currency)
-        erg_display = f"({erg_equiv} ERG)" if erg_equiv != amount and amount != "Not specified" and amount != "Ongoing" else ""
-        
+        erg_value = currency_client.calculate_erg_value(amount, currency) # Returns float
+        erg_display = f"({erg_value:.2f} ERG)" if erg_value > 0.0 else "" # Format float, check > 0
+
         # Create a claim link that opens a PR template
         claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
         
@@ -179,14 +180,11 @@ def generate_standard_bounty_table(
             amount_display = "Ongoing program"
         else:
             amount_display = f"{amount} {erg_display}"
-        
-        # Check if repo_name is already a full URL
-        if repo_name.startswith('http://') or repo_name.startswith('https://'):
-            trimmed_repo_name = repo_name.replace('http://', '').replace('https://', '')
-            repo_link = f"[{trimmed_repo_name}]({repo_name})"
-        else:
-            repo_link = f"[{repo_name}](https://github.com/{owner}/{repo_name})"
-        
+
+        # Use helper to get clean repo name and format link
+        repo_name_simple = get_repo_name_from_input(repo_name)
+        repo_link = f"[{repo_name_simple}](https://github.com/{owner}/{repo_name_simple})"
+
         content += f"| {org_link} | {repo_link} | [{title}]({url}) | {amount_display} | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
     return content
 
@@ -241,104 +239,71 @@ def update_readme_badges(
     """
     try:
         readme_path = "README.md"
-        
+
         with open(readme_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        # Directly write a new README with the updated content
-        with open(readme_path, 'w', encoding='utf-8') as f:
-            # Replace line by line, making sure to retain all content
-            lines = content.split('\n')
-            for line in lines:
-                # Open Bounties badge line
-                if "Open%20Bounties" in line and "img.shields.io" in line:
-                    # Replace the line with the updated badge
-                    line = re.sub(
-                        r'Open%20Bounties-\d+\+?-4CAF50', 
-                        f'Open%20Bounties-{total_bounties}%2B-4CAF50', 
-                        line
-                    )
-                    # Also update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated bounties badge line: {line}")
-                
-                # Total Value badge line
-                elif "Total%20Value" in line and "img.shields.io" in line:
-                    # Replace the line with the updated badge
-                    line = re.sub(
-                        r'Total%20Value-[\d,\.]+%20ERG-2196F3', 
-                        f'Total%20Value-{total_value:,.2f}%20ERG-2196F3', 
-                        line
-                    )
-                    # Also update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated total value badge line: {line}")
-                
-                # High Value badge line
-                elif "High%20Value" in line and "img.shields.io" in line:
-                    # Replace the line with the updated badge
-                    line = re.sub(
-                        r'High%20Value-\d+\+?%20Over%201000%20ERG-FFC107', 
-                        f'High%20Value-{high_value_count}%2B%20Over%201000%20ERG-FFC107', 
-                        line
-                    )
-                    # Also update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated high value badge line: {line}")
-                
-                # Featured Bounties badge line
-                elif "Featured%20Bounties" in line and "img.shields.io" in line:
-                    # Update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated featured bounties badge line: {line}")
-                
-                # Browse Bounties badge line
-                elif "Browse%20Bounties" in line and "img.shields.io" in line:
-                    # Update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated browse bounties badge line: {line}")
-                
-                # Currency Rates badge line
-                elif "Current%20Rates" in line and "img.shields.io" in line:
-                    # Update the path from /bounties/ to /data/
-                    line = line.replace("/bounties/", "/data/")
-                    print(f"DEBUG: Updated currency rates badge line: {line}")
-                
-                # By language badges
-                elif "/data/by_language/" in line:
-                    # Update all language badge paths
-                    line = line.replace("/bounties/by_language/", "/data/by_language/")
-                    # Also update the language badge counts (example: Scala-71-DC322F)
-                    for lang, lang_bounties in languages.items():
-                        line = re.sub(
-                            r'('+re.escape(lang)+r'-)\d+(-[0-9A-F]+)', 
-                            r'\g<1>'+str(len(lang_bounties))+r'\g<2>', 
-                            line
-                        )
-                    print(f"DEBUG: Updated language badge line: {line}")
 
-                # By currency badges
-                elif "/bounties/by_currency/" in line:
-                    print(f"DEBUG: Updated currency badge line: {line}")
-
-                # By org badges
-                elif "/bounties/by_org/" in line:
-                    print(f"DEBUG: Updated org badge line: {line}")
-                
-                # Latest Update line (at the end of the file)
-                elif "Latest Update:" in line:
-                    # Replace the timestamp
-                    today = datetime.now().strftime("%Y-%m-%d")
-                    line = f"<!-- Latest Update: {today} -->"
-                    print(f"DEBUG: Updated timestamp: {line}")
-                
-                # Don't add newlines after the final line with content
-                if line.strip() or line.startswith("<!-- Latest Update:"):
-                    f.write(line + '\n')
+        # --- Helper for language badge update ---
+        def _update_language_badge_line(line: str, langs_data: Dict[str, List[Dict[str, Any]]]) -> str:
+            if "/data/by_language/" in line and "img.shields.io" in line:
+                match = re.search(r'/data/by_language/(\w+)\.md.*img\.shields\.io/badge/([^-%]+)-\d+-([0-9A-F]+)', line)
+                if match:
+                    lang_name_in_url, badge_text, badge_color = match.groups()
+                    lang_key = next((k for k in langs_data if k.lower() == lang_name_in_url), None)
+                    if lang_key:
+                        count = len(langs_data[lang_key])
+                        new_badge_part = f'{badge_text}-{count}-{badge_color}'
+                        updated_line = re.sub(r'badge/([^-%]+)-\d+-[0-9A-F]+', f'badge/{new_badge_part}', line)
+                        print(f"DEBUG: Updated language badge line for {lang_key}: {updated_line}")
+                        return updated_line
+                    else:
+                        print(f"DEBUG: No matching language key found for URL language '{lang_name_in_url}' in line: {line}")
                 else:
-                    # Only preserve exactly one blank line at the end
-                    if not f.tell() or f.tell() and f.tell() and content.split('\n')[-1].strip():
-                        f.write('\n')
+                    print(f"DEBUG: Language badge line format not matched: {line}")
+            return line # Return original line if no match or update needed
+
+        # --- Define replacement rules ---
+        rules = [
+            # 1. General path replacement
+            lambda line: line.replace("/bounties/", "/data/"),
+            # 2. Specific badge value updates
+            (r'Open%20Bounties-\d+\+?-4CAF50', f'Open%20Bounties-{total_bounties}%2B-4CAF50'),
+            (r'Total%20Value-[\d,\.]+%20ERG-2196F3', f'Total%20Value-{total_value:,.2f}%20ERG-2196F3'),
+            (r'High%20Value-\d+\+?%20Over%201000%20ERG-FFC107', f'High%20Value-{high_value_count}%2B%20Over%201000%20ERG-FFC107'),
+            # 3. Language badge update (using helper)
+            lambda line: _update_language_badge_line(line, languages),
+            # 4. Timestamp update
+            lambda line: f"<!-- Latest Update: {datetime.now().strftime('%Y-%m-%d')} -->" if "Latest Update:" in line else line,
+        ]
+
+        # --- Apply rules line by line ---
+        new_lines = []
+        for line in content.splitlines():
+            processed_line = line
+            for rule in rules:
+                if callable(rule):
+                    processed_line = rule(processed_line)
+                else:
+                    pattern, replacement = rule
+                    # Apply regex only if the pattern might be relevant (simple check)
+                    if isinstance(pattern, str) and pattern.split('%')[0] in processed_line:
+                         processed_line = re.sub(pattern, replacement, processed_line)
+
+            # Debug logging for significant changes (optional)
+            if processed_line != line:
+                 if "Open%20Bounties" in processed_line: print(f"DEBUG: Updated bounties badge line: {processed_line}")
+                 elif "Total%20Value" in processed_line: print(f"DEBUG: Updated total value badge line: {processed_line}")
+                 elif "High%20Value" in processed_line: print(f"DEBUG: Updated high value badge line: {processed_line}")
+                 # Language badge debug is inside the helper
+                 elif "Latest Update:" in processed_line: print(f"DEBUG: Updated timestamp: {processed_line}")
+                 elif "/data/" in processed_line and "/bounties/" not in processed_line and line.startswith("    <a href="): print(f"DEBUG: Updated path in line: {processed_line}")
+
+
+            new_lines.append(processed_line)
+
+        # Write the modified content back, ensuring a single trailing newline
+        with open(readme_path, 'w', encoding='utf-8') as f:
+            f.write('\n'.join(new_lines).rstrip() + '\n')
             
         logger.info("Updated README.md badges successfully")
         return True
@@ -394,15 +359,4 @@ def update_partially_generated_file(
         logger.error(f"Error updating {file_path}: {e}")
         return False
 
-def wrap_with_full_guardrails(content: str, title: str = "") -> str:
-    """
-    Wrap content with full guardrails, including header and timestamp.
-    
-    Args:
-        content: Content to wrap
-        title: Optional title to use as H1 heading
-        
-    Returns:
-        Content wrapped with full guardrails
-    """
-    return wrap_with_guardrails(content, title)
+# Removed wrap_with_full_guardrails as it was redundant (just called wrap_with_guardrails)

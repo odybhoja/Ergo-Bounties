@@ -3,7 +3,7 @@
   <p><em>The Central Hub for Discovering, Claiming, and Managing Ergo Bounties</em></p>
   <p>
     <a href="/data/all.md"><img src="https://img.shields.io/badge/Open%20Bounties-106%2B-4CAF50" alt="Open Bounties"></a>
-    <a href="/data/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-47,676.40%20ERG-2196F3" alt="Total Value"></a>
+    <a href="/data/summary.md"><img src="https://img.shields.io/badge/💰%20Total%20Value-47,709.82%20ERG-2196F3" alt="Total Value"></a>
     <a href="/data/high-value-bounties.md"><img src="https://img.shields.io/badge/🌟%20High%20Value-11%2B%20Over%201000%20ERG-FFC107" alt="High Value Bounties"></a>
     <a href="/docs/ongoing-programs.md"><img src="https://img.shields.io/badge/🔥%20Grants%20and%20Initiatives-9C27B0" alt="Featured Bounties"></a>
   </p>

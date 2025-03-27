@@ -101,54 +101,34 @@ class CurrencyClient(BaseClient):
             markets = response.json()
             logger.debug(f"Spectrum API returned {len(markets)} markets")
 
-            # Process SigUSD rate (critical for other conversions)
-            sigusd_markets = [
-                m
-                for m in markets
-                if m.get("quoteSymbol") == "SigUSD" and m.get("baseSymbol") == "ERG"
-            ]
+            # Target tokens to fetch from Spectrum
+            target_tokens = ["SigUSD", "GORT", "RSN"]
 
-            if sigusd_markets:
-                # Sort by volume if available to get the most liquid market
-                if "baseVolume" in sigusd_markets[0]:
-                    sigusd_markets.sort(
-                        key=lambda m: float(m.get("baseVolume", {}).get("value", 0)),
-                        reverse=True,
-                    )
+            for token in target_tokens:
+                token_markets = [
+                    m for m in markets
+                    if m.get("quoteSymbol") == token and m.get("baseSymbol") == "ERG"
+                ]
 
-                self.rates["SigUSD"] = float(sigusd_markets[0].get("lastPrice"))
-                logger.info(f"Found SigUSD rate: {self.rates['SigUSD']}")
-            else:
-                logger.error("No SigUSD markets found in API data")
-
-            # Process GORT rate
-            gort_markets = [
-                m
-                for m in markets
-                if m.get("quoteSymbol") == "GORT" and m.get("baseSymbol") == "ERG"
-            ]
-
-            if gort_markets:
-                self.rates["GORT"] = float(gort_markets[0].get("lastPrice"))
-                logger.info(f"Found GORT rate: {self.rates['GORT']}")
-            else:
-                logger.warning("No GORT markets found in API data")
-
-            # Process RSN rate
-            rsn_markets = [
-                m
-                for m in markets
-                if m.get("quoteSymbol") == "RSN" and m.get("baseSymbol") == "ERG"
-            ]
-
-            if rsn_markets:
-                self.rates["RSN"] = float(rsn_markets[0].get("lastPrice"))
-                logger.info(f"Found RSN rate: {self.rates['RSN']}")
-            else:
-                logger.warning("No RSN markets found in API data")
+                if token_markets:
+                    # Special sorting for SigUSD by volume
+                    if token == "SigUSD" and "baseVolume" in token_markets[0]:
+                        token_markets.sort(
+                            key=lambda m: float(m.get("baseVolume", {}).get("value", 0)),
+                            reverse=True,
+                        )
+                    
+                    # Use the price from the first market (highest volume for SigUSD)
+                    try:
+                        self.rates[token] = float(token_markets[0].get("lastPrice"))
+                        logger.info(f"Found {token} rate: {self.rates[token]}")
+                    except (ValueError, TypeError, IndexError) as price_error:
+                         logger.error(f"Error processing price for {token} from market data {token_markets[0]}: {price_error}")
+                else:
+                    logger.warning(f"No {token} markets found in API data")
 
         except Exception as e:
-            logger.error(f"Error fetching Spectrum rates: {e}")
+            logger.error(f"Error fetching or processing Spectrum rates: {e}")
 
     def _fetch_gold_price(self) -> None:
         """
@@ -207,36 +187,6 @@ class CurrencyClient(BaseClient):
         except Exception as e:
             logger.error(f"Error fetching gold price: {e}")
 
-    def convert_to_erg(
-        self,
-        amount: str,
-        currency: str,
-        rates: Optional[Dict[str, float]] = None,
-    ) -> str:
-        """
-        Convert an amount in a specific currency to ERG equivalent.
-
-        Args:
-            amount: Amount to convert as a string
-            currency: Currency code
-            rates: Optional dictionary of conversion rates (uses internal rates if not provided)
-
-        Returns:
-            ERG equivalent amount as a string, or original amount if conversion not possible
-        """
-        if amount == "Not specified" or amount == "Ongoing":
-            return amount
-
-        # Use provided rates or fall back to internal rates
-        conversion_rates = rates if rates is not None else self.rates
-
-        try:
-            erg_value = self._convert_currency_to_erg(amount, currency, conversion_rates)
-            return f"{erg_value:.2f}" if erg_value != 0.0 else amount
-        except Exception as e:
-            logger.error(f"Error converting {amount} {currency} to ERG: {e}")
-            return amount
-
     def calculate_erg_value(
         self,
         amount: str,
@@ -279,20 +229,32 @@ class CurrencyClient(BaseClient):
             ERG equivalent amount as a float, or 0 if conversion not possible
         """
         try:
+            amount_float = float(amount)
             if currency == "ERG":
-                return float(amount)
-            elif currency == "SigUSD" and "SigUSD" in rates:
-                return float(amount) / rates["SigUSD"]
-            elif currency == "GORT" and "GORT" in rates:
-                return float(amount) / rates["GORT"]
-            elif currency == "RSN" and "RSN" in rates:
-                return float(amount) / rates["RSN"]
-            elif currency == "BENE" and "BENE" in rates:
-                return float(amount) / rates["BENE"]
-            elif currency == "g GOLD" and "gGOLD" in rates:
-                return float(amount) * rates["gGOLD"]
+                return amount_float
+
+            # Define conversion logic: rate key and operation (divide or multiply)
+            conversion_map = {
+                "SigUSD": ("SigUSD", "divide"),
+                "GORT": ("GORT", "divide"),
+                "RSN": ("RSN", "divide"),
+                "BENE": ("BENE", "divide"),
+                "g GOLD": ("gGOLD", "multiply"),
+            }
+
+            if currency in conversion_map:
+                rate_key, operation = conversion_map[currency]
+                if rate_key in rates:
+                    rate = rates[rate_key]
+                    if operation == "divide":
+                        return amount_float / rate if rate != 0 else 0.0
+                    elif operation == "multiply":
+                        return amount_float * rate
+                else:
+                    logger.warning(f"Missing conversion rate for {rate_key} used by {currency}")
+                    return 0.0
             else:
-                logger.warning(f"Unknown currency or missing conversion rate: {currency}")
+                logger.warning(f"Unknown currency: {currency}")
                 return 0.0
         except (ValueError, TypeError) as e:
             logger.error(f"Error converting {amount} {currency} to ERG: {e}")
