@@ -155,7 +155,10 @@ def extract_from_text(title: str, body: str) -> Tuple[Optional[str], Optional[st
         r'(\d+(?:,\d{3})*(?:\.\d{2})?)\s*(sigusd|gort|rsn|bene|erg|usd|ergos?)\s*bounty',
         r'bounty:?\s*(\d+(?:\.\d+)?)\s*(gram|g|oz|ounce)s?\s+(?:of\s+)?(gold|silver|platinum)',
         r'(\d+(?:\.\d+)?)\s*(gram|g|oz|ounce)s?\s+(?:of\s+)?(gold|silver|platinum)\s*bounty',
-        r'bounty\s+(?:of|is|:)?\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*(sigusd|gort|rsn|bene|erg|usd|ergos?|dollars?|€|£|\$)?'
+        r'bounty\s+(?:of|is|:)?\s*(\d+(?:,\d{3})*(?:\.\d{2})?)\s*(sigusd|gort|rsn|bene|erg|usd|ergos?|dollars?|€|£|\$)?',
+        # Patterns specifically looking for "Amount: ..."
+        r'amount:?\s*(\d+(?:\.\d+)?)\s*(erg|sigusd|rsn|bene|gort|usd|dollars?)',
+        r'amount:?\s*(\d+(?:\.\d+)?)\s*(gram|g|oz|ounce)s?\s+(?:of\s+)?(gold|silver|platinum)'
     ]
 
     # Combine title and body for searching

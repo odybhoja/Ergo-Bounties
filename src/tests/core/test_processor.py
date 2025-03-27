@@ -63,6 +63,65 @@ def test_placeholder_bounty_processing(processor):
     # TODO: Add real tests for process_repositories, process_organizations, etc.
     assert True
 
+def test_process_issue_marks_reserved_based_on_submission(processor, mock_github_client, mocker):
+    """Test that an issue is marked as Reserved if a submission file exists."""
+    repo_owner = "test-owner"
+    repo_name = "test-repo"
+    issue_number_reserved = 123
+    issue_number_open = 456
+
+    # Mock the _get_submitted_issue_numbers to simulate finding a submission
+    mocker.patch.object(processor, '_get_submitted_issue_numbers', return_value={str(issue_number_reserved)})
+    # Re-initialize the attribute based on the mocked method for this test instance
+    processor.submitted_issue_numbers = processor._get_submitted_issue_numbers()
+
+    # Mock GitHub API to return two issues: one matching the submission, one not
+    mock_issues = [
+        {
+            "number": issue_number_reserved,
+            "title": "Bounty: Reserved Issue",
+            "state": "open", # Initially open
+            "labels": [{"name": "bounty"}],
+            "html_url": f"https://github.com/{repo_owner}/{repo_name}/issues/{issue_number_reserved}",
+            "body": "Amount: 100 ERG",
+            "user": {"login": "creator1"}
+        },
+        {
+            "number": issue_number_open,
+            "title": "Bounty: Open Issue",
+            "state": "open",
+            "labels": [{"name": "bounty"}],
+            "html_url": f"https://github.com/{repo_owner}/{repo_name}/issues/{issue_number_open}",
+            "body": "Amount: 50 ERG",
+            "user": {"login": "creator2"}
+        }
+    ]
+    mock_github_client.get_repository_issues.return_value = mock_issues
+
+    # Define the repository to process
+    repos_to_query = [{"owner": repo_owner, "repo": repo_name}]
+
+    # Run the processing
+    processor.process_repositories(repos_to_query)
+
+    # Assertions
+    assert processor.reserved_count == 1, "Should have counted one reserved bounty"
+    assert len(processor.bounty_data) == 2, "Should have processed both issues"
+
+    reserved_bounty = next((b for b in processor.bounty_data if b["issue_number"] == issue_number_reserved), None)
+    open_bounty = next((b for b in processor.bounty_data if b["issue_number"] == issue_number_open), None)
+
+    assert reserved_bounty is not None, "Reserved bounty should be in the data"
+    assert reserved_bounty["status"] == "Reserved", "Status should be updated to Reserved"
+    assert reserved_bounty["amount"] == "100", "Amount should be extracted correctly"
+    assert reserved_bounty["currency"] == "ERG", "Currency should be extracted correctly"
+
+    assert open_bounty is not None, "Open bounty should be in the data"
+    assert open_bounty["status"] == "open", "Status should remain open"
+    assert open_bounty["amount"] == "50", "Amount should be extracted correctly"
+    assert open_bounty["currency"] == "ERG", "Currency should be extracted correctly"
+
+
 # Add more tests here for different methods of BountyProcessor
 # e.g., test_process_repositories_finds_bounty, test_add_extra_bounties,
 # test_group_by_language, test_find_featured_bounties, etc.
