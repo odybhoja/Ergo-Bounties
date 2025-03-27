@@ -1,17 +1,17 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-03-27 22:46:38 -->
+<!-- Generated on: 2025-03-27 22:54:53 -->
 
 # Summary of Bounties
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-105-blue)](/data/all.md) [![By Language](https://img.shields.io/badge/By%20Language-6-green)](/data/summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](/data/summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](/data/summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](/data/all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](/data/summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](/data/summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](/data/summary.md#projects)
 
 ## Projects
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/data/by_org/ergoplatform.md) | 81 | 42,298.87 ERG |
+| [ergoplatform](/data/by_org/ergoplatform.md) | 82 | 42,304.97 ERG |
 | [DevDAO](/data/by_org/devdao.md) | 1 | 3,000.00 ERG |
 | [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 945.26 ERG |
 | [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 609.85 ERG |
@@ -20,7 +20,7 @@
 | [stabilitynexus](/data/by_org/stabilitynexus.md) | 2 | 121.97 ERG |
 | [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.73 ERG |
 | [EF_DAO_LLC](/data/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **105** | **47,712.30 ERG** |
+| **Total** | **106** | **47,718.40 ERG** |
 
 ## Currencies
 
@@ -29,7 +29,7 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 [View current currency prices →](/data/currency_prices.md)
 | Currency | Count | Total Value (ERG) |
 |----------|-------|------------------|
-| [SigUSD ($1)](/data/by_currency/sigusd.md) | 54 | 39609.60 |
+| [SigUSD ($1)](/data/by_currency/sigusd.md) | 55 | 39615.70 |
 | [ERG](/data/by_currency/erg.md) | 25 | 6950.00 |
 | [Gold (per gram)](/data/by_currency/gold.md) | 6 | 589.49 |
 | [BENE ($1)](/data/by_currency/bene.md) | 4 | 243.94 |
@@ -41,11 +41,11 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 
 | Language | Count | Percentage |
 |----------|-------|------------|
-| [Scala](/data/by_language/scala.md) | 71 | 67.6% |
-| [Rust](/data/by_language/rust.md) | 20 | 19.0% |
+| [Scala](/data/by_language/scala.md) | 71 | 67.0% |
+| [Rust](/data/by_language/rust.md) | 20 | 18.9% |
 | [TypeScript](/data/by_language/typescript.md) | 6 | 5.7% |
 | [Svelte](/data/by_language/svelte.md) | 4 | 3.8% |
-| [Various](/data/by_language/various.md) | 3 | 2.9% |
+| [Various](/data/by_language/various.md) | 3 | 2.8% |
 
 [View all languages →](/data/by_language/)
 
