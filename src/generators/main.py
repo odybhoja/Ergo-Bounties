@@ -469,32 +469,60 @@ def generate_currency_files(
 
     logger.info(f"Generating currency-specific files for {len(currencies_dict)} currencies")
 
-    # Write currency-specific Markdown files using the helper
+    # Reverted: Write currency-specific Markdown files manually
+    languages = group_by_language(bounty_data) # Needed for nav
+    orgs = group_by_organization(bounty_data) # Needed for nav
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0) # Needed for nav
+
+    currency_client = CurrencyClient() # Needed for value calc
+    currency_client.rates = conversion_rates
+
     for currency, currency_bounties in currencies_dict.items():
-        currency_file_name = get_currency_filename(currency) # Use util function
+        currency_file_name = get_currency_filename(currency)
         currency_file = currency_dir / f'{currency_file_name}.md'
-        display_name = get_currency_display_name(currency) # Use util function
+        display_name = get_currency_display_name(currency)
         page_title = f"# {display_name} Bounties"
 
-        # Prepare extra content for currency rate
-        extra_content = ""
+        currency_value = sum(
+            currency_client.calculate_erg_value(b["amount"], currency)
+            for b in currency_bounties
+            if b["amount"] != "Not specified" and b["amount"] != "Ongoing"
+        )
+
+        content = ""
+        content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
+        content += f"![Total Bounties: {len(currency_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(currency_bounties)}-blue) "
+        if currency_value > 0:
+             content += f"![Total Value: {currency_value:.2f} ERG](https://img.shields.io/badge/Total%20Value-{currency_value:.2f}%20ERG-green)"
+        content += "\n\n"
+
+        content += generate_navigation_section(
+            total_bounties,
+            len(languages),
+            currencies_count,
+            len(orgs),
+            len(conversion_rates),
+            "../"
+        )
+
         if currency in conversion_rates:
             rate = conversion_rates[currency]
-            # Get list of currencies that don't need rate inversion from constants
             no_rate_inversion = CONSTANTS.get("no_rate_inversion", [])
             display_rate = 1.0 / rate if currency not in no_rate_inversion and rate > 0 else rate
-            extra_content = f"## Current {display_name} Rate\n\n1 {currency} = {display_rate:.6f} ERG\n"
+            content += f"## Current {display_name} Rate\n\n1 {currency} = {display_rate:.6f} ERG\n\n"
 
-        _generate_markdown_page(
-            filename=str(currency_file),
-            title=page_title,
-            page_bounties=currency_bounties,
-            all_bounty_data=bounty_data, # Pass full data for nav counts
-            conversion_rates=conversion_rates,
-            total_bounties=total_bounties,
-            nav_relative_path="../",
-            extra_content=extra_content
-        )
+        content += f"## {display_name} Bounties\n\n"
+        content += generate_standard_bounty_table(currency_bounties, conversion_rates)
+        content += add_footer_buttons("../")
+
+        final_content = wrap_with_guardrails(content, page_title)
+        try:
+            with open(currency_file, 'w', encoding='utf-8') as f:
+                f.write(final_content)
+            logger.debug(f"Successfully wrote {currency_file}")
+        except Exception as e:
+            logger.error(f"Error writing file {currency_file}: {e}")
+
 
     # Don't forget the "Not specified" currency
     not_specified_bounties = [
@@ -505,20 +533,15 @@ def generate_currency_files(
         not_specified_file = currency_dir / 'not_specified.md'
         page_title = "# Bounties with Unspecified Value"
 
-        # Need counts for navigation inside the helper
-        languages = group_by_language(bounty_data)
-        orgs = group_by_organization(bounty_data)
-        currencies_count = len(currencies_dict) + 1 # Add 1 for "Not specified"
-
-        # Build content manually for this special case as it doesn't fit the helper perfectly
+        # Build content manually for this special case
         content = ""
         content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
         content += f"![Total Bounties: {len(not_specified_bounties)}](https://img.shields.io/badge/Total%20Bounties-{len(not_specified_bounties)}-blue)\n\n"
         content += generate_navigation_section(
             total_bounties,
-            len(languages),
+            len(languages), # Recalculate or pass if needed
             currencies_count,
-            len(orgs),
+            len(orgs), # Recalculate or pass if needed
             len(conversion_rates),
             "../"
         )
@@ -529,7 +552,8 @@ def generate_currency_files(
 
         final_content = wrap_with_guardrails(content, page_title)
         try:
-            with open(not_specified_file, 'w', encoding='utf-8') as f:
+            # Cast Path to string for open()
+            with open(str(not_specified_file), 'w', encoding='utf-8') as f:
                 f.write(final_content)
             logger.debug(f"Successfully wrote {not_specified_file}")
         except Exception as e:
@@ -641,7 +665,8 @@ def generate_price_table(
     final_content = wrap_with_guardrails(content, "# Currency Prices") # Use wrap_with_guardrails
 
     # Write to file
-    with open(price_table_file, 'w', encoding='utf-8') as f:
+    # Cast Path to string for open()
+    with open(str(price_table_file), 'w', encoding='utf-8') as f:
         f.write(final_content)
 
     logger.info("Generated currency price table")
@@ -655,7 +680,7 @@ def generate_high_value_bounties_file(
     high_value_threshold: float = 1000.0
 ) -> None:
     """
-    Generate a high-value bounties markdown file using the helper function.
+    Generate a high-value bounties markdown file. (Reverted - Not using helper)
 
     Args:
         bounty_data: List of bounty data
@@ -664,25 +689,63 @@ def generate_high_value_bounties_file(
         bounties_dir: Bounties directory
         high_value_threshold: Minimum ERG value to be considered high-value
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info(f"Generating high-value bounties file (threshold: {high_value_threshold} ERG)")
 
     # Find high-value bounties using the module-level function
     high_value_bounties = find_high_value_bounties(bounty_data, conversion_rates, threshold=high_value_threshold)
 
-    high_value_file = Path(bounties_dir) / 'high-value-bounties.md'
+    high_value_file = Path(bounties_dir) / 'high-value-bounties.md' # Use Path
     page_title = f"# High-Value Bounties (Over {high_value_threshold:,.0f} ERG)"
 
-    # Use the helper function to generate the page
-    _generate_markdown_page(
-        filename=str(high_value_file),
-        title=page_title,
-        page_bounties=high_value_bounties, # Pass only high-value ones
-        all_bounty_data=bounty_data,      # Pass all data for nav counts
-        conversion_rates=conversion_rates,
-        total_bounties=total_bounties,
-        nav_relative_path="" # Relative path from data/
+    # Build content manually
+    content = ""
+    content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
+    content += f"Total high-value bounties: **{len(high_value_bounties)}**\n\n"
+    content += generate_navigation_section(
+        total_bounties,
+        len(languages),
+        currencies_count,
+        len(orgs),
+        len(conversion_rates),
+        "" # Relative path from data/
     )
-    logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")
+    content += f"## {page_title.lstrip('# ')}\n\n" # Use title for H2
+    # Custom table for high-value bounties
+    content += "| Bounty | Organization | Value | Currency | Primary Language | Reserve |\n"
+    content += "|--------|--------------|-------|----------|------------------|--------|\n"
+    for bounty in high_value_bounties:
+        owner = bounty["owner"]
+        repo_name = bounty["repo"]
+        title = bounty["title"]
+        url = bounty["url"]
+        currency = bounty["currency"]
+        primary_lang = bounty["primary_lang"]
+        issue_number = bounty["issue_number"]
+        creator = bounty["creator"]
+        amount = bounty["amount"]
+        erg_value = bounty["value"]
+        claim_url = create_claim_url(owner, repo_name, issue_number, title, url, currency, amount, creator)
+        org_link = format_organization_link(owner)
+        primary_lang_link = format_language_link(primary_lang)
+        currency_link = format_currency_link(currency)
+        reserve_button = "Reserved" if bounty.get("status") == "In Progress" else f"[<kbd>Reserve</kbd>]({claim_url})"
+        content += f"| [{title}]({url}) | {org_link} | {erg_value:.2f} ERG | {currency_link} | {primary_lang_link} | {reserve_button} |\n"
+
+    content += add_footer_buttons()
+
+    final_content = wrap_with_guardrails(content, page_title)
+    try:
+        # Cast Path to string for open()
+        with open(str(high_value_file), 'w', encoding='utf-8') as f:
+            f.write(final_content)
+        logger.info(f"Generated high-value bounties file with {len(high_value_bounties)} bounties")
+    except Exception as e:
+        logger.error(f"Error writing file {high_value_file}: {e}")
 
 
 def generate_main_file(
@@ -692,7 +755,7 @@ def generate_main_file(
     bounties_dir: str
 ) -> None:
     """
-    Generate the main markdown file with all bounties using the helper function.
+    Generate the main markdown file with all bounties. (Reverted - Not using helper)
 
     Args:
         bounty_data: List of bounty data
@@ -700,33 +763,46 @@ def generate_main_file(
         total_bounties: Total number of bounties
         bounties_dir: Bounties directory
     """
+    languages = group_by_language(bounty_data)
+    currencies_dict = group_by_currency(bounty_data)
+    orgs = group_by_organization(bounty_data)
+    currencies_count = len(currencies_dict) + (1 if any(b["currency"] == "Not specified" for b in bounty_data) else 0)
+
     logger.info("Generating main bounty file")
-    md_file = Path(bounties_dir) / 'all.md'
+
+    md_file = Path(bounties_dir) / 'all.md' # Use Path
     page_title = "# All Open Bounties"
 
-    # Prepare extra content for the ongoing programs section
-    extra_content = ""
-    ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
-    if ongoing_programs:
-        extra_content = (
-            "## Ongoing Reward Programs\n\n"
-            "The Ergo ecosystem offers ongoing reward programs to encourage continuous contributions in key areas.\n\n"
-            "**[View Ongoing Programs →](/docs/ongoing-programs.md)**\n"
-        )
-
-    # Use the helper function
-    _generate_markdown_page(
-        filename=str(md_file),
-        title=page_title,
-        page_bounties=bounty_data, # Pass all data for the main table
-        all_bounty_data=bounty_data,
-        conversion_rates=conversion_rates,
-        total_bounties=total_bounties,
-        nav_relative_path="", # Relative path from data/
-        extra_content=extra_content
+    # Build content manually
+    content = ""
+    content += f"*Report generated: {get_current_timestamp()} UTC*\n\n"
+    content += generate_navigation_section(
+        total_bounties,
+        len(languages),
+        currencies_count,
+        len(orgs),
+        len(conversion_rates),
+        "" # Relative path from data/
     )
 
-    logger.info("Generated main bounty file")
+    ongoing_programs = [b for b in bounty_data if b["amount"] == "Ongoing"]
+    if ongoing_programs:
+        content += "## Ongoing Reward Programs\n\n"
+        content += "The Ergo ecosystem offers ongoing reward programs to encourage continuous contributions in key areas.\n\n"
+        content += "**[View Ongoing Programs →](/docs/ongoing-programs.md)**\n\n"
+
+    content += "## All Bounties\n\n"
+    content += generate_standard_bounty_table(bounty_data, conversion_rates)
+    content += add_footer_buttons()
+
+    final_content = wrap_with_guardrails(content, page_title)
+    try:
+        # Cast Path to string for open()
+        with open(str(md_file), 'w', encoding='utf-8') as f:
+            f.write(final_content)
+        logger.info("Generated main bounty file")
+    except Exception as e:
+        logger.error(f"Error writing file {md_file}: {e}")
 
 
 def generate_summary_file(
@@ -768,7 +844,7 @@ def generate_summary_file(
         currencies_count, # Use calculated count
         len(orgs),
         len(conversion_rates),
-        f"/{bounties_dir}/"
+        f"/{bounties_dir}/" # Correct relative path for summary in root data dir
     )
 
     # Projects section
@@ -803,7 +879,7 @@ def generate_summary_file(
     # Write currency rows (top 5 by value)
     for currency, totals in sorted(currency_totals.items(), key=lambda x: x[1]["value"], reverse=True)[:5]:
         # Format the currency name for the file link
-        currency_file_name = get_currency_filename(currency) # Use util function
+        currency_file_name = get_currency_filename(currency) # Use renamed util function
 
         # Add link to currency page
         # Use display name for link text
@@ -836,21 +912,23 @@ def generate_summary_file(
     final_content = wrap_with_guardrails(content, "# Summary of Bounties") # Use wrap_with_guardrails
 
     # Write to file
-    with open(summary_file, 'w', encoding='utf-8') as f:
+    # Cast Path to string for open()
+    with open(str(summary_file), 'w', encoding='utf-8') as f:
         f.write(final_content)
 
     logger.info("Generated summary file")
 
     # Update README badges
     # from ..utils.markdown import update_readme_badges # Already imported
-    # Pass 0 for high_value_count temporarily, needs recalculation if threshold changes
-    update_readme_badges(total_bounties, total_value, 0, languages)
+    # Calculate high value count here before passing to update_readme_badges
+    high_value_bounties = find_high_value_bounties(bounty_data, conversion_rates) # Use default threshold
+    update_readme_badges(total_bounties, total_value, len(high_value_bounties), languages)
 
 
 def update_ongoing_programs_table(
     bounty_data: List[Dict[str, Any]],
     conversion_rates: Dict[str, float],
-    bounties_dir: str
+    bounties_dir: str # This argument seems unused here, consider removing
 ) -> None:
     """
     Update the tables in the ongoing programs markdown file using guardrails.
@@ -858,7 +936,7 @@ def update_ongoing_programs_table(
     Args:
         bounty_data: List of bounty data
         conversion_rates: Dictionary of conversion rates
-        bounties_dir: Bounties directory
+        bounties_dir: Bounties directory (unused)
     """
     logger.info("Updating ongoing programs tables with guardrails")
 
@@ -1044,50 +1122,8 @@ def generate_featured_bounties_file(
     final_content = wrap_with_guardrails(content, "# Featured Bounties") # Use wrap_with_guardrails
 
     # Write to file
-    with open(featured_bounties_file, 'w', encoding='utf-8') as f:
+    # Cast Path to string for open()
+    with open(str(featured_bounties_file), 'w', encoding='utf-8') as f:
         f.write(final_content)
 
     logger.info("Generated featured bounties file")
-
-# The following lines were likely added erroneously by the previous write operation
-# </final_file_content>
-#
-# IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
-#
-# <environment_details>
-# # VSCode Visible Files
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/devdao.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/devdao.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/ef_dao_llc.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/ef_dao_llc.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/fleet-sdk.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/fleet-sdk.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/input-output-hk.md
-# ../../../.vscode/extensions/danielsanmedium.dscodegpt-3.9.49/standalone/data/by_org/input-output-hk.md
-# src/generators/main.py
-#
-# # VSCode Open Tabs
-# src/tests/freshness.py
-# src/tests/check_apis.py
-# src/core/extractors.py
-# src/core/__init__.py
-# src/bounty_finder.py
-# src/tests/generators/test_main.py
-# src/api/currency_client.py
-# src/api/github_client.py
-# src/utils/markdown.py
-# src/core/processor.py
-# test.sh
-# src/tests/__init__.py
-# src/tests/run_bounty_check.py
-# src/utils/common.py
-# src/core/config.py
-# src/utils/__init__.py
-# src/generators/main.py
-#
-# # Current Time
-# 3/27/2025 10:01:30 PM (Europe/London UTC+0:00)
-#
-# # Current Mode
-# ACT MODE
-# </environment_details>
