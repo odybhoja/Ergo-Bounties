@@ -13,7 +13,7 @@ from .common import (
     get_current_timestamp,
     format_navigation_badges,
     add_footer_buttons,
-    format_currency_filename,
+    get_currency_filename, # Renamed from format_currency_filename
     format_currency_link,
     format_organization_link,
     format_language_link,
@@ -26,6 +26,6 @@ from .markdown import (
     generate_standard_bounty_table,
     generate_ongoing_programs_table,
     update_readme_badges,
-    update_partially_generated_file,
-    wrap_with_full_guardrails
+    update_partially_generated_file
+    # wrap_with_full_guardrails # Removed
 )

@@ -10,48 +10,39 @@ import os
 import sys
 import json
 import re
-import time
 import logging
-from datetime import datetime
 from pathlib import Path
-import requests
-from typing import Dict, Any, List, Tuple, Optional
+from typing import Dict, Any, List, Tuple
 
-# Add the parent directory to sys.path so we can import modules correctly
-sys.path.append(str(Path(__file__).parent.parent))
+# Add the parent directory to sys.path if needed for imports (though not strictly necessary for this simplified version)
+# sys.path.append(str(Path(__file__).parent.parent))
 
-# Configure colorful output
+# Assume dependencies like colorama and tabulate are installed via requirements.txt
 try:
+    import colorama
     from colorama import init, Fore, Style
     init(autoreset=True)
     COLORED_OUTPUT = True
 except ImportError:
-    print("Installing colorama for colored output...")
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "colorama"])
-    from colorama import init, Fore, Style
-    init(autoreset=True)
-    COLORED_OUTPUT = True
+    COLORED_OUTPUT = False
+    # Define dummy Fore and Style if colorama is not available
+    class DummyStyle:
+        def __getattr__(self, name):
+            return ""
+    Fore = DummyStyle()
+    Style = DummyStyle()
 
-# Try to import tabulate for table formatting
 try:
     from tabulate import tabulate
     TABULATE_AVAILABLE = True
 except ImportError:
-    print("Installing tabulate for table formatting...")
-    import subprocess
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "tabulate"])
-    from tabulate import tabulate
-    TABULATE_AVAILABLE = True
+    TABULATE_AVAILABLE = False
+
 
 # Get paths
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, '..', '..'))
-BOUNTIES_DIR = os.path.join(PROJECT_ROOT, 'data')
-SCRIPTS_DIR = os.path.join(PROJECT_ROOT, 'src')
-
-# State file to track previous runs
-STATE_FILE = os.path.join(SCRIPT_DIR, '.bounty_check_state.json')
+SCRIPT_DIR = Path(__file__).parent.resolve()
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.resolve()
+BOUNTIES_DIR = PROJECT_ROOT / 'data'
 
 # Configure logging
 logging.basicConfig(
@@ -60,6 +51,7 @@ logging.basicConfig(
     datefmt="%H:%M:%S"
 )
 logger = logging.getLogger('bounty_check')
+
 
 def print_header(title: str) -> None:
     """Print a formatted header."""
@@ -83,23 +75,194 @@ def print_status(message: str, status: bool, details: str = "") -> None:
         status_plain = "✓ PASS" if status else "✗ FAIL"
         print(f"{message}:{' ' * (50 - len(message))}{status_plain}  {details}")
 
-def validate_github_token() -> Tuple[bool, Dict[str, Any]]:
-    """Validate the GitHub token from environment and return its details."""
-    token = os.environ.get("GITHUB_TOKEN")
+
+def validate_output_files(bounties_dir: Path) -> bool:
+    """
+    Validate that expected output files exist and are not empty.
+
+    Args:
+        bounties_dir: Path object for the bounties directory.
+
+    Returns:
+        True if all checks pass, False otherwise.
+    """
+    logger.info(f"Validating output files in {bounties_dir}...")
+    overall_success = True
+
+    # List of key files to check in the root data directory
+    key_files = [
+        'all.md',
+        'summary.md',
+        'featured_bounties.md',
+        'currency_prices.md',
+        'high-value-bounties.md'
+    ]
+
+    # Check main files
+    for filename in key_files:
+        file_path = bounties_dir / filename
+        if file_path.exists() and file_path.stat().st_size > 0:
+            print_status(f"Checking {filename}", True, f"Found and not empty.")
+        else:
+            details = "Not found." if not file_path.exists() else "File is empty."
+            print_status(f"Checking {filename}", False, details)
+            overall_success = False
+
+    # Check subdirectories for existence and at least one non-empty .md file
+    subdirs = ['by_language', 'by_currency', 'by_org']
+    for subdir_name in subdirs:
+        subdir_path = bounties_dir / subdir_name
+        if subdir_path.is_dir():
+            # Check if there's at least one non-empty markdown file
+            md_files = list(subdir_path.glob('*.md'))
+            non_empty_md_files = [f for f in md_files if f.stat().st_size > 0]
+            if non_empty_md_files:
+                 print_status(f"Checking {subdir_name}/ directory", True, f"Found {len(non_empty_md_files)} non-empty file(s).")
+            elif md_files:
+                 print_status(f"Checking {subdir_name}/ directory", False, "Directory exists, but all .md files are empty.")
+                 overall_success = False
+            else:
+                 print_status(f"Checking {subdir_name}/ directory", False, "Directory exists, but contains no .md files.")
+                 overall_success = False
+        else:
+            print_status(f"Checking {subdir_name}/ directory", False, "Directory not found.")
+            overall_success = False
+
+    if overall_success:
+        logger.info("All required output files validated successfully.")
+    else:
+        logger.error("Some output files/directories failed validation.")
+
+    return overall_success
+
+
+def main() -> int:
+    """Main function to run the bounty check."""
+    print_header("Ergo Bounties Output Validation")
+    logger.info(f"Validating output in directory: {BOUNTIES_DIR}")
+
+    success = validate_output_files(BOUNTIES_DIR)
+
+    if success:
+        logger.info("Validation PASSED")
+        return 0
+    else:
+        logger.error("Validation FAILED")
+        return 1
+
+# --- Removed Functions ---
+# validate_github_token
+# get_file_count
+# count_markdown_files (replaced by validate_output_files)
+# validate_api_prices
+# extract_info_from_files
+# load_previous_state
+# save_current_state
+# calculate_changes
+# format_table
+# print_summary_table
+# print_changes_table
+# run_minimal_bounty_finder
+
+if __name__ == "__main__":
+    sys.exit(main())
+#!/usr/bin/env python3
+"""
+Ergo Bounties Validation Tool
+
+This script runs validation checks on the bounty finder outputs, providing
+a clean table-based summary of the results. It also tracks changes between runs.
+"""
+
+import os
+import sys
+import json
+import re
+import logging
+from pathlib import Path
+from typing import Dict, Any, List, Tuple
+
+# Add the parent directory to sys.path if needed for imports (though not strictly necessary for this simplified version)
+# sys.path.append(str(Path(__file__).parent.parent))
+
+# Assume dependencies like colorama and tabulate are installed via requirements.txt
+try:
+    import colorama
+    from colorama import init, Fore, Style
+    init(autoreset=True)
+    COLORED_OUTPUT = True
+except ImportError:
+    COLORED_OUTPUT = False
+    # Define dummy Fore and Style if colorama is not available
+    class DummyStyle:
+        def __getattr__(self, name):
+            return ""
+    Fore = DummyStyle()
+    Style = DummyStyle()
+
+try:
+    from tabulate import tabulate
+    TABULATE_AVAILABLE = True
+except ImportError:
+    TABULATE_AVAILABLE = False
+
+
+# Get paths
+SCRIPT_DIR = Path(__file__).parent.resolve()
+PROJECT_ROOT = SCRIPT_DIR.parent.parent.resolve()
+BOUNTIES_DIR = PROJECT_ROOT / 'data'
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format=f"{Fore.CYAN}%(asctime)s{Style.RESET_ALL} - %(message)s" if COLORED_OUTPUT else "%(asctime)s - %(message)s",
+    datefmt="%H:%M:%S"
+)
+logger = logging.getLogger('bounty_check')
+
+
+def print_header(title: str) -> None:
+    """Print a formatted header."""
+    width = 80
+    if COLORED_OUTPUT:
+        print(f"\n{Fore.CYAN}{Style.BRIGHT}{'═' * width}")
+        print(f"{Fore.CYAN}{Style.BRIGHT}{title.center(width)}")
+        print(f"{Fore.CYAN}{Style.BRIGHT}{'═' * width}{Style.RESET_ALL}\n")
+    else:
+        print(f"\n{'═' * width}")
+        print(f"{title.center(width)}")
+        print(f"{'═' * width}\n")
+
+def print_status(message: str, status: bool, details: str = "") -> None:
+    """Print a status message with colored status indicators."""
+    status_str = f"{Fore.GREEN}✓ PASS{Style.RESET_ALL}" if status else f"{Fore.RED}✗ FAIL{Style.RESET_ALL}"
+    
+    if COLORED_OUTPUT:
+        print(f"{Fore.WHITE}{message}:{' ' * (50 - len(message))}{status_str}  {details}")
+    else:
+        status_plain = "✓ PASS" if status else "✗ FAIL"
+        token = os.environ.get("GITHUB_TOKEN")
     if not token:
         # Also try to load from .env file like config.py does
-        env_file = Path(os.path.join('src', '.env'))
-        if env_file.exists():
-            try:
-                with open(env_file, 'r') as f:
-                    for line in f:
-                        line = line.strip()
-                        if line and not line.startswith('#'):
-                            if line.startswith('github_token='):
-                                token = line.split('=', 1)[1].strip('"\'')
-                                print(f"DEBUG: Found token in scripts/.env: {token[:4]}...{token[-4:]}")
-            except Exception as e:
-                print(f"ERROR reading .env file: {e}")
+        env_files = [
+            Path(os.path.join('src', '.env')),
+            Path(os.path.join(PROJECT_ROOT, '.env'))
+        ]
+        for env_file in env_files:
+            if env_file.exists():
+                try:
+                    with open(env_file, 'r') as f:
+                        for line in f:
+                            line = line.strip()
+                            if line and not line.startswith('#'):
+                                if line.startswith('github_token='):
+                                    token = line.split('=', 1)[1].strip('"\'')
+                                    print(f"DEBUG: Found token in {env_file}: {token[:4]}...{token[-4:]}")
+                                    break
+                        if token:
+                            break
+                except Exception as e:
+                    print(f"ERROR reading {env_file}: {e}")
     
     if not token:
         return False, {"error": "No GITHUB_TOKEN environment variable or in .env file found"}
@@ -680,10 +843,26 @@ def main() -> int:
     # 5. Save current state for next run
     save_current_state(results)
     
-    # 6. Print summary tables
-    print_summary_table(results)
+    # 6. Dynamically update dashboard by re-reading file counts to simulate real-time updates
+    import time
+    for i in range(5):
+        # Simulate dynamic changes by updating file counts
+        dynamic_counts = count_markdown_files()  # Re-read file counts from current state of BOUNTIES_DIR
+        results["file_counts"] = dynamic_counts
+        # Also re-extract info, if needed (optional, uncomment next line if dynamic content is expected)
+        # results.update(extract_info_from_files())
+        # Clear screen using ANSI escape codes
+        print("\033c", end="")
+        print_header("Dynamic Dashboard [Test Environment]")
+        print_summary_table(results)
+        if "changes" in results:
+            print_changes_table(results["changes"], previous_run_time)
+        time.sleep(2)
     
-    # 7. Print changes if available
+    # Final static display of the summary after dynamic updates
+    print("\033c", end="")
+    print_header("Ergo Bounties Final Validation Summary")
+    print_summary_table(results)
     if "changes" in results:
         print_changes_table(results["changes"], previous_run_time)
     

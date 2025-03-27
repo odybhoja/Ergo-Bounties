@@ -8,7 +8,8 @@ This package contains testing utilities for the bounty finder application:
 """
 
 # Import test utilities for easier access
-from .test_runner import (
-    validate_output_files,
-    run_minimal_bounty_finder
-)
+# Removed import from deleted test_runner.py
+# from .test_runner import (
+#     validate_output_files,
+#     run_minimal_bounty_finder
+# )

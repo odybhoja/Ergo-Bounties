@@ -1,0 +1,8 @@
+# Core Dependencies
+requests
+
+# Test/Validation Dependencies
+colorama
+tabulate
+pytest
+pytest-mock
