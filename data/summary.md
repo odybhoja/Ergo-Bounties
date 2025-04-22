@@ -1,5 +1,5 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-04-22 01:48:08 -->
+<!-- Generated on: 2025-04-22 12:44:47 -->
 
 # Summary of Bounties
 
@@ -11,16 +11,16 @@
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/data/by_org/ergoplatform.md) | 76 | 43,266.17 ERG |
+| [ergoplatform](/data/by_org/ergoplatform.md) | 76 | 43,264.82 ERG |
 | [DevDAO](/data/by_org/devdao.md) | 1 | 3,000.00 ERG |
-| [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 1,009.82 ERG |
-| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 651.49 ERG |
-| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 427.44 ERG |
+| [fleet-sdk](/data/by_org/fleet-sdk.md) | 1 | 1,009.79 ERG |
+| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 651.48 ERG |
+| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 426.96 ERG |
 | [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 130.30 ERG |
 | [stabilitynexus](/data/by_org/stabilitynexus.md) | 2 | 130.30 ERG |
-| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.36 ERG |
+| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.37 ERG |
 | [EF_DAO_LLC](/data/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **100** | **48,729.88 ERG** |
+| **Total** | **100** | **48,728.01 ERG** |
 
 ## Currencies
 
@@ -29,10 +29,10 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 [View current currency prices →](/data/currency_prices.md)
 | Currency | Count | Total Value (ERG) |
 |----------|-------|------------------|
-| [SigUSD ($1)](/data/by_currency/sigusd.md) | 54 | 41669.60 |
+| [SigUSD ($1)](/data/by_currency/sigusd.md) | 54 | 41668.57 |
 | [ERG](/data/by_currency/erg.md) | 21 | 6050.00 |
-| [Gold (per gram)](/data/by_currency/gold.md) | 6 | 485.05 |
-| [BENE ($1)](/data/by_currency/bene.md) | 4 | 260.60 |
+| [Gold (per gram)](/data/by_currency/gold.md) | 6 | 484.22 |
+| [BENE ($1)](/data/by_currency/bene.md) | 4 | 260.59 |
 | [GORT (Governance Token)](/data/by_currency/gort.md) | 6 | 150.26 |
 
 [View all currencies →](/data/by_currency/)
