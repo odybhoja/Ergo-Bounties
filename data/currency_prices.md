@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-04-24 12:46:46 -->
+<!-- Generated on: 2025-04-25 01:49:49 -->
 
 # Currency Prices
 
-*Report generated: 2025-04-24 12:46:46 UTC*
+*Report generated: 2025-04-25 01:49:49 UTC*
 
 ## Navigation
 
@@ -13,11 +13,11 @@
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE ($1)](by_currency/bene.md) | 1.279799 | Each BENE is worth $1 in ERG |
-| [GORT (Governance Token)](by_currency/gort.md) | 0.076363 | Governance token for ErgoDEX |
-| [RSN (Governance Token)](by_currency/rsn.md) | 0.054651 | Governance token for Rosen Bridge |
-| [SigUSD ($1)](by_currency/sigusd.md) | 1.279799 | Stablecoin pegged to USD |
-| [Gold (per gram)](by_currency/gold.md) | 73.720184 | Price per gram of gold in ERG |
+| [BENE ($1)](by_currency/bene.md) | 1.231012 | Each BENE is worth $1 in ERG |
+| [GORT (Governance Token)](by_currency/gort.md) | 0.075884 | Governance token for ErgoDEX |
+| [RSN (Governance Token)](by_currency/rsn.md) | 0.054662 | Governance token for Rosen Bridge |
+| [SigUSD ($1)](by_currency/sigusd.md) | 1.231012 | Stablecoin pegged to USD |
+| [Gold (per gram)](by_currency/gold.md) | 75.754418 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 
