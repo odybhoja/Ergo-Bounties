@@ -1,24 +1,24 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-04-30 12:44:09 -->
+<!-- Generated on: 2025-05-01 01:58:42 -->
 
 # Featured Bounties
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-101-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-104-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](summary.md#projects)
 
 ## Top Bounties by Value
 
 | Bounty | Organization | Value | Currency |
 |--------|--------------|-------|----------|
-| [NiPoPoW powered bootstrapping ](https://github.com/ergoplatform/ergo/issues/1365) | [ergoplatform](by_org/ergoplatform.md) | 6308.46 ERG | [SigUSD ($1)](by_currency/sigusd.md) |
+| [NiPoPoW powered bootstrapping ](https://github.com/ergoplatform/ergo/issues/1365) | [ergoplatform](by_org/ergoplatform.md) | 6470.06 ERG | [SigUSD ($1)](by_currency/sigusd.md) |
 | [Keystone Wallet Integration](https://discord.com/channels/668903786361651200/669989266478202917/1344310506277830697) | [DevDAO](by_org/devdao.md) | 3000.00 ERG | [ERG](by_currency/erg.md) |
 
 ## Weekly Summary
 
 | Date | Open Bounties | Total Value |
 |------|--------------|-------------|
-| [Apr 30, 2025](/data/all.md#all-bounties) | 101 | 47,644.38 ERG |
+| [May 01, 2025](/data/all.md#all-bounties) | 104 | 48,819.49 ERG |
 
 
 
