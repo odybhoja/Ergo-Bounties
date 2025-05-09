@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-05-08 12:46:54 -->
+<!-- Generated on: 2025-05-09 01:51:24 -->
 
 # RSN (Governance Token) Bounties
 
-*Report generated: 2025-05-08 12:46:54 UTC*
+*Report generated: 2025-05-09 01:51:24 UTC*
 
-![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 114.52 ERG](https://img.shields.io/badge/Total%20Value-114.52%20ERG-green)
+![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 114.53 ERG](https://img.shields.io/badge/Total%20Value-114.53%20ERG-green)
 
 ## Navigation
 
@@ -13,7 +13,7 @@
 
 ## Current RSN (Governance Token) Rate
 
-1 RSN = 0.054532 ERG
+1 RSN = 0.054536 ERG
 
 ## RSN (Governance Token) Bounties
 
