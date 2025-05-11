@@ -1,5 +1,5 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-05-10 12:40:43 -->
+<!-- Generated on: 2025-05-11 01:57:28 -->
 
 # Summary of Bounties
 
@@ -11,16 +11,16 @@
 
 | Project | Count | Value |
 |----------|-------|-------|
-| [ergoplatform](/data/by_org/ergoplatform.md) | 77 | 38,818.11 ERG |
+| [ergoplatform](/data/by_org/ergoplatform.md) | 77 | 37,806.89 ERG |
 | [DevDAO](/data/by_org/devdao.md) | 1 | 3,000.00 ERG |
-| [fleet-sdk](/data/by_org/fleet-sdk.md) | 4 | 1,041.50 ERG |
-| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 575.16 ERG |
-| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 467.60 ERG |
-| [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 115.03 ERG |
-| [stabilitynexus](/data/by_org/stabilitynexus.md) | 2 | 115.03 ERG |
-| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.54 ERG |
+| [fleet-sdk](/data/by_org/fleet-sdk.md) | 4 | 1,015.81 ERG |
+| [input-output-hk](/data/by_org/input-output-hk.md) | 1 | 558.59 ERG |
+| [chaincashlabs](/data/by_org/chaincashlabs.md) | 9 | 475.20 ERG |
+| [rosen-bridge](/data/by_org/rosen-bridge.md) | 6 | 114.50 ERG |
+| [StabilityNexus](/data/by_org/stabilitynexus.md) | 2 | 111.72 ERG |
+| [stabilitynexus](/data/by_org/stabilitynexus.md) | 2 | 111.72 ERG |
 | [EF_DAO_LLC](/data/by_org/ef_dao_llc.md) | 2 | 0.00 ERG |
-| **Total** | **104** | **44,246.97 ERG** |
+| **Total** | **104** | **43,194.41 ERG** |
 
 ## Currencies
 
@@ -29,11 +29,11 @@ Open bounties are updated daily with values shown in ERG equivalent. Some bounti
 [View current currency prices →](/data/currency_prices.md)
 | Currency | Count | Total Value (ERG) |
 |----------|-------|------------------|
-| [SigUSD ($1)](/data/by_currency/sigusd.md) | 54 | 36787.20 |
+| [SigUSD ($1)](/data/by_currency/sigusd.md) | 54 | 35727.21 |
 | [ERG](/data/by_currency/erg.md) | 25 | 6400.00 |
-| [Gold (per gram)](/data/by_currency/gold.md) | 6 | 577.64 |
-| [BENE ($1)](/data/by_currency/bene.md) | 4 | 230.06 |
-| [GORT (Governance Token)](/data/by_currency/gort.md) | 6 | 137.52 |
+| [Gold (per gram)](/data/by_currency/gold.md) | 6 | 592.83 |
+| [BENE ($1)](/data/by_currency/bene.md) | 4 | 223.43 |
+| [GORT (Governance Token)](/data/by_currency/gort.md) | 6 | 136.44 |
 
 [View all currencies →](/data/by_currency/)
 
