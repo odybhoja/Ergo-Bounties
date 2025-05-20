@@ -1,19 +1,19 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-05-20 01:54:00 -->
+<!-- Generated on: 2025-05-20 12:49:54 -->
 
 # RSN (Governance Token) Bounties
 
-*Report generated: 2025-05-20 01:54:00 UTC*
+*Report generated: 2025-05-20 12:49:54 UTC*
 
-![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 111.31 ERG](https://img.shields.io/badge/Total%20Value-111.31%20ERG-green)
+![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 111.30 ERG](https://img.shields.io/badge/Total%20Value-111.30%20ERG-green)
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-107-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-106-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
 
 ## Current RSN (Governance Token) Rate
 
-1 RSN = 0.053004 ERG
+1 RSN = 0.053001 ERG
 
 ## RSN (Governance Token) Bounties
 
