@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-05-26 01:56:16 -->
+<!-- Generated on: 2025-05-26 12:45:45 -->
 
 # Svelte Bounties
 
-*Report generated: 2025-05-26 01:56:16 UTC*
+*Report generated: 2025-05-26 12:45:45 UTC*
 
-![Total Bounties: 4](https://img.shields.io/badge/Total%20Bounties-4-blue) ![Total Value: 238.95 ERG](https://img.shields.io/badge/Total%20Value-238.95%20ERG-green)
+![Total Bounties: 4](https://img.shields.io/badge/Total%20Bounties-4-blue) ![Total Value: 238.26 ERG](https://img.shields.io/badge/Total%20Value-238.26%20ERG-green)
 
 ## Navigation
 
