@@ -1,19 +1,19 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-05-27 01:52:10 -->
+<!-- Generated on: 2025-05-27 12:49:24 -->
 
 # GORT (Governance Token) Bounties
 
-*Report generated: 2025-05-27 01:52:10 UTC*
+*Report generated: 2025-05-27 12:49:24 UTC*
 
-![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 138.93 ERG](https://img.shields.io/badge/Total%20Value-138.93%20ERG-green)
+![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 137.85 ERG](https://img.shields.io/badge/Total%20Value-137.85%20ERG-green)
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-103-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-8-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-102-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-8-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
 
 ## Current GORT (Governance Token) Rate
 
-1 GORT = 0.071247 ERG
+1 GORT = 0.070693 ERG
 
 ## GORT (Governance Token) Bounties
 
