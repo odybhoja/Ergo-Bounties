@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-06-07 01:53:11 -->
+<!-- Generated on: 2025-06-07 12:42:34 -->
 
 # SigUSD ($1) Bounties
 
-*Report generated: 2025-06-07 01:53:11 UTC*
+*Report generated: 2025-06-07 12:42:34 UTC*
 
-![Total Bounties: 55](https://img.shields.io/badge/Total%20Bounties-55-blue) ![Total Value: 36431.51 ERG](https://img.shields.io/badge/Total%20Value-36431.51%20ERG-green)
+![Total Bounties: 55](https://img.shields.io/badge/Total%20Bounties-55-blue) ![Total Value: 36432.77 ERG](https://img.shields.io/badge/Total%20Value-36432.77%20ERG-green)
 
 ## Navigation
 
@@ -13,7 +13,7 @@
 
 ## Current SigUSD ($1) Rate
 
-1 SigUSD = 1.121660 ERG
+1 SigUSD = 1.121699 ERG
 
 ## SigUSD ($1) Bounties
 
