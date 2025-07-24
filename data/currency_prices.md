@@ -1,23 +1,23 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-07-23 12:54:05 -->
+<!-- Generated on: 2025-07-24 02:04:25 -->
 
 # Currency Prices
 
-*Report generated: 2025-07-23 12:54:05 UTC*
+*Report generated: 2025-07-24 02:04:25 UTC*
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-101-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-102-blue)](all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](summary.md#projects)
 
 ## Current Prices
 
 | Currency | ERG Equivalent | Notes |
 |----------|----------------|-------|
-| [BENE ($1)](by_currency/bene.md) | 0.829506 | Each BENE is worth $1 in ERG |
-| [GORT (Governance Token)](by_currency/gort.md) | 0.062171 | Governance token for ErgoDEX |
-| [RSN (Governance Token)](by_currency/rsn.md) | 0.039219 | Governance token for Rosen Bridge |
-| [SigUSD ($1)](by_currency/sigusd.md) | 0.829506 | Stablecoin pegged to USD |
-| [Gold (per gram)](by_currency/gold.md) | 107.714521 | Price per gram of gold in ERG |
+| [BENE ($1)](by_currency/bene.md) | 0.903479 | Each BENE is worth $1 in ERG |
+| [GORT (Governance Token)](by_currency/gort.md) | 0.063292 | Governance token for ErgoDEX |
+| [RSN (Governance Token)](by_currency/rsn.md) | 0.039213 | Governance token for Rosen Bridge |
+| [SigUSD ($1)](by_currency/sigusd.md) | 0.903479 | Stablecoin pegged to USD |
+| [Gold (per gram)](by_currency/gold.md) | 99.670147 | Price per gram of gold in ERG |
 
 *Note: These prices are used to calculate ERG equivalents for bounties paid in different currencies.*
 
