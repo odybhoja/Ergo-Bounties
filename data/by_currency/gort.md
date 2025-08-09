@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-08-09 01:56:51 -->
+<!-- Generated on: 2025-08-09 12:47:59 -->
 
 # GORT (Governance Token) Bounties
 
-*Report generated: 2025-08-09 01:56:51 UTC*
+*Report generated: 2025-08-09 12:47:59 UTC*
 
 ![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 105.76 ERG](https://img.shields.io/badge/Total%20Value-105.76%20ERG-green)
 
