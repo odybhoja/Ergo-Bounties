@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-08-10 12:48:51 -->
+<!-- Generated on: 2025-08-11 02:07:46 -->
 
 # BENE ($1) Bounties
 
-*Report generated: 2025-08-10 12:48:51 UTC*
+*Report generated: 2025-08-11 02:07:46 UTC*
 
-![Total Bounties: 4](https://img.shields.io/badge/Total%20Bounties-4-blue) ![Total Value: 206.71 ERG](https://img.shields.io/badge/Total%20Value-206.71%20ERG-green)
+![Total Bounties: 4](https://img.shields.io/badge/Total%20Bounties-4-blue) ![Total Value: 207.25 ERG](https://img.shields.io/badge/Total%20Value-207.25%20ERG-green)
 
 ## Navigation
 
@@ -13,7 +13,7 @@
 
 ## Current BENE ($1) Rate
 
-1 BENE = 1.033538 ERG
+1 BENE = 1.036244 ERG
 
 ## BENE ($1) Bounties
 
