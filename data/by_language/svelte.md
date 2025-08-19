@@ -1,15 +1,15 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-08-18 12:53:31 -->
+<!-- Generated on: 2025-08-19 01:53:00 -->
 
 # Svelte Bounties
 
-*Report generated: 2025-08-18 12:53:31 UTC*
+*Report generated: 2025-08-19 01:53:00 UTC*
 
-![Total Bounties: 5](https://img.shields.io/badge/Total%20Bounties-5-blue) ![Total Value: 205.93 ERG](https://img.shields.io/badge/Total%20Value-205.93%20ERG-green)
+![Total Bounties: 5](https://img.shields.io/badge/Total%20Bounties-5-blue) ![Total Value: 205.53 ERG](https://img.shields.io/badge/Total%20Value-205.53%20ERG-green)
 
 ## Navigation
 
-[![All Bounties](https://img.shields.io/badge/All%20Bounties-100-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
+[![All Bounties](https://img.shields.io/badge/All%20Bounties-101-blue)](../all.md) [![By Language](https://img.shields.io/badge/By%20Language-7-green)](../summary.md#languages) [![By Currency](https://img.shields.io/badge/By%20Currency-7-yellow)](../summary.md#currencies) [![By Organization](https://img.shields.io/badge/By%20Organization-9-orange)](../summary.md#projects)
 
 ## Svelte Bounties
 
