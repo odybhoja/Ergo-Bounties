@@ -1,11 +1,11 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2025-09-28 01:53:30 -->
+<!-- Generated on: 2025-09-28 12:42:24 -->
 
 # rosen-bridge Bounties
 
-*Report generated: 2025-09-28 01:53:30 UTC*
+*Report generated: 2025-09-28 12:42:24 UTC*
 
-![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 71.70 ERG](https://img.shields.io/badge/Total%20Value-71.70%20ERG-green)
+![Total Bounties: 6](https://img.shields.io/badge/Total%20Bounties-6-blue) ![Total Value: 71.69 ERG](https://img.shields.io/badge/Total%20Value-71.69%20ERG-green)
 
 ## Navigation
 
