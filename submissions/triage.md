@@ -1,10 +1,11 @@
 # Submission Triage
 
-Generated: 2026-07-30 10:57 UTC
+Generated: 2026-07-31 11:19 UTC
 
 ## Ready Review
 
-None.
+- [#46](https://github.com/ErgoDevs/Ergo-Bounties/pull/46) Create ergoplatform-ergo-2184.json (payment request, 1 g GOLD) (ready-review)
+- [#45](https://github.com/ErgoDevs/Ergo-Bounties/pull/45) Create ergoplatform-sigmastate-interpreter-1114.json (payment request, 500 ERG) (ready-review)
 
 ## Payment Ready
 
@@ -16,7 +17,7 @@ None.
 
 ## Stale
 
-- [#43](https://github.com/ErgoDevs/Ergo-Bounties/pull/43) \[WIP\] Bounty ergoplatform/ergo#1905 - Prevent custom-scan boxes from being spent (stale-reservation)
+- [#43](https://github.com/ErgoDevs/Ergo-Bounties/pull/43) \[WIP\] Bounty ergoplatform/ergo#1905 - Prevent custom-scan boxes from being spent (duplicate-bounty, stale-reservation)
 
 ## Invalid
 
