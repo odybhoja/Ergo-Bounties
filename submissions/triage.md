@@ -1,6 +1,6 @@
 # Submission Triage
 
-Generated: 2026-07-31 11:19 UTC
+Generated: 2026-08-01 10:25 UTC
 
 ## Ready Review
 
@@ -17,7 +17,7 @@ None.
 
 ## Stale
 
-- [#43](https://github.com/ErgoDevs/Ergo-Bounties/pull/43) \[WIP\] Bounty ergoplatform/ergo#1905 - Prevent custom-scan boxes from being spent (duplicate-bounty, stale-reservation)
+None.
 
 ## Invalid
 
