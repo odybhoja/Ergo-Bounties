@@ -1,9 +1,9 @@
 <!-- GENERATED FILE - DO NOT EDIT DIRECTLY -->
-<!-- Generated on: 2026-11-21 05:00:15 -->
+<!-- Generated on: 2026-11-22 04:22:23 -->
 
 # High-Value Bounties (Over 1,000 ERG)
 
-*Report generated: 2026-11-21 05:00:15 UTC*
+*Report generated: 2026-11-22 04:22:23 UTC*
 
 Total high-value bounties: **39**
 
